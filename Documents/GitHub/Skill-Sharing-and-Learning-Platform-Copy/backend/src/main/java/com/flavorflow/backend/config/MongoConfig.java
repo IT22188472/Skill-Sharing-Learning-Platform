@@ -1,0 +1,10 @@
+package com.flavorflow.backend.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+@Configuration
+@EnableMongoRepositories(basePackages = "com.flavorflow.repository")
+public class MongoConfig {
+
+}
