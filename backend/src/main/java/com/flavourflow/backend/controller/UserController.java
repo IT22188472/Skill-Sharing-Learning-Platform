@@ -1,85 +1,79 @@
 package com.flavourflow.backend.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flavourflow.backend.models.User;
+import com.flavourflow.backend.repository.UserRepository;
+import com.flavourflow.backend.service.UserService;
 
 
 @RestController
 public class UserController {
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
+    
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+
+        User savedUser=userService.registerUser(user);
+
+        return savedUser;
+    }
     
     @GetMapping("/users")
     public List<User> getUsers(){
 
-        List<User> users = new ArrayList<>();
+        List<User> users = userRepository.findAll();
 
-        User user1 = new User(1,"Dulanja","Anuradha","dulanjaanuradha12@gmail.com","2001");
-        User user2 = new User(2,"Dushan","Rishitha","dushanrishitha1996@gmail.com","2122");
-
-        users.add(user1);
-        users.add(user2);
-
-       
         return users;
+
     }
 
     @GetMapping("/users/{userId}")
-    public User getUserById(@PathVariable("userId")Integer id){
+    public User getUserById(@PathVariable("userId")Integer id) throws Exception{
 
+        User user=userService.findUserById(id);
 
-        User user1 = new User(1,"Dulanja","Anuradha","dulanjaanuradha12@gmail.com","2001");
-        user1.setId(id);
+        return user;
+
+    }
+
+    @PutMapping("/users/{userId}")
+    public User uptadeUser(@RequestBody User user,@PathVariable Integer userId) throws Exception{
        
-        return user1;
-    }
+        User updatUser=userService.updateUser(user,userId);
 
-
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        User newUser = new User();
-        newUser.setEmail(user.getEmail());
-        newUser.setFisrtName(user.getFisrtName());
-        newUser.setLastName(user.getLastName());
-        newUser.setPassword(user.getPassword());
-        newUser.setId(user.getId());
-
-        return newUser;
-    }
-
-    @PutMapping("/users")
-    public User uptadeUser(@RequestBody User user){
-        User user1 = new User(1,"Dulanja","Anuradha","dulanjaanuradha12@gmail.com","2001");
-
-        if (user.getFisrtName()!=null) {
-            user1.setFisrtName(user.getFisrtName());
-        }
-
-        if (user.getLastName()!=null) {
-            user1.setLastName(user.getLastName());
-        }
-
-        if (user.getEmail()!=null) {
-            user1.setEmail(user.getEmail());
-        }
-
-        return user1;
+        return updatUser;
         
     }
 
-    @DeleteMapping("users/{userId}")
-    public String deleteUser(@PathVariable("userId") Integer userId){
 
-        return "user deleted successfully with Id: "+userId;
+    @PutMapping("/users/follow/{userId1}/{userId2}")
+    public User followUserHandler(@PathVariable Integer userId1,@PathVariable Integer userId2) throws Exception{
+
+        User user=userService.followUser(userId1, userId2);
+        return user;
+    }
+
+    @GetMapping("/users/search")
+    public List<User> searchUser(@RequestParam("query") String query){
+
+        List<User> users = userService.searchUser(query);
+
+        return users;
     }
 
 }

@@ -1,33 +1,85 @@
 package com.flavourflow.backend.models;
 
-public class User {
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "users")
+public class User {
+    @Id
     private Integer id;
-    private String fisrtName;
+    private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private String gender;
+    private List<Integer> followers= new ArrayList<>();
+    private List<Integer> following= new ArrayList<>();
 
     public User(){
 
     }
 
-    public User(Integer id, String fisrtName, String lastName, String email, String password) {
+ 
+
+    public User(Integer id, String firstName, String lastName, String email, String password, String gender,
+            List<Integer> followers, List<Integer> following) {
         this.id = id;
-        this.fisrtName = fisrtName;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.gender = gender;
+        this.followers = followers;
+        this.following = following;
     }
 
 
 
-    public String getFisrtName() {
-        return fisrtName;
+    public String getGender() {
+        return gender;
     }
 
-    public void setFisrtName(String fisrtName) {
-        this.fisrtName = fisrtName;
+
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+
+
+    public List<Integer> getFollowers() {
+        return followers;
+    }
+
+
+
+    public void setFollowers(List<Integer> followers) {
+        this.followers = followers;
+    }
+
+
+
+    public List<Integer> getFollowing() {
+        return following;
+    }
+
+
+
+    public void setFollowing(List<Integer> following) {
+        this.following = following;
+    }
+
+
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
