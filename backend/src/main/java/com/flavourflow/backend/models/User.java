@@ -8,8 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
 public class User {
+
     @Id
     private Integer id;
+
     private String firstName;
     private String lastName;
     private String email;
@@ -17,6 +19,8 @@ public class User {
     private String gender;
     private List<Integer> followers= new ArrayList<>();
     private List<Integer> following= new ArrayList<>();
+
+    private List<Post> savedPost = new ArrayList<>();
 
     public User(){
 
@@ -112,6 +116,18 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+
+    public List<Post> getSavedPost() {
+        return savedPost;
+    }
+
+
+
+    public void setSavedPost(List<Post> savedPost) {
+        this.savedPost = savedPost;
     }
 
     
