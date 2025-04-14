@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,15 +24,8 @@ public class UserController {
     @Autowired
     UserService userService;
     
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-
-        User savedUser=userService.registerUser(user);
-
-        return savedUser;
-    }
     
-    @GetMapping("/users")
+    @GetMapping("/api/users")
     public List<User> getUsers(){
 
         List<User> users = userRepository.findAll();
@@ -42,7 +34,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/api/users/{userId}")
     public User getUserById(@PathVariable("userId")Integer id) throws Exception{
 
         User user=userService.findUserById(id);
@@ -51,7 +43,7 @@ public class UserController {
 
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/api/users/{userId}")
     public User uptadeUser(@RequestBody User user,@PathVariable Integer userId) throws Exception{
        
         User updatUser=userService.updateUser(user,userId);
@@ -61,14 +53,14 @@ public class UserController {
     }
 
 
-    @PutMapping("/users/follow/{userId1}/{userId2}")
+    @PutMapping("/api/users/follow/{userId1}/{userId2}")
     public User followUserHandler(@PathVariable Integer userId1,@PathVariable Integer userId2) throws Exception{
 
         User user=userService.followUser(userId1, userId2);
         return user;
     }
 
-    @GetMapping("/users/search")
+    @GetMapping("/api/users/search")
     public List<User> searchUser(@RequestParam("query") String query){
 
         List<User> users = userService.searchUser(query);
