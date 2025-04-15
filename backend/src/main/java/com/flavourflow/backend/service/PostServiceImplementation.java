@@ -25,7 +25,7 @@ public class PostServiceImplementation implements PostService {
     UserRepository userRepository;
 
     @Override
-    public Post createNewPost(Post post, Integer userId) throws Exception {
+    public Post createNewPost(Post post, String userId) throws Exception {
 
         User user=userService.findUserById(userId);
 
@@ -42,11 +42,11 @@ public class PostServiceImplementation implements PostService {
     }
 
     @Override
-    public String deletePost(String postId, Integer userId) throws Exception {
+    public String deletePost(String postId, String userId) throws Exception {
         Post post=findPostById(postId);
         User user=userService.findUserById(userId);
 
-        if (post.getUser().getId()!=user.getId()) {
+        if (!post.getUser().getId().equals(user.getId())) {
             throw new Exception("You can't delete another users post");
         }
 
@@ -56,7 +56,7 @@ public class PostServiceImplementation implements PostService {
     }
 
     @Override
-    public List<Post> findPostByUserId(Integer userId) {
+    public List<Post> findPostByUserId(String userId) {
 
         return postRepository.findPostByUserId(userId);
     }
@@ -78,7 +78,7 @@ public class PostServiceImplementation implements PostService {
     }
 
     @Override
-    public Post savedPost(String postId, Integer userId) throws Exception {
+    public Post savedPost(String postId, String userId) throws Exception {
         Post post=findPostById(postId);
         User user=userService.findUserById(userId);
 
@@ -96,7 +96,7 @@ public class PostServiceImplementation implements PostService {
     }
 
     @Override
-    public Post likePost(String postId, Integer userId) throws Exception {
+    public Post likePost(String postId, String userId) throws Exception {
         Post post=findPostById(postId);
         User user=userService.findUserById(userId);
 

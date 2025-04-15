@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import com.flavourflow.backend.models.User;
 
-public interface UserRepository extends MongoRepository<User,Integer>{
+public interface UserRepository extends MongoRepository<User,String>{
 
     public User findByEmail(String email);
 

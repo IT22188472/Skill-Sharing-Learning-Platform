@@ -10,15 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     @Id
-    private Integer id;
+    private String id;
 
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String gender;
-    private List<Integer> followers= new ArrayList<>();
-    private List<Integer> following= new ArrayList<>();
+    private List<String> followers= new ArrayList<>();
+    private List<String> following= new ArrayList<>();
 
     private List<Post> savedPost = new ArrayList<>();
 
@@ -28,8 +28,8 @@ public class User {
 
  
 
-    public User(Integer id, String firstName, String lastName, String email, String password, String gender,
-            List<Integer> followers, List<Integer> following) {
+    public User(String id, String firstName, String lastName, String email, String password, String gender,
+            List<String> followers, List<String> following) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,25 +54,25 @@ public class User {
 
 
 
-    public List<Integer> getFollowers() {
+    public List<String> getFollowers() {
         return followers;
     }
 
 
 
-    public void setFollowers(List<Integer> followers) {
+    public void setFollowers(List<String> followers) {
         this.followers = followers;
     }
 
 
 
-    public List<Integer> getFollowing() {
+    public List<String> getFollowing() {
         return following;
     }
 
 
 
-    public void setFollowing(List<Integer> following) {
+    public void setFollowing(List<String> following) {
         this.following = following;
     }
 
@@ -110,11 +110,11 @@ public class User {
         this.password = password;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -24,7 +24,7 @@ public class PostController {
     PostService postService;
 
     @PostMapping("/posts/user/{userId}")
-    public ResponseEntity<Post> createPost(@RequestBody Post post,@PathVariable Integer userId) throws Exception{
+    public ResponseEntity<Post> createPost(@RequestBody Post post,@PathVariable String userId) throws Exception{
 
         Post createdPost = postService.createNewPost(post, userId);
 
@@ -33,7 +33,7 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{postId}/user/{userId}")
-    public ResponseEntity<ApiResponse> deletePost(@PathVariable String postId,@PathVariable Integer userId) throws Exception{
+    public ResponseEntity<ApiResponse> deletePost(@PathVariable String postId,@PathVariable String userId) throws Exception{
         
         String message = postService.deletePost(postId, userId);
         ApiResponse res = new ApiResponse(message,true);
@@ -50,7 +50,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/user/{userId}")
-    public ResponseEntity<List<Post>> findUserPost(@PathVariable Integer userId){
+    public ResponseEntity<List<Post>> findUserPost(@PathVariable String userId){
 
         List<Post> posts = postService.findPostByUserId(userId);
 
@@ -67,7 +67,7 @@ public class PostController {
 
     
     @PutMapping("/posts/save/{postId}/user/{userId}")
-    public ResponseEntity<Post> savedPosthandler(@PathVariable String postId,@PathVariable Integer userId) throws Exception{
+    public ResponseEntity<Post> savedPosthandler(@PathVariable String postId,@PathVariable String userId) throws Exception{
        
         Post post = postService.savedPost(postId, userId);
 
@@ -75,7 +75,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/like/{postId}/user/{userId}")
-    public ResponseEntity<Post> likePosthandler(@PathVariable String postId,@PathVariable Integer userId) throws Exception{
+    public ResponseEntity<Post> likePosthandler(@PathVariable String postId,@PathVariable String userId) throws Exception{
        
         Post post = postService.likePost(postId, userId);
 

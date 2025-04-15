@@ -48,7 +48,6 @@ public class AuthController {
         newUser.setEmail(user.getEmail());
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
-        newUser.setId(user.getId());//need this change to string
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setGender(user.getGender());
 

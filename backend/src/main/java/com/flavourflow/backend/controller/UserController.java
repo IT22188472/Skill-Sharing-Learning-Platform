@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/api/users/{userId}")
-    public User getUserById(@PathVariable("userId")Integer id) throws Exception{
+    public User getUserById(@PathVariable("userId")String id) throws Exception{
 
         User user=userService.findUserById(id);
 
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping("/api/users/{userId}")
-    public User uptadeUser(@RequestBody User user,@PathVariable Integer userId) throws Exception{
+    public User uptadeUser(@RequestBody User user,@PathVariable String userId) throws Exception{
        
         User updatUser=userService.updateUser(user,userId);
 
@@ -54,7 +54,7 @@ public class UserController {
 
 
     @PutMapping("/api/users/follow/{userId1}/{userId2}")
-    public User followUserHandler(@PathVariable Integer userId1,@PathVariable Integer userId2) throws Exception{
+    public User followUserHandler(@PathVariable String userId1,@PathVariable String userId2) throws Exception{
 
         User user=userService.followUser(userId1, userId2);
         return user;
