@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flavourflow.backend.config.JwtProvider;
 import com.flavourflow.backend.models.User;
 import com.flavourflow.backend.repository.UserRepository;
 
@@ -50,19 +51,19 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User followUser(String userId1, String userId2) throws Exception {
+    public User followUser(String reqUserId, String userId2) throws Exception {
 
-        User user1=findUserById(userId1);
+        User reqUser=findUserById(reqUserId);
 
         User user2=findUserById(userId2);
 
-        user2.getFollowers().add(user1.getId());
-        user1.getFollowing().add(user2.getId());
+        user2.getFollowers().add(reqUser.getId());
+        reqUser.getFollowing().add(user2.getId());
 
-        userRepository.save(user1);
+        userRepository.save(reqUser);
         userRepository.save(user2);
 
-        return user1;
+        return reqUser;
     }
 
     @Override
@@ -87,6 +88,10 @@ public class UserServiceImplementation implements UserService {
             oldUser.setEmail(user.getEmail());
         }
 
+        if (user.getGender()!=null) {
+            oldUser.setGender(user.getGender());
+        }
+
         User updatUser=userRepository.save(oldUser);
 
         return updatUser;
@@ -95,6 +100,15 @@ public class UserServiceImplementation implements UserService {
     @Override
     public List<User> searchUser(String query) {
         return userRepository.searchUser(query);
+    }
+
+    @Override
+    public User findUserByJwt(String jwt) {
+        String email=JwtProvider.getEmailFromJwtToken(jwt);
+
+        User user = userRepository.findByEmail(email);
+
+        return user;
     }
 
 }
