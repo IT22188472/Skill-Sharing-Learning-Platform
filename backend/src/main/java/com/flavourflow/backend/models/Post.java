@@ -24,15 +24,17 @@ public class Post {
     private User user;
 
     private List<User> liked=new ArrayList<>();
+
     private LocalDateTime createdAt;
+
+    private List<Comment> comments = new ArrayList<>();
 
     public Post(){
 
     }
 
-
     public Post(String id, String title, String ingredients, String instructions, String imageUrl, String videoUrl,
-            User user, List<User> liked, LocalDateTime createdAt) {
+            User user, List<User> liked, LocalDateTime createdAt, List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.ingredients = ingredients;
@@ -42,6 +44,7 @@ public class Post {
         this.user = user;
         this.liked = liked;
         this.createdAt = createdAt;
+        this.comments = comments;
     }
 
 
@@ -120,6 +123,16 @@ public class Post {
 
     public void setLiked(List<User> liked) {
         this.liked = liked;
+    }
+
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
 }
