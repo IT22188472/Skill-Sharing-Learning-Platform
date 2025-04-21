@@ -1,3 +1,9 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "emmet.preferences": {
+
+    },
+    "js/ts.implicitProjectConfig.checkJs": false,
+    "java.compile.nullAnalysis.mode": "disabled"
+
 }
