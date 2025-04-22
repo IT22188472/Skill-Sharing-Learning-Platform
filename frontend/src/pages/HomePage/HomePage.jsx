@@ -13,7 +13,7 @@ const HomePage = () => {
       <Grid container spacing={0}>
         <Grid item xs={0} lg={3}>
           <div className="sticky top-0">
-            <Sidebar/>
+            <Sidebar />
           </div>
         </Grid>
 
@@ -28,15 +28,11 @@ const HomePage = () => {
             <Route path="/profile/:id" element={<Profile />} />
           </Routes>
         </Grid>
-        <Grid item lg={3} className="relative">
-
-            <div className="sticky top-0 w-full">
-
-                <HomeRight/>
-
-            </div>
-
-        </Grid>
+        {location.pathname==="/" && <Grid item lg={3} className="relative">
+          <div className="sticky top-0 w-full">
+            <HomeRight />
+          </div>
+        </Grid>}
       </Grid>
     </div>
   );
