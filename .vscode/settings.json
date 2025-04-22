@@ -3,7 +3,8 @@
     "emmet.preferences": {
 
     },
-    "js/ts.implicitProjectConfig.checkJs": false,
-    "java.compile.nullAnalysis.mode": "disabled"
+    "js/ts.implicitProjectConfig.checkJs": true,
+    "java.compile.nullAnalysis.mode": "disabled",
+    "json.format.enable": true
 
 }
