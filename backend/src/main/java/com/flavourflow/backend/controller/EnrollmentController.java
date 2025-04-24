@@ -64,4 +64,9 @@ public class EnrollmentController {
         return enrollmentService.findByUserId(userId);
     }
 
+    @GetMapping("/{courseId}/{userId}")
+    public List<Enrollusrs> findByCourseIdAndUserId(@PathVariable String courseId, @PathVariable String userId) {
+        return enrollmentService.findByCourseIdAndUserId(courseId, userId);
+    }
+
 }

@@ -16,6 +16,7 @@ import Home from "./pages/Home";
 import AddCourse from "./components/AddCourse";
 import ContentDashboard from "./components/ContentDashboard";
 import Profile from "./pages/Profile";
+import Enrollments from "./pages/Enrollments";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/addcourse" element={<AddCourse />} />
             <Route path="/ContentDashboard/:id" element={<ContentDashboard />} />
             <Route path ="/profile/:userid" element={<Profile />} />
+            <Route path ="/enrollments/:courseId/:userId" element={<Enrollments />} />
           </Routes>
         </div>
       </Router>

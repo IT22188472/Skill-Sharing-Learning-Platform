@@ -36,4 +36,8 @@ public class EnrollmentService {
         return enrollmentRepository.findByUserId(userId);
     }
 
+        
+    public List<Enrollusrs> findByCourseIdAndUserId(String courseId, String userId) {
+        return enrollmentRepository.findByCourseIdAndUserId(courseId, userId);
+    }
 }

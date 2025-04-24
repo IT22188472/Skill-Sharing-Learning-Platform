@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Swal from "sweetalert2";
 import Nav1 from "../pages/nav_1";
 
+
 const ContentDashboard = () => {
-  {}
+  const { id } = useParams();
+  const userid = id;
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -311,7 +313,7 @@ const ContentDashboard = () => {
                 </td>
                 <td>
                   <Link
-                    to={`/course/${course.courseId}/`}
+                    to={`/course/${course.courseId}/${userid}`}
                     className="btn btn-info btn-sm me-2"
                   >
                     View
