@@ -65,22 +65,17 @@ const CourseDetail = () => {
     try {
       const enrollmentData = {
         userId: userid,
-        image: course.images[0] || "default-image-url", // fallback if images are missing
-        name: course.name,
-        courseId: id,
-        enrollDate: new Date().toISOString(),
-        description: course.description,
-        duration: course.duration,
-        level: course.level,
-        ageRange: course.ageRange,
-        video:
-          course.video.length > 0 ? [course.video[0]] : ["default-video-url"], // fallback if video is missing
-        skillsImprove:
-          course.skillsImprove && course.skillsImprove.length > 0
-            ? course.skillsImprove
-            : ["default-skill"], // fallback if skillsImprove is missing
-        images:
-          course.images.length > 0 ? course.images : ["default-image-url"],
+      image: course.images[0] || "default-image-url", // fallback if images are missing
+      name: course.name,
+      courseId: id,
+      enrollDate: new Date().toISOString(),
+      description: course.description,
+      duration: course.duration,
+      level: course.level,
+      ageRange: course.ageRange,
+      video: course.video.length > 0 ? [course.video[0]] : ["default-video-url"], // fallback if video is missing
+      skillsImprove: course.skillsImprove && course.skillsImprove.length > 0 ? course.skillsImprove : ["default-skill"], // fallback if skillsImprove is missing
+      images: course.images.length > 0 ? course.images : ["default-image-url"],
       };
       await axios.post(
         "http://localhost:8080/enrollments/enroll",
