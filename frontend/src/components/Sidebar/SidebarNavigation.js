@@ -13,21 +13,21 @@ export const navigationMenu=[
     {
         title:"Notifications",
         icon:<NotificationsIcon/>,
-        path:"/"
+        path:"/notifications"
     },
     {
         title:"Lists",
         icon:<ListAltIcon/>,
-        path:"/"
+        path:"/lists"
     },
     {
         title:"Communities",
         icon:<GroupIcon/>,
-        path:"/"
+        path:"/communities"
     },
     {
         title:"Profile",
         icon:<AccountCircleIcon/>,
-        path:"/"
+        path:"/profile"
     }
 ]

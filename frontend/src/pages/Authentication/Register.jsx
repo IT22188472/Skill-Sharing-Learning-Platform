@@ -27,19 +27,19 @@ const validationSchema = {
 };
 const Register = () => {
   const [gender, setGender] = useState("");
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (values) => {
-    values.gender=gender
+    values.gender = gender;
     console.log("handle submit", values);
 
-    dispatch(registerUserAction({data:values}))
+    dispatch(registerUserAction({ data: values }));
   };
 
-const handleChange = (event) => {
-  setGender(event.target.value);
-}
+  const handleChange = (event) => {
+    setGender(event.target.value);
+  };
   return (
     <>
       <Formik
@@ -114,7 +114,12 @@ const handleChange = (event) => {
             </div>
 
             <div>
-              <RadioGroup onChange={handleChange} row aria-label="gender" name="gender">
+              <RadioGroup
+                onChange={handleChange}
+                row
+                aria-label="gender"
+                name="gender"
+              >
                 <FormControlLabel
                   value="female"
                   control={<Radio />}
@@ -126,10 +131,10 @@ const handleChange = (event) => {
                   label="Male"
                 />
                 <ErrorMessage
-                name="gender"
-                component={"div"}
-                className="text-red-500"
-              />
+                  name="gender"
+                  component={"div"}
+                  className="text-red-500"
+                />
               </RadioGroup>
             </div>
           </div>
@@ -145,9 +150,9 @@ const handleChange = (event) => {
           </Button>
         </Form>
       </Formik>
-      <div className='flex gap-2 items-center justify-center pt-5'>
-            <p>if you already have an account ?</p>
-            <Button onClick={()=>navigate("/login")}>Login</Button>
+      <div className="flex gap-2 items-center justify-center pt-5">
+        <p>if you already have an account ?</p>
+        <Button onClick={() => navigate("/login")}>Login</Button>
       </div>
     </>
   );
