@@ -11,15 +11,14 @@ public class User {
 
     @Id
     private String id;
-
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String gender;
-    private List<String> followers= new ArrayList<>();
-    private List<String> following= new ArrayList<>();
-
+    private String profileImage;  // Added field to store image URL
+    private List<String> followers = new ArrayList<>();
+    private List<String> following = new ArrayList<>();
     private List<Post> savedPost = new ArrayList<>();
 
     public User(){
@@ -27,7 +26,6 @@ public class User {
     }
 
  
-
     public User(String id, String firstName, String lastName, String email, String password, String gender,
             List<String> followers, List<String> following) {
         this.id = id;
@@ -40,13 +38,18 @@ public class User {
         this.following = following;
     }
 
+    // Getters and setters
+    public String getProfileImage() {
+        return profileImage;
+    }
 
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public String getGender() {
         return gender;
     }
-
-
 
     public void setGender(String gender) {
         this.gender = gender;

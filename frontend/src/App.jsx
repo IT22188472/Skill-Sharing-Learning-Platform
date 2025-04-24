@@ -1,14 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import CreatePost from './pages/CreatePost';
-import EditPost from './pages/EditPost';
-import GroupList from './components/Groups/GroupList';
-import GroupDetail from './components/Groups/GroupDetail';
-import PostDetail from './pages/PostDetail';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import CreatePost from "./pages/CreatePost";
+import EditPost from "./pages/EditPost";
+import GroupList from "./components/Groups/GroupList";
+import GroupDetail from "./components/Groups/GroupDetail";
+import PostDetail from "./pages/PostDetail";
+import CourseForm from "./components/CourseForm";
+import CourseDetail from "./components/CourseDetail";
+import Home from "./pages/Home";
+import AddCourse from "./components/AddCourse";
+import ContentDashboard from "./components/ContentDashboard";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -25,6 +32,12 @@ function App() {
             <Route path="/groups" element={<GroupList />} />
             <Route path="/groups/:groupId" element={<GroupDetail />} />
             <Route path="/posts/:id" element={<PostDetail />} />
+            <Route path="/courses/:id" element={<CourseForm />} />
+            <Route path="/course/:id/:userid" element={<CourseDetail />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/addcourse" element={<AddCourse />} />
+            <Route path="/ContentDashboard/:id" element={<ContentDashboard />} />
+            <Route path ="/profile/:id" element={<Profile />} />
           </Routes>
         </div>
       </Router>
