@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const Profile = () => {
-  const { id } = useParams();
+  const { userid } = useParams();
   const [user, setUser] = useState(null);
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const Profile = () => {
   // Fetch user data when the component mounts
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/users/${id}`)
+      .get(`http://localhost:8080/users/${userid}`)
       .then((response) => {
         setUser(response.data);
         setLoading(false);
@@ -26,7 +26,7 @@ const Profile = () => {
       });
 
     axios
-      .get(`http://localhost:8080/enrollments/user/${id}`)
+      .get(`http://localhost:8080/enrollments/user/${userid}`)
       .then((response) => {
         setEnrollments(response.data);
       })
@@ -35,7 +35,7 @@ const Profile = () => {
       });
 
     axios
-      .get(`http://localhost:8080/courses/${id}`)
+      .get(`http://localhost:8080/courses/${userid}`)
       .then((response) => {
         setCourse(response.data);
       })

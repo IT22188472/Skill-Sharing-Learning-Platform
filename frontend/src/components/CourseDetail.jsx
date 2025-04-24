@@ -1,33 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Nav2 from "../pages/nav_1";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useAuth } from "../context/AuthContext"; 
 
 const CourseDetail = () => {
-  const { user } = useAuth();
-  const { userid } = useParams();
-  const { id } = useParams();
+  const { userid, id } = useParams();
+  const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [courseVideoUrl, setCourseVideoUrl] = useState("");
+  const iframeRef = useRef(null);
 
-  // Fetch course details
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/courses/${id}`);
         setCourse(response.data);
-        // Ensure video URL is in a valid format and set autoplay
         const videoUrl = getYouTubeEmbedUrl(response.data.video[0]);
         setCourseVideoUrl(videoUrl);
       } catch (err) {
-        console.error("Error fetching course:", err);
         setError("Failed to fetch course details.");
       } finally {
         setLoading(false);
@@ -36,69 +32,74 @@ const CourseDetail = () => {
     fetchCourse();
   }, [id]);
 
-  // Enroll in course
-  const enrollUser = async () => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Do you want to enroll in this course?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, enroll me!",
-    });
+  useEffect(() => {
+    if (courseVideoUrl) {
+      const timer = setTimeout(() => {
+        if (iframeRef.current) {
+          const iframeWindow = iframeRef.current.contentWindow;
+          iframeWindow.postMessage(
+            '{"event":"command","func":"stopVideo","args":""}',
+            "*"
+          );
+        }
 
-    if (result.isConfirmed) {
-      try {
-        const enrollmentData = {
-          userId: userid,
-          image: course.images[0],
-          name: course.name,
-          courseId: id,
-        };
-        const response = await axios.post(
-          "http://localhost:8080/enrollments/enroll",
-          enrollmentData, {
-            headers: {
-              'Authorization': localStorage.getItem('token'),
-            },
+        Swal.fire({
+          title: "Enjoying the course?",
+          text: "Want to continue learning?",
+          icon: "info",
+          showCancelButton: true,
+          confirmButtonText: "Enroll Now",
+          cancelButtonText: "Maybe Later",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            enrollUser();
           }
-        );
-        await Swal.fire(
-          "Enrolled!",
-          "You have been successfully enrolled.",
-          "success"
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error("Enrollment failed:", error);
-        await Swal.fire("Oops!", "Failed to enroll.", "error");
-      }
+        });
+      }, 20000); // 20 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [courseVideoUrl]);
+
+  const enrollUser = async () => {
+    try {
+      const enrollmentData = {
+        userId: userid,
+        image: course.images[0],
+        name: course.name,
+        courseId: id,
+      };
+      await axios.post(
+        "http://localhost:8080/enrollments/enroll",
+        enrollmentData,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      await Swal.fire("Success!", "You have enrolled successfully!", "success");
+      navigate(`/profile/${id}`);
+    } catch (error) {
+      console.error("Enrollment failed:", error);
+      Swal.fire("Oops!", "Failed to enroll.", "error");
     }
   };
 
   const getYouTubeEmbedUrl = (url) => {
     if (!url) return null;
     let videoId = "";
-
-    // If URL contains "youtube.com/watch?v="
     if (url.includes("watch?v=")) {
       const urlParams = new URLSearchParams(new URL(url).search);
       videoId = urlParams.get("v");
-    }
-    // If URL is shortened like "youtu.be/VIDEOID"
-    else if (url.includes("youtu.be/")) {
+    } else if (url.includes("youtu.be/")) {
       videoId = url.split("youtu.be/")[1];
-    }
-    // If URL already in "embed/VIDEOID" format
-    else if (url.includes("embed/")) {
+    } else if (url.includes("embed/")) {
       videoId = url.split("embed/")[1];
     }
-
-    if (videoId) {
-      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    }
-    return null;
+    return videoId
+      ? `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1`
+      : null;
   };
 
   if (loading) return <div className="text-center py-5">Loading...</div>;
@@ -113,7 +114,6 @@ const CourseDetail = () => {
         <Row className="justify-content-center">
           <Col md={7}>
             <Card className="p-4 shadow-sm rounded-4">
-              {/* User Header */}
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <div className="d-flex align-items-center">
                   <img
@@ -137,7 +137,6 @@ const CourseDetail = () => {
                   variant="outline-primary"
                   className="my-2 rounded-5 px-3 py-2"
                   onClick={enrollUser}
-                  style={{ width: "120px", height: "40px" }}
                 >
                   <b>Enroll in Course</b>
                 </Button>
@@ -151,10 +150,11 @@ const CourseDetail = () => {
                 {courseVideoUrl ? (
                   <div style={{ position: "relative", paddingTop: "56.25%" }}>
                     <iframe
+                      ref={iframeRef}
                       src={courseVideoUrl}
                       title="Course Video"
                       frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allow="autoplay; encrypted-media"
                       allowFullScreen
                       style={{
                         position: "absolute",
@@ -163,7 +163,7 @@ const CourseDetail = () => {
                         width: "100%",
                         height: "100%",
                       }}
-                    ></iframe>
+                    />
                   </div>
                 ) : (
                   <div className="text-center text-muted p-4">
