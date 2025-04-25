@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import YouTube from "react-youtube";
 
 const Enrollments = () => {
   const { courseId, userId } = useParams();
@@ -34,40 +33,46 @@ const Enrollments = () => {
   }, [courseId, userId]);
 
   useEffect(() => {
+    if (playerRef.current) {
+      const videoDuration = playerRef.current.duration;
+      setDuration(videoDuration); // Update the video duration
+    }
+  }, [enroll]);
+
+  useEffect(() => {
     let interval;
     if (isPlaying) {
       interval = setInterval(() => {
-        setWatchedSeconds((prev) => Math.min(prev + 1, duration)); // Stop at the duration of the video
         if (playerRef.current) {
-          lastValidTimeRef.current = playerRef.current.getCurrentTime();
+          const currentTime = playerRef.current.currentTime;
+          setWatchedSeconds(currentTime);
         }
-      }, 1000);
+      }, 1000); // Update progress every second
     } else {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, duration]);
-
-  const onReady = (event) => {
-    playerRef.current = event.target;
-    const videoDuration = event.target.getDuration();
-    setDuration(videoDuration);
-  };
+  }, [isPlaying]);
 
   const onPlay = () => setIsPlaying(true);
   const onPause = () => setIsPlaying(false);
 
-  const onStateChange = (event) => {
-    const currentTime = event.target.getCurrentTime();
-    if (currentTime > lastValidTimeRef.current + 5) {
-      // User tried to skip ahead
-      event.target.seekTo(lastValidTimeRef.current, true);
-    } else {
-      lastValidTimeRef.current = currentTime;
+  const onTimeUpdate = (event) => {
+    const currentTime = event.target.currentTime;
+    setWatchedSeconds(currentTime); // Update watched seconds based on video progress
+  };
+
+  const onSeeked = () => {
+    if (playerRef.current) {
+      const currentTime = playerRef.current.currentTime;
+      setWatchedSeconds(currentTime); // Update watched seconds when the user seeks
     }
   };
 
   const actualProgress = Math.min((watchedSeconds / duration) * 100, 100);
+
+  const isCompleteable =
+    actualProgress >= 95 && watchedSeconds >= duration * 0.95;
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -88,18 +93,19 @@ const Enrollments = () => {
             }}
           >
             <h2 className="fw-bold mb-3 text-center text-3xl">Profile</h2>
-            <div className="text-center"><center>
+            <div className="text-center">
               <img
                 src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
                 alt="User"
                 className="rounded-circle shadow-sm mb-3"
                 style={{ width: "100px", height: "100px", objectFit: "cover" }}
-              /></center>
+              />
               <Link to={`/profile/${userId}`}>
                 <h5 className="text-xl font-bold">
                   {enroll?.user?.firstName} {enroll?.user?.lastName}
                 </h5>
-              </Link><br/>
+              </Link>
+              <br />
             </div>
             <hr />
             <div className="d-grid gap-3">
@@ -130,7 +136,9 @@ const Enrollments = () => {
             }}
           >
             <h2 className="mb-3 text-4xl">
-              <b>{enroll.courseId}&nbsp;-&nbsp;{enroll.name}</b>
+              <b>
+                {enroll.courseId}&nbsp;-&nbsp;{enroll.name}
+              </b>
             </h2>
             <h2
               className="text-xl"
@@ -140,23 +148,19 @@ const Enrollments = () => {
               {new Date(enroll.enrollDate).toLocaleDateString()}
             </h2>
 
-            {/* YouTube Video */}
-            <YouTube
-              videoId={enroll.video[0].split("youtu.be/")[1]}
-              opts={{
-                height: "450",
-                width: "800",
-                playerVars: {
-                  autoplay: 0,  
-                  rel: 0,       
-                  modestbranding: 1 
-                },
-              }}
-              onReady={onReady}
+            {/* Cloudinary Video */}
+            <video
+              ref={playerRef}
+              controls={!isCompleteable} // Disable controls if not completeable
               onPlay={onPlay}
               onPause={onPause}
-              onStateChange={onStateChange}
-            />
+              onTimeUpdate={onTimeUpdate}
+              onSeeked={onSeeked} // Listen for video seeking
+              style={{ width: "800px", height: "450px" }}
+            >
+              <source src={enroll.video[0]} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
 
             {/* Progress Bar */}
             <div className="mt-3">
@@ -179,9 +183,25 @@ const Enrollments = () => {
                 </div>
               </div>
             </div>
+            <div className="text-lg"
+              style={{
+                width: "800px",
+                height: "30px",
+                position: "absolute",
+                color: "red",
+                top: "480px",
+                backgroundColor: "lightgray",
+                display: "flex",
+                alignItems: "center", 
+                justifyContent: "center", 
+              }}
+            >
+              <strong>Note : &nbsp;</strong> Complete Button is disabled for this video
+              until 95% of the content is watched.
+            </div>
 
             {/* Completion Button */}
-            {actualProgress >= 95 && (
+            {isCompleteable && (
               <div
                 className="mt-4 text-center"
                 style={{ position: "absolute", top: "515px", left: "630px" }}

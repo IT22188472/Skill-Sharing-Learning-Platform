@@ -21,7 +21,7 @@ const CourseDetail = () => {
       try {
         const response = await axios.get(`http://localhost:8080/courses/${id}`);
         setCourse(response.data);
-        const videoUrl = getYouTubeEmbedUrl(response.data.video[0]);
+        const videoUrl = getVideoUrl(response.data.video[0]);
         setCourseVideoUrl(videoUrl);
       } catch (err) {
         setError("Failed to fetch course details.");
@@ -35,12 +35,24 @@ const CourseDetail = () => {
   useEffect(() => {
     if (courseVideoUrl) {
       const timer = setTimeout(() => {
-        if (iframeRef.current) {
-          const iframeWindow = iframeRef.current.contentWindow;
-          iframeWindow.postMessage(
-            '{"event":"command","func":"stopVideo","args":""}',
-            "*"
-          );
+        if (
+          courseVideoUrl.includes("youtube.com") ||
+          courseVideoUrl.includes("youtu.be")
+        ) {
+          // YouTube Video - Stop video after 20 seconds
+          if (iframeRef.current) {
+            const iframeWindow = iframeRef.current.contentWindow;
+            iframeWindow.postMessage(
+              '{"event":"command","func":"stopVideo","args":""}',
+              "*"
+            );
+          }
+        } else {
+          // Non-YouTube Video - Pause the video after 20 seconds (for Cloudinary MP4, etc.)
+          const videoElement = document.querySelector("video");
+          if (videoElement) {
+            videoElement.pause(); // Pause the video
+          }
         }
 
         Swal.fire({
@@ -55,7 +67,7 @@ const CourseDetail = () => {
             enrollUser();
           }
         });
-      }, 20000); // 20 seconds
+      }, 15000);
 
       return () => clearTimeout(timer);
     }
@@ -65,17 +77,22 @@ const CourseDetail = () => {
     try {
       const enrollmentData = {
         userId: userid,
-      image: course.images[0] || "default-image-url", // fallback if images are missing
-      name: course.name,
-      courseId: id,
-      enrollDate: new Date().toISOString(),
-      description: course.description,
-      duration: course.duration,
-      level: course.level,
-      ageRange: course.ageRange,
-      video: course.video.length > 0 ? [course.video[0]] : ["default-video-url"], // fallback if video is missing
-      skillsImprove: course.skillsImprove && course.skillsImprove.length > 0 ? course.skillsImprove : ["default-skill"], // fallback if skillsImprove is missing
-      images: course.images.length > 0 ? course.images : ["default-image-url"],
+        image: course.images[0] || "default-image-url",
+        name: course.name,
+        courseId: id,
+        enrollDate: new Date().toISOString(),
+        description: course.description,
+        duration: course.duration,
+        level: course.level,
+        ageRange: course.ageRange,
+        video:
+          course.video.length > 0 ? [course.video[0]] : ["default-video-url"], // fallback if video is missing
+        skillsImprove:
+          course.skillsImprove && course.skillsImprove.length > 0
+            ? course.skillsImprove
+            : ["default-skill"], // fallback if skillsImprove is missing
+        images:
+          course.images.length > 0 ? course.images : ["default-image-url"],
       };
       await axios.post(
         "http://localhost:8080/enrollments/enroll",
@@ -94,8 +111,15 @@ const CourseDetail = () => {
     }
   };
 
-  const getYouTubeEmbedUrl = (url) => {
+  const getVideoUrl = (url) => {
     if (!url) return null;
+
+    // Check if the URL is a Cloudinary MP4 URL
+    if (url.includes("cloudinary.com") && url.endsWith(".mp4")) {
+      return url; // Direct video URL (Cloudinary, etc.)
+    }
+
+    // Otherwise, treat as YouTube video URL
     let videoId = "";
     if (url.includes("watch?v=")) {
       const urlParams = new URLSearchParams(new URL(url).search);
@@ -156,23 +180,36 @@ const CourseDetail = () => {
                 style={{ backgroundColor: "#000" }}
               >
                 {courseVideoUrl ? (
-                  <div style={{ position: "relative", paddingTop: "56.25%" }}>
-                    <iframe
-                      ref={iframeRef}
-                      src={courseVideoUrl}
-                      title="Course Video"
-                      frameBorder="0"
-                      allow="autoplay; encrypted-media"
-                      allowFullScreen
+                  courseVideoUrl.includes("youtube.com") ? (
+                    <div style={{ position: "relative", paddingTop: "56.25%" }}>
+                      <iframe
+                        ref={iframeRef}
+                        src={courseVideoUrl}
+                        title="Course Video"
+                        frameBorder="0"
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <video
+                      controls
+                      autoPlay
+                      muted
                       style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
+                        width: "100%", 
+                        height: "450px", 
                       }}
-                    />
-                  </div>
+                    >
+                      <source src={courseVideoUrl} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )
                 ) : (
                   <div className="text-center text-muted p-4">
                     No Video Available
