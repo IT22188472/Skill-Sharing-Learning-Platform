@@ -1,5 +1,6 @@
 package com.flavourflow.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,13 +15,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.flavourflow.backend.model.Course;
 import com.flavourflow.backend.models.User;
 import com.flavourflow.backend.response.ApiResponse;
+import com.flavourflow.backend.service.CloudinaryService;
 import com.flavourflow.backend.service.CourseService;
 import com.flavourflow.backend.service.UserService;
+
+import io.jsonwebtoken.lang.Arrays;
 
 @RestController
 @RequestMapping("/courses")
@@ -32,22 +38,57 @@ public class CourseController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
     // Create a new course
     @PostMapping("/add")
-    public ResponseEntity<?> createCourse(@RequestHeader("Authorization") String jwt, @RequestBody Course course) {
+    public ResponseEntity<?> createCourse(
+            @RequestHeader("Authorization") String jwt,
+            @RequestParam("courseCode") String courseCode,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("duration") int duration,
+            @RequestParam("level") String level,
+            @RequestParam("ageRange") String ageRange,
+            @RequestParam("status") String status,
+            @RequestParam("skillsImprove") String skillsImproveStr, // comma-separated
+            @RequestParam("videos") MultipartFile[] videoFiles,
+            @RequestParam("images") MultipartFile[] imageFiles) {
+
         try {
-            // Extract and validate JWT to get user data
+            // Authenticate user
             User reqUser = userService.findUserByJwt(jwt);
             if (reqUser == null) {
-                return new ResponseEntity<ApiResponse>(new ApiResponse("User not found or unauthorized", false),
+                return new ResponseEntity<>(new ApiResponse("User not found or unauthorized", false),
                         HttpStatus.UNAUTHORIZED);
             }
-            
-            // Associate course with the user (if needed) and save the course
-            course.setUser(reqUser);  // Assuming Course has a User field for owner/creator
-            Course createdCourse = courseService.saveCourse(course);
 
+            // Upload images to Cloudinary
+            List<String> imageUrls = new ArrayList<>();
+            for (MultipartFile file : imageFiles) {
+                String url = cloudinaryService.uploadFile(file);
+                imageUrls.add(url);
+            }
+
+            // Upload videos
+            List<String> videoUrls = new ArrayList<>();
+            for (MultipartFile file : videoFiles) {
+                String url = cloudinaryService.uploadVideo(file);
+                videoUrls.add(url);
+            }
+
+            // Convert comma-separated strings into lists
+            List<String> skillsImprove = Arrays.asList(skillsImproveStr.split(","));
+
+            // Create course object
+            Course course = new Course(courseCode, name, description, duration, level, status,
+                    skillsImprove, ageRange, imageUrls, videoUrls);
+            course.setUser(reqUser);
+
+            Course createdCourse = courseService.saveCourse(course);
             return ResponseEntity.ok(createdCourse);
+
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse("Error creating course: " + e.getMessage(), false),
                     HttpStatus.INTERNAL_SERVER_ERROR);

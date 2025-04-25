@@ -1,4 +1,5 @@
 package com.flavourflow.backend.model;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.flavourflow.backend.models.User;
 import org.springframework.data.annotation.Id;
@@ -21,10 +22,12 @@ public class Course {
     private List<String> images;
     private User user;
 
-    public Course() {}
+    public Course() {
+    }
 
-    public Course(String name, String description, int duration, String level, String status,
-                  List<String> skillsImprove, String ageRange, List<String> images, List<String> video) {
+    public Course(String courseId, String name, String description, int duration, String level, String status,
+            List<String> skillsImprove, String ageRange, List<String> images, List<String> video) {
+        this.courseId = courseId;
         this.name = name;
         this.description = description;
         this.duration = duration;
@@ -61,7 +64,7 @@ public class Course {
     public User getUser() {
         return user;
     }
-    
+
     public void setUser(User user) {
         this.user = user;
     }

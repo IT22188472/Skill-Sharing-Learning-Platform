@@ -357,7 +357,7 @@ const ContentDashboard = () => {
         </tbody>
       </table>
       <Link
-        to="/addcourse"
+        to={`/addcourse/${id}`}
         className="btn btn-primary mb-3 absolute top-90 right-20"
       >
         Create New Course
