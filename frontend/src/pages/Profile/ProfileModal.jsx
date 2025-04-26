@@ -1,9 +1,9 @@
 import * as React from "react";
+import { useEffect } from "react"; // Add this import
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; // Add useSelector
 import { useFormik } from "formik";
 import { updateProfileAction } from "../../Redux/Auth/auth.action";
 import { Avatar, IconButton, TextField } from "@mui/material";
@@ -25,21 +25,31 @@ const style = {
 
 export default function ProfileModal({ open, handleClose }) {
   const dispatch = useDispatch();
-
-  const handleSubmit = (values) => {
-    console.log("values ", values);
-  };
+  const { user } = useSelector(store => store.auth); // Get current user from Redux store
 
   const formik = useFormik({
     initialValues: {
       firstName: "",
       lastName: ""
     },
-    onSubmit: (values,) => {
-      console.log("values ", values);
-      dispatch(updateProfileAction(values));
+    onSubmit: (values) => {
+      dispatch(updateProfileAction({
+        ...values,
+        userId: user?.id
+      }));
+      handleClose();
     },
   });
+
+  // Reset form with user data when modal opens or user changes
+  useEffect(() => {
+    if (open && user) {
+      formik.setValues({
+        firstName: user.firstName || "",
+        lastName: user.lastName || ""
+      });
+    }
+  }, [open, user]); // Add user to dependency array
 
   return (
     <div>
@@ -64,14 +74,14 @@ export default function ProfileModal({ open, handleClose }) {
               <div className="h-[15rem]">
                 <img
                   src="https://cdn.pixabay.com/photo/2025/04/15/17/14/lighthouse-9535881_1280.jpg"
-                  alt=""
+                  alt="Profile background"
                 />
               </div>
               <div className="pl-5">
                 <Avatar
                   className="transform -translate-y-24"
                   sx={{ width: "10rem", height: "10rem" }}
-                  src="https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_1280.png"
+                  src={user?.profilePicture || "https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_1280.png"}
                 />
               </div>
             </div>

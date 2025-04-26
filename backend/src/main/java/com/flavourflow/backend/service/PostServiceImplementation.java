@@ -97,18 +97,22 @@ public class PostServiceImplementation implements PostService {
 
     @Override
     public Post likePost(String postId, String userId) throws Exception {
-        Post post=findPostById(postId);
-        User user=userService.findUserById(userId);
+        Post post = findPostById(postId);
+    User user = userService.findUserById(userId);
 
-        if (post.getLiked().contains(user)) {
-            post.getLiked().remove(user);
-        }
-        else{
-           post.getLiked().add(user);
-        }
+    // Check if user already liked the post
+    boolean isLiked = post.getLiked().stream()
+            .anyMatch(likedUser -> likedUser.getId().equals(userId));
 
-        
-        return postRepository.save(post);
+    if (isLiked) {
+        // Remove like if already liked
+        post.getLiked().removeIf(likedUser -> likedUser.getId().equals(userId));
+    } else {
+        // Add like if not already liked
+        post.getLiked().add(user);
+    }
+
+    return postRepository.save(post);
     }
 
 }

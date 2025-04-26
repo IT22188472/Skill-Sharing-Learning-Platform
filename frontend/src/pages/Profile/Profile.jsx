@@ -10,32 +10,48 @@ const tabs = [
   { value: "saved", name: "Saved" },
   { value: "repost", name: "Repost" },
 ];
-const posts = [1, 1, 1, 1];
-const savedPost = [1, 1, 1];
+
+// Dummy posts and saved posts
+const posts = [
+  { id: 1, liked: false, title: "First Post" },
+  { id: 2, liked: true, title: "Second Post" },
+  { id: 3, liked: false, title: "Third Post" },
+  { id: 4, liked: true, title: "Fourth Post" },
+];
+
+const savedPost = [
+  { id: 1, liked: true, title: "Saved Post 1" },
+  { id: 2, liked: true, title: "Saved Post 2" },
+  { id: 3, liked: true, title: "Saved Post 3" },
+];
+
 const Profile = () => {
   const { id } = useParams();
-
   const [open, setOpen] = useState(false);
   const handleOpenProfileModal = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [value, setValue] = React.useState("post");
-  const {auth} = useSelector(store=>store);
+  const [value, setValue] = useState("post");
+  const { auth } = useSelector((store) => store);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return (
     <Card className="my-10 w-[70%]">
       <div className="rounded-md">
+        {/* Cover Image */}
         <div className="h-[15rem]">
           <img
             className="w-full h-full rounded-t-md"
             src="https://cdn.pixabay.com/photo/2025/04/15/17/14/lighthouse-9535881_1280.jpg"
-            alt=""
+            alt="cover"
           />
         </div>
-        <div className=" px-5 flex justify-between items-start mt-5 h-[5rem]">
+
+        {/* Avatar and Button */}
+        <div className="px-5 flex justify-between items-start mt-5 h-[5rem]">
           <Avatar
             className="transform -translate-y-24"
             sx={{ width: "10rem", height: "10rem" }}
@@ -43,7 +59,11 @@ const Profile = () => {
           />
 
           {true ? (
-            <Button sx={{ borderRadius: "20px" }} variant="outlined" onClick={handleOpenProfileModal}>
+            <Button
+              sx={{ borderRadius: "20px" }}
+              variant="outlined"
+              onClick={handleOpenProfileModal}
+            >
               Edit Profile
             </Button>
           ) : (
@@ -52,22 +72,30 @@ const Profile = () => {
             </Button>
           )}
         </div>
+
+        {/* User Info */}
         <div className="p-5">
           <div>
-            <h1 className="py-1 font-bold text-xl">{auth.user?.firstName +" "+ auth.user?.lastName}</h1>
-            <p>@{auth.user?.firstName.toLowerCase() +"_"+ auth.user?.lastName.toLowerCase()}</p>
+            <h1 className="py-1 font-bold text-xl">
+              {auth.user?.firstName + " " + auth.user?.lastName}
+            </h1>
+            <p>
+              @{auth.user?.firstName?.toLowerCase()}_{auth.user?.lastName?.toLowerCase()}
+            </p>
           </div>
 
           <div className="flex gap-5 items-center py-3">
-            <span>3 post</span>
+            <span>3 posts</span>
             <span>8 followers</span>
-            <span>5 followings</span>
+            <span>5 following</span>
           </div>
 
           <div>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
           </div>
         </div>
+
+        {/* Tabs */}
         <section>
           <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
             <Tabs
@@ -76,36 +104,39 @@ const Profile = () => {
               aria-label="wrapped label tabs example"
             >
               {tabs.map((item) => (
-                <Tab value={item.value} label={item.name} wrapped />
+                <Tab key={item.value} value={item.value} label={item.name} wrapped />
               ))}
             </Tabs>
           </Box>
+
+          {/* Posts Content */}
           <div className="flex justify-center">
             {value === "post" ? (
               <div className="space-y-5 w-[70%] my-10">
                 {posts.map((item) => (
-                  <div className="border border-slate-100 rounded-md">
-                    <PostCard />
+                  <div key={item.id} className="border border-slate-100 rounded-md">
+                    <PostCard post={item} />
                   </div>
                 ))}
               </div>
             ) : value === "saved" ? (
               <div className="space-y-5 w-[70%] my-10">
-                {posts.map((item) => (
-                  <div className="border border-slate-100 rounded-md">
-                    <PostCard />
+                {savedPost.map((item) => (
+                  <div key={item.id} className="border border-slate-100 rounded-md">
+                    <PostCard post={item} />
                   </div>
                 ))}
               </div>
             ) : (
-              <div>Repost</div>
+              <div className="my-10 text-center text-gray-500">No reposts yet.</div>
             )}
           </div>
         </section>
       </div>
 
+      {/* Profile Modal */}
       <section>
-        <ProfileModal open={open} handleClose={handleClose}/>
+        <ProfileModal open={open} handleClose={handleClose} />
       </section>
     </Card>
   );
