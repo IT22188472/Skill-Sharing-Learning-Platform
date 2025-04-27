@@ -7,6 +7,7 @@ import {
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
+  LOGOUT,
   UPDATE_PROFILE_FAILURE,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
@@ -81,4 +82,12 @@ export const updateProfileAction = (reqData) => async (dispatch) => {
     console.log("-------", error);
     dispatch({ type: UPDATE_PROFILE_FAILURE, payload: error });
   }
+};
+
+
+export const logoutAction = () => (dispatch) => {
+  // Remove JWT token from localStorage
+  localStorage.removeItem('jwt');
+  
+  dispatch({ type: LOGOUT });
 };

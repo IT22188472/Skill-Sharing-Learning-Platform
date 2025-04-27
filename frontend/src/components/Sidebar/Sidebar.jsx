@@ -2,12 +2,14 @@ import React from "react";
 import { navigationMenu } from "./SidebarNavigation";
 import { Avatar, Button, Card, Divider, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logoutAction } from "../../Redux/Auth/auth.action";
 
 const Sidebar = () => {
   const { auth } = useSelector((store) => store);
   const navigate=useNavigate();
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -21,6 +23,10 @@ const Sidebar = () => {
       navigate(`/profile/${auth.user?.id}`)
     }
   }
+
+  const handleLogout = () => {
+    dispatch(logoutAction()); 
+  };
 
 
   return (
@@ -73,7 +79,7 @@ const Sidebar = () => {
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>
       </div>
