@@ -16,8 +16,11 @@ C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\b
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\config\AuthController.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\controller\UserController.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\repository\userrepo.java
+C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\models\CompletedCourse.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\config\WebMvcConfig.java
+C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\service\CompletedCourseService.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\BackendApplication.java
+C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\repository\CompletedCourseRepository.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\request\LoginRequest.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\models\GroupMessage.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\models\Post.java
@@ -34,7 +37,9 @@ C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\b
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\config\CorsConfig.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\config\FileUploadConfig.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\service\userservices.java
+C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\controller\CompletedCourseController.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\controller\HomeController.java
+C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\request\CompleteCourseRequest.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\models\Group.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\controller\PostController.java
 C:\Users\USER\Desktop\Skill-Sharing-Learning-Platform-Learning-Plan-Management\backend\src\main\java\com\flavourflow\backend\config\jwtValidator.java

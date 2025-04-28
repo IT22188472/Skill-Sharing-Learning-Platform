@@ -69,4 +69,16 @@ public class EnrollmentController {
         return enrollmentService.findByCourseIdAndUserId(courseId, userId);
     }
 
+    // Delete enrollment by userId and courseId
+    @DeleteMapping("/delete/{userId}/{courseId}")
+    public ResponseEntity<ApiResponse> deleteEnrollment(@PathVariable String userId, @PathVariable String courseId) {
+        try {
+            enrollmentService.deleteEnrollmentByUserIdAndCourseId(userId, courseId);
+            return new ResponseEntity<>(new ApiResponse("Enrollment deleted successfully", true), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse("Error deleting enrollment: " + e.getMessage(), false),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 }

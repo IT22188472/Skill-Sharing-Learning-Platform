@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { Spinner } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Swal from "sweetalert2";
 import Nav1 from "../pages/nav_1";
-
 
 const ContentDashboard = () => {
   const { id } = useParams();
@@ -162,7 +162,13 @@ const ContentDashboard = () => {
     (course) => course.status === "inactive"
   ).length;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="text-center mt-5">
+        <Spinner animation="border" variant="primary" />
+        <p>Loading courses...</p>
+      </div>
+    );
 
   return (
     <div className="w-[90%] mx-auto mt-5">
@@ -511,42 +517,132 @@ const ContentDashboard = () => {
               </button>
             </>
           ) : selectedCourse ? (
-            <div className="space-y-3">
-              {selectedCourse.images?.[0] && (
-                <div className="flex justify-center mb-4">
-                  <img
-                    src={selectedCourse.images[0]}
-                    alt="Course"
-                    className="rounded-lg w-1/3 sm:w-1/4 md:w-1/6"
-                  />
-                </div>
-              )}
-              <h5>
-                <strong>Code:</strong> {selectedCourse.courseId}
-              </h5>
-              <h5>
-                <strong>Name:</strong> {selectedCourse.name}
-              </h5>
-              <h5>
-                <strong>Description:</strong> {selectedCourse.description}
-              </h5>
-              <h5>
-                <strong>Duration:</strong> {selectedCourse.duration} hours
-              </h5>
-              <h5>
-                <strong>Level:</strong> {selectedCourse.level}
-              </h5>
-              <h5>
-                <strong>Age Range:</strong> {selectedCourse.ageRange}
-              </h5>
-              <h5>
-                <strong>Skills:</strong>{" "}
-                {selectedCourse.skillsImprove?.join(", ")}
-              </h5>
-              <h5>
-                <strong>Status:</strong> {selectedCourse.status}
-              </h5>
-            </div>
+            <div className="space-y-6 p-6 border-2 border-gray-300 rounded-lg max-w-4xl mx-auto bg-white shadow-xl hover:shadow-2xl transition-all ease-in-out duration-300">
+  {selectedCourse.images?.[0] && (
+    <div className="flex justify-center mb-6">
+      <img
+        src={selectedCourse.images[0]}
+        alt="Course"
+        className="rounded-lg w-full sm:w-1/2 md:w-2/3 lg:w-1/4 shadow-lg"
+      />
+    </div>
+  )}
+
+  <div className="space-y-4">
+    {/* Course Code */}
+    <div className="flex justify-between items-center">
+      <label htmlFor="courseCode" className="text-lg font-semibold text-gray-700">
+        Course Code:
+      </label>
+      <input
+        id="courseCode"
+        type="text"
+        value={selectedCourse.courseId}
+        readOnly
+        className="border-2 border-gray-300 rounded-lg p-2 w-full sm:w-1/2 md:w-2/3 text-gray-600"
+      />
+    </div>
+
+    {/* Course Name */}
+    <div className="flex justify-between items-center">
+      <label htmlFor="courseName" className="text-lg font-semibold text-gray-700">
+        Course Name:
+      </label>
+      <input
+        id="courseName"
+        type="text"
+        value={selectedCourse.name}
+        readOnly
+        className="border-2 border-gray-300 rounded-lg p-2 w-full sm:w-1/2 md:w-2/3 text-gray-600"
+      />
+    </div>
+
+    {/* Course Description */}
+    <div className="flex justify-between items-center">
+      <label htmlFor="courseDescription" className="text-lg font-semibold text-gray-700">
+        Description:
+      </label>
+      <textarea
+        id="courseDescription"
+        value={selectedCourse.description}
+        readOnly
+        className="border-2 border-gray-300 rounded-lg p-2 w-full sm:w-1/2 md:w-2/3 text-gray-600"
+        rows="3"
+      />
+    </div>
+
+    {/* Duration */}
+    <div className="flex justify-between items-center">
+      <label htmlFor="courseDuration" className="text-lg font-semibold text-gray-700">
+        Duration:
+      </label>
+      <input
+        id="courseDuration"
+        type="number"
+        value={selectedCourse.duration}
+        readOnly
+        className="border-2 border-gray-300 rounded-lg p-2 w-full sm:w-1/2 md:w-2/3 text-gray-600"
+      />
+    </div>
+
+    {/* Level */}
+    <div className="flex justify-between items-center">
+      <label htmlFor="courseLevel" className="text-lg font-semibold text-gray-700">
+        Level:
+      </label>
+      <input
+        id="courseLevel"
+        type="text"
+        value={selectedCourse.level}
+        readOnly
+        className="border-2 border-gray-300 rounded-lg p-2 w-full sm:w-1/2 md:w-2/3 text-gray-600"
+      />
+    </div>
+
+    {/* Age Range */}
+    <div className="flex justify-between items-center">
+      <label htmlFor="courseAgeRange" className="text-lg font-semibold text-gray-700">
+        Age Range:
+      </label>
+      <input
+        id="courseAgeRange"
+        type="text"
+        value={selectedCourse.ageRange}
+        readOnly
+        className="border-2 border-gray-300 rounded-lg p-2 w-full sm:w-1/2 md:w-2/3 text-gray-600"
+      />
+    </div>
+
+    {/* Skills Improved */}
+    <div className="flex justify-between items-center">
+      <label htmlFor="courseSkills" className="text-lg font-semibold text-gray-700">
+        Skills Improved:
+      </label>
+      <input
+        id="courseSkills"
+        type="text"
+        value={selectedCourse.skillsImprove?.join(", ")}
+        readOnly
+        className="border-2 border-gray-300 rounded-lg p-2 w-full sm:w-1/2 md:w-2/3 text-gray-600"
+      />
+    </div>
+
+    {/* Status */}
+    <div className="flex justify-between items-center">
+      <label htmlFor="courseStatus" className="text-lg font-semibold text-gray-700">
+        Status:
+      </label>
+      <input
+        id="courseStatus"
+        type="text"
+        value={selectedCourse.status}
+        readOnly
+        className="border-2 border-gray-300 rounded-lg p-2 w-full sm:w-1/2 md:w-2/3 text-gray-600"
+      />
+    </div>
+  </div>
+</div>
+
           ) : null}
         </Modal.Body>
 
@@ -576,24 +672,6 @@ const ContentDashboard = () => {
           margin: "1rem 0",
         }}
       />
-
-      <div className="container">
-        <div className="row">
-          {/* Left Side */}
-          <div className="col-md-6">
-            <center>
-              <h4>Course Ratings</h4>
-            </center>
-          </div>
-
-          {/* Right Side */}
-          <div className="col-md-6">
-            <center>
-              <h4>Learners</h4>
-            </center>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -25,7 +25,7 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    // ✅ Retrieve course by ID
+    // Retrieve course by ID
     public Optional<Course> getCourseById(String id) {
         return courseRepository.findById(id);
     }

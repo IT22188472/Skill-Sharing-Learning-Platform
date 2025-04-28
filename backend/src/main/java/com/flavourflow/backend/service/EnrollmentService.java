@@ -2,7 +2,6 @@ package com.flavourflow.backend.service;
 
 import com.flavourflow.backend.models.Enrollusrs;
 import com.flavourflow.backend.repository.EnrollmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +12,6 @@ public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
 
-    @Autowired
     public EnrollmentService(EnrollmentRepository enrollmentRepository) {
         this.enrollmentRepository = enrollmentRepository;
     }
@@ -21,6 +19,11 @@ public class EnrollmentService {
     // Method to enroll a user in a course
     public Enrollusrs enrollUserInCourse(Enrollusrs enrollment) {
         return enrollmentRepository.save(enrollment);
+    }
+
+    // Method to delete an enrollment by userId and courseId
+    public void deleteEnrollmentByUserIdAndCourseId(String userId, String courseId) {
+        enrollmentRepository.deleteByUserIdAndCourseId(userId, courseId);
     }
 
     // Retrieve all Enrollments
@@ -36,7 +39,6 @@ public class EnrollmentService {
         return enrollmentRepository.findByUserId(userId);
     }
 
-        
     public List<Enrollusrs> findByCourseIdAndUserId(String courseId, String userId) {
         return enrollmentRepository.findByCourseIdAndUserId(courseId, userId);
     }

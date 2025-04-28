@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Enrollments = () => {
   const { courseId, userId } = useParams();
+  const id = userId;
+  const userid = userId;
   const [enroll, setEnroll] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +28,88 @@ const Enrollments = () => {
       setError("Failed to fetch enrollment.");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleCompleteCourse = async () => {
+    try {
+      // Step 1: Mark course as completed
+      const completeResponse = await axios.post(
+        "http://localhost:8080/completedcourses/complete",
+        {
+          userId: userId,
+          courseId: courseId,
+        }
+      );
+
+      console.log("Course marked as completed:", completeResponse.data);
+
+      // Delete the course from Enrollments
+      const deleteResponse = await axios.delete(
+        `http://localhost:8080/enrollments/delete/${userId}/${courseId}`
+      );
+
+      console.log("Course deleted from enrollments:", deleteResponse.data);
+
+      // Show SweetAlert2 with the appropriate badge based on course level
+      let badgeImage = "";
+      let badgeMessage = "";
+
+      // Based on course level, assign badge image
+      switch (enroll.level) {
+        case "Advanced":
+          badgeImage = "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Advanced_x2xmg7.png";
+          badgeMessage = "Congratulations on completing an Advanced Course!";
+          break;
+        case "Intermediate":
+          badgeImage = "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808778/Intermediate_o3ba9y.png";
+          badgeMessage = "Well done on completing an Intermediate Course!";
+          break;
+        case "Beginner":
+          badgeImage = "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Biginner_yaebnv.png";
+          badgeMessage = "Great job on completing a Beginner Course!";
+          break;
+        default:
+          badgeMessage = "Congratulations on completing the course!";
+      }
+
+      // Display SweetAlert2 with the congratulatory message and badge image
+      Swal.fire({
+        title: "Course Completed!",
+        text: badgeMessage,
+        imageUrl: badgeImage,
+        imageWidth: 200,
+        imageHeight: 200,
+        imageAlt: "Badge",
+        showCancelButton: true,
+        confirmButtonText: "Explore Course",
+        cancelButtonText: "Profile",
+        reverseButtons: true,
+        customClass: {
+          popup: 'rounded-popup',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/courses/${id}`;
+        } else if (result.isDismissed) {
+          window.location.href = `/profile/${userid}`;
+        }
+      });
+      
+      
+      // Add this style in your CSS file or within a style tag in the component
+      const style = document.createElement("style");
+      style.innerHTML = `
+        .rounded-popup {
+          border-radius: 15px; 
+        }
+      `;
+      document.head.appendChild(style);
+      
+      
+    } catch (error) {
+      console.error("Error completing course:", error);
+      alert("Failed to complete course or remove from enrollments.");
     }
   };
 
@@ -54,6 +139,7 @@ const Enrollments = () => {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
+  // Video event handlers
   const onPlay = () => setIsPlaying(true);
   const onPause = () => setIsPlaying(false);
 
@@ -183,7 +269,9 @@ const Enrollments = () => {
                 </div>
               </div>
             </div>
-            <div className="text-lg"
+
+            <div
+              className="text-lg"
               style={{
                 width: "800px",
                 height: "30px",
@@ -192,21 +280,23 @@ const Enrollments = () => {
                 top: "480px",
                 backgroundColor: "lightgray",
                 display: "flex",
-                alignItems: "center", 
-                justifyContent: "center", 
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <strong>Note : &nbsp;</strong> Complete Button is disabled for this video
-              until 95% of the content is watched.
+              <strong>Note : &nbsp;</strong> Complete Button is disabled for
+              this video until 95% of the content is watched.
             </div>
 
-            {/* Completion Button */}
             {isCompleteable && (
               <div
                 className="mt-4 text-center"
                 style={{ position: "absolute", top: "515px", left: "630px" }}
               >
-                <button className="btn btn-success btn-lg w-60 text-lg">
+                <button
+                  className="btn btn-success btn-lg w-60 text-lg"
+                  onClick={handleCompleteCourse} // Handle button click
+                >
                   ✅ Complete This Course
                 </button>
               </div>

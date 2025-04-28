@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Card, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import cooking1 from "../images/cooking4.jpg";
@@ -116,7 +117,7 @@ const CourseForm = () => {
                 />
                 <br />
                 <b>
-                  <Link to={`/profile/${users.id}`} >
+                  <Link to={`/profile/${users.id}`}>
                     <h1 className="text-xl font-bold hover:text-blue-500 transition-colors duration-200">
                       {users.firstName} {users.lastName}
                     </h1>
@@ -125,15 +126,18 @@ const CourseForm = () => {
               </div>
               <br />
               <div className="d-grid gap-4">
-                <Link to="/enroll-courses" className="btn btn-primary">
+                <HashLink
+                  to={`/profile/${users.id}/#enrolled-courses`}
+                  className="btn btn-primary"
+                >
                   Enrolled Courses
-                </Link>
+                </HashLink>
                 <Link to="/progress" className="btn btn-secondary">
                   Progress
                 </Link>
-                <Link to="/achievements" className="btn btn-success">
+                <HashLink to={`/profile/${users.id}/#Achievements`} className="btn btn-success">
                   Achievements
-                </Link>
+                </HashLink>
               </div>
             </div>
           </div>

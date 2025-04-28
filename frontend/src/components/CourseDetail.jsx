@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 
 const CourseDetail = () => {
   const { userid, id } = useParams();
+  const courseId = id;
+  const userId = userid;
   const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -86,14 +88,15 @@ const CourseDetail = () => {
         level: course.level,
         ageRange: course.ageRange,
         video:
-          course.video.length > 0 ? [course.video[0]] : ["default-video-url"], // fallback if video is missing
+          course.video.length > 0 ? [course.video[0]] : ["default-video-url"],
         skillsImprove:
           course.skillsImprove && course.skillsImprove.length > 0
             ? course.skillsImprove
-            : ["default-skill"], // fallback if skillsImprove is missing
+            : ["default-skill"],
         images:
           course.images.length > 0 ? course.images : ["default-image-url"],
       };
+
       await axios.post(
         "http://localhost:8080/enrollments/enroll",
         enrollmentData,
@@ -103,8 +106,22 @@ const CourseDetail = () => {
           },
         }
       );
-      await Swal.fire("Success!", "You have enrolled successfully!", "success");
-      navigate(`/enrollments/${id}/${userid}`);
+
+      // Show second SweetAlert after successful enrollment
+      const result = await Swal.fire({
+        title: "Enrolled Successfully!",
+        text: "What do you want to do next?",
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonText: "Done this course now",
+        cancelButtonText: "Explore courses",
+      });
+
+      if (result.isConfirmed) {
+        navigate(`/enrollments/${courseId}/${userId}`);
+      } else {
+        navigate(`/courses/${userId}`);
+      }
     } catch (error) {
       console.error("Enrollment failed:", error);
       Swal.fire("Oops!", "Failed to enroll.", "error");
@@ -192,7 +209,7 @@ const CourseDetail = () => {
                         style={{
                           position: "absolute",
                           top: 0,
-                          left: 0
+                          left: 0,
                         }}
                       />
                     </div>
@@ -202,8 +219,8 @@ const CourseDetail = () => {
                       autoPlay
                       muted
                       style={{
-                        width: "100%", 
-                        height: "450px", 
+                        width: "100%",
+                        height: "450px",
                       }}
                     >
                       <source src={courseVideoUrl} type="video/mp4" />
@@ -263,13 +280,13 @@ const CourseDetail = () => {
 
               {/* Skills Hashtags */}
               <div className="mb-3">
-                {Array.isArray(course.skills) &&
-                  course.skills.map((skill, idx) => (
+                {Array.isArray(course.skillsImprove) &&
+                  course.skillsImprove.map((skill, idx) => (
                     <span
                       key={idx}
                       className="badge bg-light text-dark me-2 mb-2 p-2 rounded-pill"
                     >
-                      #{skill}
+                      #{skill.trim()}
                     </span>
                   ))}
               </div>
@@ -305,7 +322,10 @@ const CourseDetail = () => {
                     <strong>Age Range:</strong> {course.ageRange}
                   </Col>
                   <Col xs={6}>
-                    <strong>Skills:</strong> {course.skills?.join(", ")}
+                    <strong>Skills:</strong>{" "}
+                    {Array.isArray(course.skillsImprove)
+                      ? course.skillsImprove.join(", ")
+                      : "N/A"}
                   </Col>
                 </Row>
               </div>

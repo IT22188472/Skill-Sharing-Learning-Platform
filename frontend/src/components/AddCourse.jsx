@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const AddCourse = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { id } = useParams();
+
   const [newCourse, setNewCourse] = useState({
     courseCode: "",
     title: "",
@@ -19,16 +19,33 @@ const AddCourse = () => {
     video: "",
     status: "active",
   });
+
   const [imageFiles, setImageFiles] = useState([]);
   const [videoFiles, setVideoFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [videoPreviews, setVideoPreviews] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCourse({ ...newCourse, [name]: value });
   };
 
-  const handleFileChange = (e) => {
-    setImageFiles([...e.target.files]);
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImageFiles(files);
+
+    // Generate image preview URLs
+    const imageURLs = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews(imageURLs);
+  };
+
+  const handleVideoChange = (e) => {
+    const files = Array.from(e.target.files);
+    setVideoFiles(files);
+
+    // Generate video preview URLs
+    const videoURLs = files.map((file) => URL.createObjectURL(file));
+    setVideoPreviews(videoURLs);
   };
 
   const handleFormSubmit = async (e) => {
@@ -42,10 +59,9 @@ const AddCourse = () => {
     formData.append("level", newCourse.level);
     formData.append("ageRange", newCourse.ageRange);
     formData.append("status", newCourse.status);
-    formData.append("skillsImprove", newCourse.skillsImprove); // comma-separated
-    formData.append("video", newCourse.video); // comma-separated
+    formData.append("skillsImprove", newCourse.skillsImprove);
+    formData.append("video", newCourse.video);
 
-    // Append all images
     imageFiles.forEach((file) => formData.append("images", file));
     videoFiles.forEach((file) => formData.append("videos", file));
 
@@ -61,7 +77,7 @@ const AddCourse = () => {
       alert("Course added successfully!");
       navigate(`/ContentDashboard/${id}`);
 
-      // Reset
+      // Reset form
       setNewCourse({
         courseCode: "",
         title: "",
@@ -74,6 +90,9 @@ const AddCourse = () => {
         status: "active",
       });
       setImageFiles([]);
+      setVideoFiles([]);
+      setImagePreviews([]);
+      setVideoPreviews([]);
     } catch (error) {
       console.error("Error adding course:", error);
       alert("Failed to add course. Please try again.");
@@ -81,133 +100,183 @@ const AddCourse = () => {
   };
 
   return (
-    <div className="container mx-auto p-5">
-      <h2 className="text-2xl font-bold mb-6">Add a New Course</h2>
+    <div className="max-w-[800px] mx-auto p-8">
+      <h2 className="text-3xl font-bold mb-8 text-center text-blue-700">
+        Add a New Course
+      </h2>
+
       <form
         onSubmit={handleFormSubmit}
-        className="bg-white shadow-lg p-6 rounded-lg space-y-4"
+        className="bg-white shadow-xl p-8 rounded-xl space-y-2"
         encType="multipart/form-data"
       >
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Course Code
-          </label>
-          <input
-            type="text"
-            name="courseCode"
-            value={newCourse.courseCode}
-            onChange={handleInputChange}
-            required
-            className="form-input"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Course Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            value={newCourse.title}
-            onChange={handleInputChange}
-            required
-            className="form-input"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Description
-          </label>
-          <textarea
-            name="description"
-            rows={3}
-            value={newCourse.description}
-            onChange={handleInputChange}
-            required
-            className="form-input"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Duration (Hours)
-          </label>
-          <input
-            type="number"
-            name="duration"
-            value={newCourse.duration}
-            onChange={handleInputChange}
-            required
-            className="form-input"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Level
-          </label>
-          <input
-            type="text"
-            name="level"
-            value={newCourse.level}
-            onChange={handleInputChange}
-            required
-            className="form-input"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Age Range
-          </label>
-          <input
-            type="text"
-            name="ageRange"
-            value={newCourse.ageRange}
-            onChange={handleInputChange}
-            required
-            className="form-input"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Skills Improved (comma-separated)
-          </label>
-          <input
-            type="text"
-            name="skillsImprove"
-            value={newCourse.skillsImprove}
-            onChange={handleInputChange}
-            className="form-input"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Upload Videos
-          </label>
-          <input
-            type="file"
-            name="videos"
-            multiple
-            accept="video/*"
-            onChange={(e) => setVideoFiles([...e.target.files])}
-            className="form-input"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Upload Images
-          </label>
-          <input
-            type="file"
-            name="images"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-            className="form-input"
-          />
+        {/* Course Information */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Course Code
+            </label>
+            <input
+              type="text"
+              name="courseCode"
+              value={newCourse.courseCode}
+              onChange={handleInputChange}
+              required
+              className="w-full border rounded-md p-2"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Course Title
+            </label>
+            <input
+              type="text"
+              name="title"
+              value={newCourse.title}
+              onChange={handleInputChange}
+              required
+              className="w-full border rounded-md p-2"
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Description
+            </label>
+            <textarea
+              name="description"
+              rows={4}
+              value={newCourse.description}
+              onChange={handleInputChange}
+              required
+              className="w-full border rounded-md p-2"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Duration (Hours)
+            </label>
+            <input
+              type="number"
+              name="duration"
+              value={newCourse.duration}
+              onChange={handleInputChange}
+              required
+              className="w-full border rounded-md p-2"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Level
+            </label>
+            <select
+              name="level"
+              value={newCourse.level}
+              onChange={handleInputChange}
+              required
+              className="w-full border rounded-md p-2"
+            >
+              <option value="">Select Level</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Age Range
+            </label>
+            <select
+              name="ageRange"
+              value={newCourse.ageRange}
+              onChange={handleInputChange}
+              required
+              className="w-full border rounded-md p-2"
+            >
+              <option value="">Select Age Range</option>
+              <option value="10-18">10-18 years</option>
+              <option value="18-30">18-30 years</option>
+              <option value="30+">30+ years</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Skills Improved (comma-separated)
+            </label>
+            <input
+              type="text"
+              name="skillsImprove"
+              value={newCourse.skillsImprove}
+              onChange={handleInputChange}
+              className="w-full border rounded-md p-2"
+            />
+          </div>
         </div>
 
+        {/* Upload Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Upload Images
+            </label>
+            <input
+              type="file"
+              name="images"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full border rounded-md p-2"
+            />
+
+            {/* Image Preview */}
+            <div className="flex flex-wrap mt-4 gap-4">
+              {imagePreviews.map((src, index) => (
+                <img
+                  key={index}
+                  src={src}
+                  alt={`Preview ${index}`}
+                  className="w-24 h-24 object-cover rounded-md border"
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-600 mb-2">
+              Upload Videos
+            </label>
+            <input
+              type="file"
+              name="videos"
+              multiple
+              accept="video/*"
+              onChange={handleVideoChange}
+              className="w-full border rounded-md p-2"
+            />
+
+            {/* Video Preview */}
+            <div className="flex flex-wrap mt-4 gap-4">
+              {videoPreviews.map((src, index) => (
+                <video
+                  key={index}
+                  src={src}
+                  controls
+                  className="w-32 h-24 rounded-md border"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
         >
           Add Course
         </button>

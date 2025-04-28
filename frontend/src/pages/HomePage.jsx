@@ -61,7 +61,7 @@ const HomePage = () => {
     <div className="min-h-screen bg-orange-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white py-16 px-4">
-        <div className="container mx-auto max-w-6xl">
+        <div className="container   max-w-6xl">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-8 md:mb-0">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">Discover & Share Amazing Recipes</h1>

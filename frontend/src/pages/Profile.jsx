@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 const Profile = () => {
   const { userid } = useParams();
   const [user, setUser] = useState(null);
   const [course, setCourse] = useState(null);
+  const [completeCourse, setCompleteCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab1, setActiveTab1] = useState("posts");
@@ -41,6 +42,16 @@ const Profile = () => {
       })
       .catch((err) => {
         console.error("Error fetching Courses:", err);
+      });
+
+    axios
+      .get(`http://localhost:8080/completedcourses/user/${userid}`)
+      .then((response) => {
+        console.log("Completed Courses:", response.data);
+        setCompleteCourse(response.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching Completed Courses:", err);
       });
   }, []);
 
@@ -90,7 +101,7 @@ const Profile = () => {
               {/* Bio */}
               <div className="mt-4">
                 <p className="text-gray-700 text-lg">
-                  This is a dummy bio of the user. Replace this with actual data
+                  This is a bio of the user. Replace this with actual data
                   later.
                 </p>
               </div>
@@ -259,6 +270,7 @@ const Profile = () => {
               Achivements
             </button>
             <button
+              id="Achievements"
               onClick={() => setActiveTab2("Completed")}
               className={`px-6 py-2 text-lg font-medium ${
                 activeTab2 === "friends"
@@ -269,6 +281,7 @@ const Profile = () => {
               Completed Courses
             </button>
             <button
+              id="enrolled-courses"
               onClick={() => setActiveTab2("Enroll")}
               className={`px-6 py-2 text-lg font-medium ${
                 activeTab2 === "photos"
@@ -283,64 +296,126 @@ const Profile = () => {
           {/* Tab2 Content */}
           <div className="p-6">
             {activeTab2 === "Achivements" && (
-              <div>
-                <h2 className="text-xl font-semibold text-gray-700">
-                  Achivements
-                </h2>
-                <div className="mt-4">
-                  <div className="bg-gray-50 p-4 rounded-xl shadow-sm mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      Post Title 1
-                    </h3>
-                    <p className="text-gray-600 mt-2">
-                      This is an example of a post content. Feel free to explore
-                      more posts by this user.
-                    </p>
+              <div className="mt-2 grid grid-cols-10 gap-0">
+                {completeCourse && completeCourse.length > 0 ? (
+                  completeCourse.map((completeCours, index) => (
+                    <div
+                      key={index}
+                      className="relative bg-gray-0  flex items-center justify-center"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        position: "relative",
+                        top: "-30px",
+                        left: "20px",
+                      }}
+                    >
+                      <div className="absolute bottom-0 left-0">
+                        {completeCours.course.level === "Beginner" && (
+                          <img
+                            src="https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Biginner_yaebnv.png"
+                            alt="Beginner Badge"
+                            className="w-20 h-20 "
+                          />
+                        )}
+                        {completeCours.course.level === "Intermediate" && (
+                          <img
+                            src="https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808778/Intermediate_o3ba9y.png"
+                            alt="Intermediate Badge"
+                            className="w-20 h-20"
+                          />
+                        )}
+                        {completeCours.course.level === "Advanced" && (
+                          <img
+                            src="https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Advanced_x2xmg7.png"
+                            alt="Advanced Badge"
+                            className="w-20 h-20 "
+                          />
+                        )}
+                        <div
+                          className="absolute text-dark font-bold text-sm p-1  bg-opacity-90 rounded-full flex items-center justify-center"
+                          style={{
+                            textAlign: "center",
+                            left: "50%",
+                            top: "70px",
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          <b>{completeCours.course.name}</b>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="w-full h-32 bg-gray-300 rounded-lg flex items-center justify-center">
+                    <span className="text-dark text-2xl font-semibold">
+                      No completed courses found
+                    </span>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-xl shadow-sm mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      Post Title 2
-                    </h3>
-                    <p className="text-gray-600 mt-2">
-                      Another post with some engaging content.
-                    </p>
-                  </div>
-                </div>
+                )}
               </div>
             )}
             {activeTab2 === "Completed" && (
-              <div>
-                <h2 className="text-xl font-semibold text-gray-700">
-                  Completed Courses
-                </h2>
-                <div className="mt-4">
-                  {/* Sample Friends */}
-                  <div className="flex space-x-4">
-                    <div className="w-20 h-20 rounded-full bg-gray-300"></div>
-                    <div className="w-20 h-20 rounded-full bg-gray-300"></div>
-                    <div className="w-20 h-20 rounded-full bg-gray-300"></div>
+              <div className="mt-2 grid grid-cols-8 gap-0">
+                {completeCourse && completeCourse.length > 0 ? (
+                  completeCourse.map((completeCours, index) => (
+                    <div
+                      key={index}
+                      className="relative bg-gray-300 rounded-full flex items-center justify-center"
+                      style={{ width: "90px", height: "90px" }}
+                    >
+                      <img
+                        src={completeCours.course.images[0]}
+                        alt={completeCours.course.name}
+                        className="img-fluid rounded-full object-cover opacity-100"
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                      <div className="absolute text-dark font-bold text-xs p-1 bg-white bg-opacity-90 rounded-full">
+                        <b>{completeCours.course.name}</b>{" "}
+                        {/* Ensure 'name' is the correct property */}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="w-full h-32 bg-gray-300 rounded-lg flex items-center justify-center">
+                    <span className="text-dark text-2xl font-semibold">
+                      No completed courses found
+                    </span>
                   </div>
-                </div>
+                )}
               </div>
             )}
+
             {activeTab2 === "Enroll" && (
-              <div className="mt-2 grid grid-cols-7 gap-0">
+              <div className="mt-2 grid grid-cols-8 gap-0">
                 {enrollments && enrollments.length > 0 ? (
                   enrollments.map((enrollment, index) => (
                     <div
                       key={index}
                       className="relative bg-gray-300 rounded-full flex items-center justify-center"
-                      style={{ width: "100px", height: "100px" }}
+                      style={{ width: "90px", height: "90px" }}
                     >
-                      <img
-                        src={enrollment.image}
-                        alt="Enrollment Image"
-                        className="img-fluid rounded-full object-cover opacity-100" 
-                        style={{ width: "100%", height: "100%" }}
-                      />
-                      <div className="absolute text-darl font-bold text-xs p-1 bg-white bg-opacity-90 rounded-full">
-                        <b>{enrollment.name}</b>
-                      </div>
+                      <Link
+                        to={`/enrollments/${enrollment.courseId}/${userid}`}
+                        className="block w-full h-full"
+                      >
+                        <img
+                          src={enrollment.image}
+                          alt="Enrollment Image"
+                          className="img-fluid rounded-full object-cover opacity-100"
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                        <div
+                          className="absolute text-dark font-bold text-xs p-1 bg-white bg-opacity-90 rounded-full"
+                          style={{
+                            position: "absolute",
+                            top: "35px",
+                            left: "10px",
+                          }}
+                        >
+                          <b>{enrollment.name}</b>
+                        </div>
+                      </Link>
                     </div>
                   ))
                 ) : (
