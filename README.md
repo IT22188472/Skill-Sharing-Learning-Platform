@@ -1,3 +1,4 @@
+
 # Development Branch
 
 Welcome to the development branch!
@@ -18,3 +19,4 @@ This branch serves as a centralized location for all team members to contribute 
 - **Folder Organization**: Maintain the folder structure to ensure easy access and organization for all team members.
 - **Database Configurations**: All database-related settings (e.g., credentials, connection URIs, and settings) should be stored and updated in this branch.
 - **Code Updates**: Add new code files or updates to the appropriate folders as per the project structure.
+
