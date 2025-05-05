@@ -21,6 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 
 HELP.md
 target/
@@ -55,3 +56,5 @@ build/
 
 ### VS Code ###
 .vscode/
+=======
+>>>>>>> 677b53eb3022dabf54b0cf06516de596d2c648f6

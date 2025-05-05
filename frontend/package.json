@@ -1,12 +1,29 @@
 {
   "name": "frontend",
+<<<<<<< HEAD
   "private": true,
   "version": "0.1.0",
   "type": "module",
+=======
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.8.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+>>>>>>> 677b53eb3022dabf54b0cf06516de596d2c648f6
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+<<<<<<< HEAD
     "eject": "react-scripts eject",
     "dev": "vite",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
@@ -43,6 +60,9 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "vite": "^5.4.18"
+=======
+    "eject": "react-scripts eject"
+>>>>>>> 677b53eb3022dabf54b0cf06516de596d2c648f6
   },
   "eslintConfig": {
     "extends": [
