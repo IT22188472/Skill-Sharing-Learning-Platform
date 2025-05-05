@@ -1,5 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+<<<<<<< HEAD
+import { BrowserRouter } from 'react-router-dom';
+import App from './App'; // Ensure this path is correct
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+);
+=======
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -15,3 +27,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+>>>>>>> 677b53eb3022dabf54b0cf06516de596d2c648f6
