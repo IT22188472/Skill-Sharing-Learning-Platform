@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -22,7 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-=======
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -56,4 +55,3 @@ build/
 
 ### VS Code ###
 .vscode/
->>>>>>> 559a47f (Update all Files & add profile Sections and merge Some Pages)
