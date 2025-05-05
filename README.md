@@ -1,31 +1,22 @@
-# FloverFlow - Cooking Skills Sharing and Learning Platform
 
-## Introduction
-FloverFlow is a modern **Cooking Skills Sharing and Learning Platform** that connects home chefs, learners, and cooking enthusiasts. Our goal is to facilitate an interactive space where users can share their cooking expertise, discover new recipes, and improve their culinary skills in an engaging and supportive community.
+# Development Branch
 
-## Features
-- **Recipe Sharing**: Users can post recipes with detailed cooking methods, kitchen advice, images, and videos.
-- **Skill Development Tracking**: Users can set and track their personal cooking skill development plans.
-- **Community Interaction**: Like, comment, and follow other users to build a vibrant learning network.
-- **Real-time Notifications**: Get updates on interactions and platform activities.
-- **Commiunity App**: Allows users to interact, follow, and engage with others in the cooking community.
-- **OAuth 2.0 Authentication**: Secure and easy social login access.
+Welcome to the development branch!
 
-## Tech Stack
-### Backend
-- **Spring Boot** (REST API)
-- **MongoDB** (Database)
-- **JWT & OAuth 2.0** (Authentication)
+This branch is dedicated to sharing and collaborating on the following resources for the project:
 
-### Frontend
-- **React.js** (Client Web App)
-- **Tailwind CSS** (Styling)
-- **Boostrap**
+- **Folder Structure**: Organized folder structure to maintain consistency and improve navigation.
+- **Database Configurations**: All necessary configurations for connecting and managing the database are stored here.
+- **Code Resources**: Core development code, scripts, and other resources are available in this branch.
 
-### DevOps & Tools
-- **GitHub** (Version Control)
-- **Git Version Controller**
+## Purpose
+This branch serves as a centralized location for all team members to contribute and sync resources related to:
+- Folder structure that aligns with the project.
+- Database configuration settings (e.g., MongoDB, MySQL, etc.).
+- Core code resources, including utilities, libraries, and other essential files.
 
-### System Overview Diagram
-![System Overview Diagram](https://github.com/IT22188472/Skill-Sharing-Learning-Platform/blob/b63a09775f8a2a82afa2684e7e3ac65dc4d16788/Images/System%20Overview%20Diagram.png)
+## Usage
+- **Folder Organization**: Maintain the folder structure to ensure easy access and organization for all team members.
+- **Database Configurations**: All database-related settings (e.g., credentials, connection URIs, and settings) should be stored and updated in this branch.
+- **Code Updates**: Add new code files or updates to the appropriate folders as per the project structure.
 
