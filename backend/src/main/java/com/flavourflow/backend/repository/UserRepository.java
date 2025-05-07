@@ -13,4 +13,5 @@ public interface UserRepository extends MongoRepository<User,String>{
     @Query("{'$or':[ {'firstName': {$regex: ?0, $options: 'i'}}, {'lastName': {$regex: ?0, $options: 'i'}}, {'email': {$regex: ?0, $options: 'i'}} ] }")
     public List<User> searchUser(String query);
 
+    
 }

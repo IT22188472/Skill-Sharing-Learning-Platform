@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import { useNavigate, useParams, Link } from 'react-router-dom';
-=======
-import { useNavigate, useParams } from 'react-router-dom';
->>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
@@ -25,20 +21,13 @@ const EditPost = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentPost, setCurrentPost] = useState(null);
-<<<<<<< HEAD
   const [imagePreview, setImagePreview] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
-=======
->>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get(`http://localhost:8080/api/posts/${postId}`);
-=======
-        const response = await axios.get(`http://localhost:8081/api/posts/${postId}`);
->>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         const post = response.data;
         
         // Check if user is the post owner
@@ -62,11 +51,7 @@ const EditPost = () => {
 
         setCurrentPost(post);
       } catch (error) {
-<<<<<<< HEAD
         setError('Failed to fetch recipe');
-=======
-        setError('Failed to fetch post');
->>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         console.error('Error fetching post:', error);
       }
     };
@@ -96,11 +81,7 @@ const EditPost = () => {
 
     try {
       const response = await axios.put(
-<<<<<<< HEAD
         `http://localhost:8080/api/posts/${postId}`,
-=======
-        `http://localhost:8081/api/posts/${postId}`,
->>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         postData,
         {
           headers: {
@@ -111,19 +92,11 @@ const EditPost = () => {
       );
 
       if (response.status === 200) {
-<<<<<<< HEAD
         // Navigate to the post detail page
         navigate(`/posts/${postId}`);
       }
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to update recipe');
-=======
-        // Force a full page refresh to show the updated post
-        window.location.href = '/';
-      }
-    } catch (error) {
-      setError(error.response?.data?.message || 'Failed to update post');
->>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
       console.error('Error updating post:', error);
     } finally {
       setIsLoading(false);
@@ -133,7 +106,6 @@ const EditPost = () => {
   const handleChange = (e) => {
     const { name, type } = e.target;
     if (type === 'file') {
-<<<<<<< HEAD
       const file = e.target.files[0];
       setFormData(prev => ({
         ...prev,
@@ -159,12 +131,6 @@ const EditPost = () => {
           setVideoPreview(null);
         }
       }
-=======
-      setFormData(prev => ({
-        ...prev,
-        [name]: e.target.files[0]
-      }));
->>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
     } else {
       setFormData(prev => ({
         ...prev,
@@ -173,7 +139,6 @@ const EditPost = () => {
     }
   };
 
-<<<<<<< HEAD
   if (!currentPost && !error) {
     return (
       <div className="min-h-screen bg-orange-50 flex justify-center items-center p-4">
@@ -427,108 +392,6 @@ const EditPost = () => {
           </div>
         </div>
       </div>
-=======
-  return (
-    <div className="max-w-2xl mx-auto mt-10 p-6">
-      <h2 className="text-2xl font-bold mb-6">Edit Post</h2>
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block text-gray-700 mb-2">Title</label>
-          <input
-            type="text"
-            name="title"
-            required
-            className="w-full p-2 border rounded"
-            value={formData.title}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700 mb-2">Ingredients</label>
-          <textarea
-            name="ingredients"
-            required
-            rows="4"
-            className="w-full p-2 border rounded"
-            value={formData.ingredients}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700 mb-2">Instructions</label>
-          <textarea
-            name="instructions"
-            required
-            rows="6"
-            className="w-full p-2 border rounded"
-            value={formData.instructions}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700 mb-2">Image</label>
-          {currentMedia.imageUrl && (
-            <div className="mb-2">
-              <img 
-                src={`http://localhost:8081${currentMedia.imageUrl}`}
-                alt="Current" 
-                className="max-h-40 rounded"
-              />
-            </div>
-          )}
-          <input
-            type="file"
-            name="imageFile"
-            accept="image/*"
-            className="w-full p-2 border rounded"
-            onChange={handleChange}
-          />
-        </div>
-        
-        <div>
-          <label className="block text-gray-700 mb-2">Video</label>
-          {currentMedia.videoUrl && (
-            <div className="mb-2">
-              <video 
-                src={`http://localhost:8081${currentMedia.videoUrl}`}
-                controls
-                className="max-h-40 rounded"
-              />
-            </div>
-          )}
-          <input
-            type="file"
-            name="videoFile"
-            accept="video/*"
-            className="w-full p-2 border rounded"
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex space-x-4">
-          <button
-            type="submit"
-            disabled={isLoading}
-            className={`flex-1 py-2 px-4 rounded text-white font-medium ${
-              isLoading ? 'bg-gray-400' : 'bg-orange-600 hover:bg-orange-700'
-            }`}
-          >
-            {isLoading ? 'Saving...' : 'Save Changes'}
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/')}
-            className="flex-1 py-2 px-4 rounded text-gray-700 font-medium bg-gray-200 hover:bg-gray-300"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
->>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
     </div>
   );
 };
