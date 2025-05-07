@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.flavourflow.backend.models.User;
 import com.flavourflow.backend.repository.UserRepository;
@@ -17,6 +20,7 @@ import com.flavourflow.backend.service.UserService;
 
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3001", "http://localhost:8080"})
 public class UserController {
 
     @Autowired
@@ -74,13 +78,22 @@ public class UserController {
     }
 
     @GetMapping("/api/users/profile")
-    public User getUserFromToken(@RequestHeader("Authorization")String jwt) {
-        
-        User user = userService.findUserByJwt(jwt);
-
-        user.setPassword(null);
-        
-        return user;
+    public ResponseEntity<User> getUserFromToken(@RequestHeader("Authorization")String jwt) {
+        try {
+            User user = userService.findUserByJwt(jwt);
+            
+            if (user == null) {
+                return new ResponseEntity<>(null, new org.springframework.http.HttpHeaders(), HttpStatus.UNAUTHORIZED);
+            }
+            
+            // Don't send the password back to the client
+            user.setPassword(null);
+            
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, new org.springframework.http.HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }

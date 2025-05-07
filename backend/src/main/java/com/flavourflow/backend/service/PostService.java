@@ -20,4 +20,6 @@ public interface PostService {
 
     Post likePost(String postId,String userId) throws Exception;
 
+    Post updatePost(String postId, Post updatedPost, String userId) throws Exception;
+
 }

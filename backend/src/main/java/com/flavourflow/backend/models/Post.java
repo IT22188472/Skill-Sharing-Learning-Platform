@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.annotation.Transient;
 
 @Document(collection = "Posts")
 public class Post {
@@ -20,16 +22,22 @@ public class Post {
     private String imageUrl;
     private String videoUrl; 
 
-   
     private User user;
 
-    private List<User> liked=new ArrayList<>();
+    private List<User> liked = new ArrayList<>();
+    
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    public Post(){
+    @Transient
+    private MultipartFile imageFile;
+    
+    @Transient
+    private MultipartFile videoFile;
+
+    public Post() {
 
     }
-
 
     public Post(String id, String title, String ingredients, String instructions, String imageUrl, String videoUrl,
             User user, List<User> liked, LocalDateTime createdAt) {
@@ -43,8 +51,6 @@ public class Post {
         this.liked = liked;
         this.createdAt = createdAt;
     }
-
-
 
     public String getId() {
         return id;
@@ -110,16 +116,35 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-
-
     public List<User> getLiked() {
         return liked;
     }
 
-
-
     public void setLiked(List<User> liked) {
         this.liked = liked;
+    }
+
+    public MultipartFile getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
+    }
+
+    public MultipartFile getVideoFile() {
+        return videoFile;
+    }
+
+    public void setVideoFile(MultipartFile videoFile) {
+        this.videoFile = videoFile;
+    }
+    
+    // Initialize createdAt in constructor if it's null
+    public void initializeCreatedAtIfNull() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
     }
 
 }
