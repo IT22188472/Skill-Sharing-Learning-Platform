@@ -3,10 +3,10 @@ package com.flavourflow.backend.config;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -41,17 +41,25 @@ public class jwtValidator extends OncePerRequestFilter {
         
         filterChain.doFilter(request, response);
     }
-    
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        List<String> excludedPaths = List.of("/api/auth/signin", "/api/auth/signup", "/auth/signin", "/auth/signup", "/swagger-ui", "/v3/api-docs", "/uploads/");
+        List<String> excludedPaths = List.of(
+            "/auth/signin", "/auth/signup",
+            "/api/auth/signin", "/api/auth/signup",
+            "/swagger-ui", "/v3/api-docs", "/uploads/"
+        );
         String path = request.getServletPath();
-        
-        // For GET requests, don't filter /api/posts/* and /api/groups/* paths
-        if (request.getMethod().equals("GET") && (path.startsWith("/api/posts/") || path.startsWith("/api/groups") || path.equals("/api/posts") || path.equals("/api/groups"))) {
+
+        // Allow unauthenticated GETs to some endpoints
+        if (request.getMethod().equals("GET") && (
+                path.startsWith("/api/posts/") ||
+                path.startsWith("/api/groups") ||
+                path.equals("/api/posts") ||
+                path.equals("/api/groups"))) {
             return true;
         }
-        
+
         return excludedPaths.stream().anyMatch(path::startsWith);
     }
 }
