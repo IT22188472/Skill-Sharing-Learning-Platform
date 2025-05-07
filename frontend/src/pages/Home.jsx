@@ -12,7 +12,11 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+<<<<<<< HEAD
+        const response = await axios.get('http://localhost:8080/posts');
+=======
         const response = await axios.get('http://localhost:8081/posts');
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         setPosts(response.data);
       } catch (error) {
         console.error('Error fetching posts:', error);
@@ -59,7 +63,11 @@ const Home = () => {
               <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 {post.imageUrl && (
                   <img 
+<<<<<<< HEAD
+                    src={`http://localhost:8080${post.imageUrl}`} 
+=======
                     src={`http://localhost:8081${post.imageUrl}`} 
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                     alt={post.title} 
                     className="w-full h-48 object-cover"
                   />

@@ -5,7 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.flavourflow.backend.models.Post;
 import com.flavourflow.backend.models.User;
@@ -16,14 +24,14 @@ import com.flavourflow.backend.service.FileStorageService;
 import com.flavourflow.backend.repository.PostRepository;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8081"})
+@CrossOrigin(origins = {"http://localhost:3001", "http://localhost:8080"})
 public class PostController {
 
     @Autowired
-    private PostService postService;
+    PostService postService;
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Autowired
     private FileStorageService fileStorageService;
@@ -32,46 +40,68 @@ public class PostController {
     private PostRepository postRepository;
 
     @PostMapping("/api/posts")
-    public ResponseEntity<?> createPost(@RequestHeader("Authorization") String jwt, @ModelAttribute Post post) {
+    public ResponseEntity<?> createPost(@RequestHeader("Authorization")String jwt, @ModelAttribute Post post) {
         try {
+            System.out.println("Received post creation request with JWT: " + jwt);
+            System.out.println("Post details - Title: " + post.getTitle());
+            
+            // Check if files are attached
+            System.out.println("Image file present: " + (post.getImageFile() != null && !post.getImageFile().isEmpty()));
+            System.out.println("Video file present: " + (post.getVideoFile() != null && !post.getVideoFile().isEmpty()));
+            
             User reqUser = userService.findUserByJwt(jwt);
             if (reqUser == null) {
-                return new ResponseEntity<>(new ApiResponse("User not found", false), HttpStatus.UNAUTHORIZED);
+                System.err.println("User not found for the provided JWT token");
+                return new ResponseEntity<>(new ApiResponse("User not found", false), 
+                    HttpStatus.UNAUTHORIZED);
             }
-
+            
+            System.out.println("Creating post for user: " + reqUser.getFirstName() + " (ID: " + reqUser.getId() + ")");
+            
+            // Handle null fields gracefully
             if (post.getTitle() == null) post.setTitle("");
             if (post.getIngredients() == null) post.setIngredients("");
             if (post.getInstructions() == null) post.setInstructions("");
 
             if (post.getImageFile() != null && !post.getImageFile().isEmpty()) {
-                if (post.getImageFile().getSize() > 10485760) {
-                    return new ResponseEntity<>(new ApiResponse("Image file too large. Max size: 10MB", false), HttpStatus.BAD_REQUEST);
-                }
                 try {
+                    if (post.getImageFile().getSize() > 10485760) { // 10MB limit
+                        return new ResponseEntity<>(new ApiResponse("Image file too large. Max size: 10MB", false), 
+                            HttpStatus.BAD_REQUEST);
+                    }
                     String imageUrl = fileStorageService.saveImage(post.getImageFile());
                     post.setImageUrl(imageUrl);
                 } catch (Exception e) {
+                    System.err.println("Error saving image: " + e.getMessage());
+                    // Continue without image if upload fails
                     post.setImageUrl(null);
                 }
             }
-
+            
             if (post.getVideoFile() != null && !post.getVideoFile().isEmpty()) {
-                if (post.getVideoFile().getSize() > 52428800) {
-                    return new ResponseEntity<>(new ApiResponse("Video file too large. Max size: 50MB", false), HttpStatus.BAD_REQUEST);
-                }
                 try {
+                    if (post.getVideoFile().getSize() > 52428800) { // 50MB limit
+                        return new ResponseEntity<>(new ApiResponse("Video file too large. Max size: 50MB", false), 
+                            HttpStatus.BAD_REQUEST);
+                    }
                     String videoUrl = fileStorageService.saveVideo(post.getVideoFile());
                     post.setVideoUrl(videoUrl);
                 } catch (Exception e) {
+                    System.err.println("Error saving video: " + e.getMessage());
+                    // Continue without video if upload fails
                     post.setVideoUrl(null);
                 }
             }
 
             Post createdPost = postService.createNewPost(post, reqUser.getId());
+            System.out.println("Post created successfully with ID: " + createdPost.getId());
             return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
 
         } catch (Exception e) {
-            return new ResponseEntity<>(new ApiResponse("Error creating post: " + e.getMessage(), false), HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace(); // Log the exception for debugging
+            System.err.println("Error in createPost: " + e.getMessage());
+            return new ResponseEntity<>(new ApiResponse("Error creating post: " + e.getMessage(), false), 
+                HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -80,34 +110,32 @@ public class PostController {
         try {
             User reqUser = userService.findUserByJwt(jwt);
             Post post = postService.findPostById(postId);
-
+            
             if (post == null) {
-                return new ResponseEntity<>(new ApiResponse("Post not found", false), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new ApiResponse("Post not found", false), 
+                    HttpStatus.NOT_FOUND);
             }
-
+            
             if (!post.getUser().getId().equals(reqUser.getId())) {
-                return new ResponseEntity<>(new ApiResponse("You are not authorized to delete this post", false), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(new ApiResponse("You are not authorized to delete this post", false),
+                    HttpStatus.FORBIDDEN);
             }
-
+            
             postService.deletePost(postId, reqUser.getId());
             return new ResponseEntity<>(new ApiResponse("Post deleted successfully", true), HttpStatus.OK);
-
         } catch (Exception e) {
-            return new ResponseEntity<>(new ApiResponse("Error deleting post: " + e.getMessage(), false), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiResponse("Error deleting post: " + e.getMessage(), false),
+                HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/api/posts/{postId}")
-    public ResponseEntity<Post> findPostByIdHandler(@PathVariable String postId) {
-        try {
-            Post post = postService.findPostById(postId);
-            if (post == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(post, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Post> findPostByIdHandler(@PathVariable String postId) throws Exception {
+        Post post = postService.findPostById(postId);
+        if (post == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @GetMapping("/api/posts/user/{userId}")
@@ -137,31 +165,37 @@ public class PostController {
     }
 
     @PutMapping("/api/posts/{postId}")
-    public ResponseEntity<?> updatePost(@PathVariable String postId, @ModelAttribute Post updatedPost, @RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<?> updatePost(@PathVariable String postId, @ModelAttribute Post updatedPost,
+            @RequestHeader("Authorization") String jwt) {
         try {
             User reqUser = userService.findUserByJwt(jwt);
-
+            
+            // Handle image update
             if (updatedPost.getImageFile() != null && !updatedPost.getImageFile().isEmpty()) {
                 if (updatedPost.getImageFile().getSize() > 10485760) {
-                    return new ResponseEntity<>(new ApiResponse("Image file too large. Max size: 10MB", false), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(new ApiResponse("Image file too large. Max size: 10MB", false), 
+                        HttpStatus.BAD_REQUEST);
                 }
                 String imageUrl = fileStorageService.saveImage(updatedPost.getImageFile());
                 updatedPost.setImageUrl(imageUrl);
             }
-
+            
+            // Handle video update
             if (updatedPost.getVideoFile() != null && !updatedPost.getVideoFile().isEmpty()) {
                 if (updatedPost.getVideoFile().getSize() > 52428800) {
-                    return new ResponseEntity<>(new ApiResponse("Video file too large. Max size: 50MB", false), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(new ApiResponse("Video file too large. Max size: 50MB", false), 
+                        HttpStatus.BAD_REQUEST);
                 }
                 String videoUrl = fileStorageService.saveVideo(updatedPost.getVideoFile());
                 updatedPost.setVideoUrl(videoUrl);
             }
-
+            
             Post updatedPostResult = postService.updatePost(postId, updatedPost, reqUser.getId());
             return new ResponseEntity<>(updatedPostResult, HttpStatus.OK);
-
+            
         } catch (Exception e) {
-            return new ResponseEntity<>(new ApiResponse("Error updating post: " + e.getMessage(), false), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiResponse("Error updating post: " + e.getMessage(), false),
+                HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

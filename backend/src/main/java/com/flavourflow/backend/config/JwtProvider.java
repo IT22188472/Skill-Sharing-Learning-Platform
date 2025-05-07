@@ -18,19 +18,23 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtProvider {
 
-    private static final SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
+    private static final SecretKey key=Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
 
-    public static String generateToken(Authentication auth) {
+    public static String generateToken(Authentication auth){
+
         Instant now = Instant.now();
         Instant expiry = now.plus(1, ChronoUnit.DAYS);
 
-        return Jwts.builder()
-                .issuer("Flavourflow")
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(expiry))
+
+        String jwt = Jwts.builder()
+                .issuer("Flavourflow")                            
+                .issuedAt(Date.from(now))                         
+                .expiration(Date.from(expiry))                    
                 .claim("email", auth.getName())
                 .signWith(key)
                 .compact();
+
+        return jwt;
     }
 
     public static String getEmailFromJwtToken(String jwt) {
@@ -38,7 +42,7 @@ public class JwtProvider {
         if (jwt.startsWith("Bearer ")) {
             jwt = jwt.substring(7);
         }
-
+        
         try {
             System.out.println("Parsing JWT token: " + jwt.substring(0, Math.min(jwt.length(), 20)) + "...");
             JwtParser parser = Jwts.parser().verifyWith(key).build();
@@ -49,21 +53,22 @@ public class JwtProvider {
         } catch (JwtException e) {
             System.err.println("JWT validation error: " + e.getMessage());
             throw new RuntimeException("Invalid or expired JWT token", e);
-        }
+        }    
     }
 
     public static Authentication getAuthentication(String jwt) {
-        if (jwt.startsWith("Bearer ")) {
-            jwt = jwt.substring(7);
-        }
-
+        jwt = jwt.substring(7);
+        
         try {
             JwtParser parser = Jwts.parser().verifyWith(key).build();
             Claims claims = parser.parseSignedClaims(jwt).getPayload();
             String email = claims.get("email", String.class);
+            
             return new UsernamePasswordAuthenticationToken(email, null, new ArrayList<>());
         } catch (JwtException e) {
             throw new RuntimeException("Invalid JWT token", e);
         }
     }
+
+    
 }
