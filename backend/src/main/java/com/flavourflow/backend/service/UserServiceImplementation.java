@@ -104,11 +104,29 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User findUserByJwt(String jwt) {
-        String email=JwtProvider.getEmailFromJwtToken(jwt);
-
-        User user = userRepository.findByEmail(email);
-
-        return user;
+        try {
+            // Log the JWT for debugging
+            System.out.println("JWT received: " + (jwt.length() > 20 ? jwt.substring(0, 20) + "..." : jwt));
+            
+            // Check if the Bearer prefix is present
+            if (jwt.startsWith("Bearer ")) {
+                jwt = jwt.substring(7);
+            }
+            
+            String email = JwtProvider.getEmailFromJwtToken(jwt);
+            System.out.println("Email extracted from JWT: " + email);
+            
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                System.out.println("No user found with email: " + email);
+            }
+            
+            return user;
+        } catch (Exception e) {
+            System.err.println("Error processing JWT: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
