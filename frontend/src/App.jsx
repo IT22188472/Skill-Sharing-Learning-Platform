@@ -10,11 +10,11 @@ import EditPost from "./pages/EditPost";
 import GroupList from "./components/Groups/GroupList";
 import GroupDetail from "./components/Groups/GroupDetail";
 import PostDetail from "./pages/PostDetail";
-import CourseForm from "./components/CourseForm";
-import CourseDetail from "./components/CourseDetail";
+import CourseForm from "./components/Course/CourseForm";
+import CourseDetail from "./components/Course/CourseDetail";
 import Home from "./pages/Home";
-import AddCourse from "./components/AddCourse";
-import ContentDashboard from "./components/ContentDashboard";
+import AddCourse from "./components/Course/AddCourse";
+import ContentDashboard from "./components/Course/ContentDashboard";
 import Profile from "./pages/Profile";
 import Enrollments from "./pages/Enrollments";
 
