@@ -7,7 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.flavourflow.backend.models.Group;
 import com.flavourflow.backend.models.User;
@@ -18,7 +28,7 @@ import com.flavourflow.backend.service.GroupService;
 import com.flavourflow.backend.service.UserService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8081"})
+@CrossOrigin(origins = {"http://localhost:3001", "http://localhost:8080"})
 @RequestMapping("/api/groups")
 public class GroupController {
     
@@ -215,6 +225,85 @@ public class GroupController {
             return new ResponseEntity<>(group, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.FORBIDDEN);
+        }
+    }
+    
+    @GetMapping("/{groupId}/members")
+    public ResponseEntity<?> getGroupMembers(@PathVariable String groupId, @RequestHeader("Authorization") String jwt) {
+        try {
+            User user = userService.findUserByJwt(jwt);
+            if (user == null) {
+                return new ResponseEntity<>(new ApiResponse("User not authenticated", false), HttpStatus.UNAUTHORIZED);
+            }
+            
+            Group group = groupService.findGroupById(groupId);
+            return new ResponseEntity<>(group.getMembers(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @PostMapping("/{groupId}/join")
+    public ResponseEntity<?> joinGroup(@PathVariable String groupId, @RequestHeader("Authorization") String jwt) {
+        try {
+            User user = userService.findUserByJwt(jwt);
+            if (user == null) {
+                return new ResponseEntity<>(new ApiResponse("User not authenticated", false), HttpStatus.UNAUTHORIZED);
+            }
+            
+            Group group = groupService.findGroupById(groupId);
+            
+            // Check if user is already a member
+            boolean isMember = group.getMembers().stream()
+                .anyMatch(member -> member.getId().equals(user.getId()));
+                
+            if (isMember) {
+                return new ResponseEntity<>(new ApiResponse("User is already a member of this group", false), HttpStatus.BAD_REQUEST);
+            }
+            
+            // Add user to group members using the addMemberToGroup method
+            // This method is called by the creator, so we use the creator's ID
+            Group updatedGroup = groupService.addMemberToGroup(groupId, group.getCreator().getId(), user.getId());
+            
+            return new ResponseEntity<>(updatedGroup, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @PostMapping("/{groupId}/leave")
+    public ResponseEntity<?> leaveGroup(@PathVariable String groupId, @RequestHeader("Authorization") String jwt) {
+        try {
+            User user = userService.findUserByJwt(jwt);
+            if (user == null) {
+                return new ResponseEntity<>(new ApiResponse("User not authenticated", false), HttpStatus.UNAUTHORIZED);
+            }
+            
+            Group group = groupService.findGroupById(groupId);
+            
+            // Check if user is the creator
+            if (group.getCreator().getId().equals(user.getId())) {
+                return new ResponseEntity<>(new ApiResponse("Group creator cannot leave the group", false), HttpStatus.BAD_REQUEST);
+            }
+            
+            // Check if user is a member
+            boolean isMember = group.getMembers().stream()
+                .anyMatch(member -> member.getId().equals(user.getId()));
+                
+            if (!isMember) {
+                return new ResponseEntity<>(new ApiResponse("User is not a member of this group", false), HttpStatus.BAD_REQUEST);
+            }
+            
+            // Remove user from group members
+            group.setMembers(group.getMembers().stream()
+                .filter(member -> !member.getId().equals(user.getId()))
+                .toList());
+                
+            Group updatedGroup = groupService.updateGroup(groupId, group, group.getCreator().getId());
+            
+            return new ResponseEntity<>(updatedGroup, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

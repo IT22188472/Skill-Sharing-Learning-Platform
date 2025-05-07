@@ -18,7 +18,11 @@ export const AuthProvider = ({ children }) => {
       try {
         const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
         
+<<<<<<< HEAD
+        const response = await axios.get('http://localhost:8080/api/users/profile', {
+=======
         const response = await axios.get('http://localhost:8081/api/users/profile', {
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
           headers: {
             'Authorization': authToken
           }
@@ -40,7 +44,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+<<<<<<< HEAD
+      const response = await axios.post('http://localhost:8080/auth/signin', {
+=======
       const response = await axios.post('http://localhost:8081/auth/signin', {
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         email,
         password
       });
