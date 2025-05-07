@@ -17,7 +17,11 @@ const Posts = () => {
   const fetchPosts = async () => {
     try {
       console.log('Fetching posts...');
+<<<<<<< HEAD
       const response = await axios.get('http://localhost:8080/api/posts');
+=======
+      const response = await axios.get('http://localhost:8081/api/posts');
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
       setPosts(response.data);
       console.log('Fetched posts:', response.data.length);
     } catch (error) {

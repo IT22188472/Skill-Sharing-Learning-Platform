@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\Anu\Desktop\Flavourflow\backend\src\main\java\com\flavourflow\backend\BackendApplication.java
 C:\Users\Anu\Desktop\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\AppConfig.java
 C:\Users\Anu\Desktop\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\AuthController.java
@@ -33,3 +34,37 @@ C:\Users\Anu\Desktop\Flavourflow\backend\src\main\java\com\flavourflow\backend\s
 C:\Users\Anu\Desktop\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\PostServiceImplementation.java
 C:\Users\Anu\Desktop\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\UserService.java
 C:\Users\Anu\Desktop\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\UserServiceImplementation.java
+=======
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\BackendApplication.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\AppConfig.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\AuthController.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\FileUploadConfig.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\JwtConstant.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\JwtProvider.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\jwtValidator.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\config\WebMvcConfig.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\controller\GroupController.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\controller\HomeController.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\controller\PostController.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\controller\UserController.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\exception\FileStorageException.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\model\AuthResponse.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\models\Group.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\models\Post.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\models\User.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\repository\GroupRepository.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\repository\PostRepository.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\repository\UserRepository.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\request\GroupRequest.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\request\LoginRequest.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\response\ApiResponse.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\response\AuthResponse.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\CustomUserDetailsService.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\FileStorageService.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\GroupService.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\GroupServiceImplementation.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\PostService.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\PostServiceImplementation.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\UserService.java
+D:\SLIIT\Y3S2\PAF\Flavourflow\backend\src\main\java\com\flavourflow\backend\service\UserServiceImplementation.java
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a

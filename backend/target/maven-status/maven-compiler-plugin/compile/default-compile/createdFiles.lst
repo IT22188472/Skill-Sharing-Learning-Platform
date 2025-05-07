@@ -6,7 +6,10 @@ com\flavourflow\backend\request\GroupRequest.class
 com\flavourflow\backend\config\JwtProvider.class
 com\flavourflow\backend\response\ApiResponse.class
 com\flavourflow\backend\service\GroupService.class
+<<<<<<< HEAD
 com\flavourflow\backend\models\GroupMessage.class
+=======
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 com\flavourflow\backend\models\Post.class
 com\flavourflow\backend\service\FileStorageService.class
 com\flavourflow\backend\config\JwtConstant.class
@@ -20,17 +23,25 @@ com\flavourflow\backend\repository\GroupRepository.class
 com\flavourflow\backend\response\AuthResponse.class
 com\flavourflow\backend\config\jwtValidator.class
 com\flavourflow\backend\config\WebMvcConfig.class
+<<<<<<< HEAD
 com\flavourflow\backend\repository\GroupMessageRepository.class
+=======
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 com\flavourflow\backend\config\AppConfig.class
 com\flavourflow\backend\controller\UserController.class
 com\flavourflow\backend\service\UserServiceImplementation.class
 com\flavourflow\backend\controller\HomeController.class
 com\flavourflow\backend\model\AuthResponse.class
 com\flavourflow\backend\config\FileUploadConfig.class
+<<<<<<< HEAD
 com\flavourflow\backend\controller\GroupMessageController$MessageRequest.class
 com\flavourflow\backend\models\User.class
 com\flavourflow\backend\controller\GroupController.class
 com\flavourflow\backend\controller\GroupMessageController.class
+=======
+com\flavourflow\backend\models\User.class
+com\flavourflow\backend\controller\GroupController.class
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 com\flavourflow\backend\repository\UserRepository.class
 com\flavourflow\backend\service\UserService.class
 com\flavourflow\backend\service\CustomUserDetailsService.class

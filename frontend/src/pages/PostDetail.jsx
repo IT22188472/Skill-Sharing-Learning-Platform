@@ -8,14 +8,21 @@ const PostDetail = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+<<<<<<< HEAD
   const [activeTab, setActiveTab] = useState('instructions');
+=======
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
   const { user } = useAuth();
   const navigate = useNavigate();
   
   useEffect(() => {
     const fetchPost = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get(`http://localhost:8080/api/posts/${id}`);
+=======
+        const response = await axios.get(`http://localhost:8081/api/posts/${id}`);
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         setPost(response.data);
       } catch (error) {
         console.error('Error fetching post details:', error);
@@ -43,7 +50,11 @@ const PostDetail = () => {
       // Make sure token is properly formatted with Bearer prefix
       const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
       
+<<<<<<< HEAD
       await axios.delete(`http://localhost:8080/api/posts/${id}`, {
+=======
+      await axios.delete(`http://localhost:8081/api/posts/${id}`, {
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         headers: {
           'Authorization': authToken
         }
@@ -58,6 +69,7 @@ const PostDetail = () => {
   
   if (loading) {
     return (
+<<<<<<< HEAD
       <div className="min-h-screen bg-orange-50 flex justify-center items-center p-4">
         <div className="flex flex-col items-center">
           <div className="animate-pulse flex space-x-2 mb-4">
@@ -67,12 +79,17 @@ const PostDetail = () => {
           </div>
           <p className="text-orange-800">Loading recipe...</p>
         </div>
+=======
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
       </div>
     );
   }
   
   if (error || !post) {
     return (
+<<<<<<< HEAD
       <div className="min-h-screen bg-orange-50 flex justify-center items-center p-4">
         <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -86,6 +103,12 @@ const PostDetail = () => {
           >
             Back to Recipes
           </Link>
+=======
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <p>{error || 'Recipe not found'}</p>
+          <Link to="/" className="underline mt-2 inline-block">Return to home</Link>
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         </div>
       </div>
     );
@@ -100,6 +123,7 @@ const PostDetail = () => {
   // Parse instructions into array
   const instructionsList = post.instructions?.split('\n').filter(item => item.trim()) || [];
 
+<<<<<<< HEAD
   // Format date
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -170,21 +194,81 @@ const PostDetail = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                   </svg>
+=======
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <Link to="/" className="flex items-center text-orange-500 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+        </svg>
+        Back to recipes
+      </Link>
+      
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="md:flex">
+          <div className="md:w-1/2">
+            {post.imageUrl ? (
+              <img 
+                src={`http://localhost:8081${post.imageUrl}`} 
+                alt={post.title} 
+                className="w-full h-[400px] object-cover"
+              />
+            ) : (
+              <div className="w-full h-[400px] bg-gray-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+            )}
+          </div>
+          
+          <div className="md:w-1/2 p-6">
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">{post.title}</h1>
+            
+            <div className="flex items-center text-gray-600 mb-6">
+              <span>By {post.user?.firstName || 'Anonymous'}</span>
+              <span className="mx-2">•</span>
+              <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+            </div>
+            
+            {post.videoUrl && (
+              <div className="mt-4 mb-6">
+                <h3 className="text-lg font-semibold mb-2">Video Recipe</h3>
+                <video controls className="w-full rounded shadow">
+                  <source src={`http://localhost:8081${post.videoUrl}`} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            )}
+            
+            {isOwner && (
+              <div className="flex space-x-3 mb-6">
+                <Link 
+                  to={`/posts/${post.id}/edit`}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded flex-1 text-center"
+                >
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                   Edit Recipe
                 </Link>
                 <button
                   onClick={handleDelete}
+<<<<<<< HEAD
                   className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-medium transition duration-200 flex items-center"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
+=======
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded flex-1"
+                >
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                   Delete Recipe
                 </button>
               </div>
             )}
           </div>
         </div>
+<<<<<<< HEAD
       </div>
       
       {/* Main Content */}
@@ -310,6 +394,28 @@ const PostDetail = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
             </button>
+=======
+        
+        <div className="p-6">
+          <div className="md:flex md:space-x-8">
+            <div className="md:w-1/3 mb-6 md:mb-0">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Ingredients</h2>
+              <ul className="list-disc pl-5 space-y-2">
+                {ingredientsList.map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="md:w-2/3">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Instructions</h2>
+              <ol className="list-decimal pl-5 space-y-4">
+                {instructionsList.map((instruction, index) => (
+                  <li key={index} className="pl-2">{instruction}</li>
+                ))}
+              </ol>
+            </div>
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
           </div>
         </div>
       </div>

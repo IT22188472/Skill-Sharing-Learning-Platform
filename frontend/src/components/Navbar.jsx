@@ -1,17 +1,25 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
+=======
+import React from 'react';
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+<<<<<<< HEAD
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+=======
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+<<<<<<< HEAD
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -138,10 +146,31 @@ const Navbar = () => {
                     setMobileMenuOpen(false);
                   }} 
                   className="block w-full text-left text-white bg-red-600 hover:bg-red-700 px-3 py-2 rounded-md text-base font-medium"
+=======
+  return (
+    <nav className="bg-gray-800 p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <Link to="/" className="text-white font-bold text-xl">FlavorFlow</Link>
+        <div className="space-x-4 flex items-center">
+          {user ? (
+            <>
+              <Link to="/create-post" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Create Post
+              </Link>
+              <Link to="/groups" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Groups
+              </Link>
+              <div className="flex items-center space-x-2">
+                <span className="text-white">Welcome, {user.firstName}</span>
+                <button 
+                  onClick={handleLogout} 
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                 >
                   Logout
                 </button>
               </div>
+<<<<<<< HEAD
             ) : (
               <div className="flex flex-col space-y-2 pb-3">
                 <Link 
@@ -162,6 +191,26 @@ const Navbar = () => {
             )}
           </div>
         )}
+=======
+            </>
+          ) : (
+            <>
+              <Link 
+                to="/login" 
+                className="text-white hover:text-gray-300 px-4 py-2"
+              >
+                Login
+              </Link>
+              <Link 
+                to="/signup" 
+                className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
       </div>
     </nav>
   );

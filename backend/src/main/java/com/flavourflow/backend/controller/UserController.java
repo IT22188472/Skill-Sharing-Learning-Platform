@@ -83,7 +83,7 @@ public class UserController {
             User user = userService.findUserByJwt(jwt);
             
             if (user == null) {
-                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(null, new org.springframework.http.HttpHeaders(), HttpStatus.UNAUTHORIZED);
             }
             
             // Don't send the password back to the client
@@ -92,7 +92,7 @@ public class UserController {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(null, new org.springframework.http.HttpHeaders(), HttpStatus.UNAUTHORIZED);
         }
     }
 

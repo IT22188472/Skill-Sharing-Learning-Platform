@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+<<<<<<< HEAD
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+=======
+import { useNavigate } from 'react-router-dom';
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 
 const GroupList = () => {
     const [groups, setGroups] = useState([]);
@@ -9,9 +13,13 @@ const GroupList = () => {
     const [newGroup, setNewGroup] = useState({ name: '', description: '' });
     const [editingGroup, setEditingGroup] = useState(null);
     const [error, setError] = useState('');
+<<<<<<< HEAD
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { user } = useAuth();
+=======
+    const navigate = useNavigate();
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 
     useEffect(() => {
         checkAuthentication();
@@ -20,16 +28,28 @@ const GroupList = () => {
 
     // Add a function to check authentication status
     const checkAuthentication = () => {
+<<<<<<< HEAD
         const token = localStorage.getItem('token');
         
         if (!token) {
             setError('Authentication token not found. Please log in again.');
             setLoading(false);
+=======
+        const token = localStorage.getItem('token'); // Changed from 'jwt' to 'token'
+        console.log('Authentication check - localStorage keys:', Object.keys(localStorage));
+        console.log('JWT token exists:', !!token);
+        
+        if (!token) {
+            setError('Authentication token not found. Please log in again.');
+            // Uncomment this line to automatically redirect to login
+            // setTimeout(() => navigate('/login'), 2000);
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         }
     };
 
     const fetchGroups = async () => {
         try {
+<<<<<<< HEAD
             const token = localStorage.getItem('token');
             if (!token) {
                 setError('Authentication token not found. Please log in again.');
@@ -40,20 +60,40 @@ const GroupList = () => {
             const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
             
             const response = await axios.get('http://localhost:8080/api/groups', {
+=======
+            const token = localStorage.getItem('token'); // Changed from 'jwt' to 'token'
+            if (!token) {
+                setError('Authentication token not found. Please log in again.');
+                return;
+            }
+
+            console.log('Using token:', token.substring(0, 20) + '...');
+            
+            const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+            
+            const response = await axios.get('http://localhost:8081/api/groups', {
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                 headers: { 
                     'Authorization': authToken
                 }
             });
             setGroups(response.data);
+<<<<<<< HEAD
             setLoading(false);
+=======
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         } catch (error) {
             console.error('Error fetching groups:', error);
             if (error.response?.status === 401) {
                 setError('Session expired. Please log in again.');
+<<<<<<< HEAD
             } else {
                 setError('Failed to load groups. Please try again later.');
             }
             setLoading(false);
+=======
+            }
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         }
     };
 
@@ -61,33 +101,78 @@ const GroupList = () => {
         e.preventDefault();
         setError('');
         try {
+<<<<<<< HEAD
             const token = localStorage.getItem('token');
+=======
+            const token = localStorage.getItem('token'); // Changed from 'jwt' to 'token'
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
             if (!token) {
                 setError('Authentication token not found. Please log in again.');
                 return;
             }
             
+<<<<<<< HEAD
             // Make sure token is properly formatted with Bearer prefix
             const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
             
             const response = await axios.post('http://localhost:8080/api/groups', newGroup, {
+=======
+            console.log('Creating group with token:', token.substring(0, 20) + '...');
+            console.log('Group data being sent:', newGroup);
+            
+            // Make sure token is properly formatted with Bearer prefix
+            const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+            
+            // Log the full request details
+            console.log('Sending POST request to:', 'http://localhost:8081/api/groups');
+            console.log('With headers:', { 
+                'Authorization': authToken.substring(0, 20) + '...',
+                'Content-Type': 'application/json'
+            });
+            
+            const response = await axios.post('http://localhost:8081/api/groups', newGroup, {
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                 headers: { 
                     'Authorization': authToken,
                     'Content-Type': 'application/json'
                 }
             });
             
+<<<<<<< HEAD
+=======
+            console.log('Group creation response status:', response.status);
+            console.log('Group creation response data:', response.data);
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
             setNewGroup({ name: '', description: '' });
             setShowModal(false);
             fetchGroups();
         } catch (error) {
             console.error('Error creating group:', error);
+<<<<<<< HEAD
             
             if (error.response) {
                 setError(`Failed to create group: ${error.response.data.message || error.message}`);
             } else if (error.request) {
                 setError('No response received from server. Please check your network connection.');
             } else {
+=======
+            console.error('Error name:', error.name);
+            console.error('Error message:', error.message);
+            
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log('Error status:', error.response.status);
+                console.log('Error data:', error.response.data);
+                console.log('Error headers:', error.response.headers);
+                setError(`Server error: ${error.response.status} - ${error.response.data.message || error.message}`);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.log('Error request:', error.request);
+                setError('No response received from server. Please check your network connection.');
+            } else {
+                // Something happened in setting up the request that triggered an Error
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                 setError(`Request error: ${error.message}`);
             }
         }
@@ -95,21 +180,32 @@ const GroupList = () => {
 
     const handleUpdateGroup = async (groupId) => {
         try {
+<<<<<<< HEAD
             const token = localStorage.getItem('token');
             const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
             
             await axios.put(`http://localhost:8080/api/groups/${groupId}`, editingGroup, {
+=======
+            const token = localStorage.getItem('token'); // Changed from 'jwt' to 'token'
+            const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+            
+            await axios.put(`http://localhost:8081/api/groups/${groupId}`, editingGroup, {
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                 headers: { Authorization: authToken }
             });
             setEditingGroup(null);
             fetchGroups();
         } catch (error) {
             console.error('Error updating group:', error);
+<<<<<<< HEAD
             setError('Failed to update group. Please try again.');
+=======
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         }
     };
 
     const handleDeleteGroup = async (groupId) => {
+<<<<<<< HEAD
         if (!window.confirm('Are you sure you want to delete this group?')) {
             return;
         }
@@ -119,11 +215,19 @@ const GroupList = () => {
             const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
             
             await axios.delete(`http://localhost:8080/api/groups/${groupId}`, {
+=======
+        try {
+            const token = localStorage.getItem('token'); // Changed from 'jwt' to 'token'
+            const authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+            
+            await axios.delete(`http://localhost:8081/api/groups/${groupId}`, {
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                 headers: { Authorization: authToken }
             });
             fetchGroups();
         } catch (error) {
             console.error('Error deleting group:', error);
+<<<<<<< HEAD
             setError('Failed to delete group. Please try again.');
         }
     };
@@ -354,11 +458,143 @@ const GroupList = () => {
                                         Create Group
                                     </button>
                                 </div>
+=======
+        }
+    };
+
+    return (
+        <div className="container mx-auto p-4">
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Groups</h2>
+                <button
+                    onClick={() => setShowModal(true)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                    Create Group
+                </button>
+            </div>
+
+            {/* Error display */}
+            {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <p>{error}</p>
+                    {error.includes('Authentication token not found') && (
+                        <button 
+                            onClick={() => navigate('/login')} 
+                            className="bg-red-500 text-white px-4 py-2 rounded mt-2 hover:bg-red-600"
+                        >
+                            Go to Login
+                        </button>
+                    )}
+                </div>
+            )}
+
+            {/* Modal */}
+            {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded-lg w-96">
+                        <h3 className="text-xl font-semibold mb-4">Create New Group</h3>
+                        <form onSubmit={handleCreateGroup}>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 mb-2">Group Name</label>
+                                <input
+                                    type="text"
+                                    value={newGroup.name}
+                                    onChange={(e) => setNewGroup({...newGroup, name: e.target.value})}
+                                    className="w-full border p-2 rounded"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 mb-2">Description</label>
+                                <textarea
+                                    value={newGroup.description}
+                                    onChange={(e) => setNewGroup({...newGroup, description: e.target.value})}
+                                    className="w-full border p-2 rounded"
+                                    rows="3"
+                                    required
+                                />
+                            </div>
+                            <div className="flex justify-end space-x-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowModal(false)}
+                                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                >
+                                    Create Group
+                                </button>
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
                             </div>
                         </form>
                     </div>
                 </div>
             )}
+<<<<<<< HEAD
+=======
+
+            {/* Groups List */}
+            <div className="space-y-4">
+                {groups.map(group => (
+                    <div key={group.id} className="border p-4 rounded">
+                        {editingGroup && editingGroup.id === group.id ? (
+                            <div className="flex gap-4">
+                                <input
+                                    type="text"
+                                    value={editingGroup.name}
+                                    onChange={(e) => setEditingGroup({...editingGroup, name: e.target.value})}
+                                    className="border p-2 rounded"
+                                />
+                                <input
+                                    type="text"
+                                    value={editingGroup.description}
+                                    onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
+                                    className="border p-2 rounded"
+                                />
+                                <button
+                                    onClick={() => handleUpdateGroup(group.id)}
+                                    className="bg-green-500 text-white px-4 py-2 rounded"
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    onClick={() => setEditingGroup(null)}
+                                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <h3 className="text-xl font-semibold">{group.name}</h3>
+                                    <p className="text-gray-600">{group.description}</p>
+                                </div>
+                                <div className="space-x-2">
+                                    <button
+                                        onClick={() => setEditingGroup(group)}
+                                        className="bg-yellow-500 text-white px-4 py-2 rounded"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => handleDeleteGroup(group.id)}
+                                        className="bg-red-500 text-white px-4 py-2 rounded"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         </div>
     );
 };

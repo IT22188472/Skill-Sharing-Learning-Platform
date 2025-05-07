@@ -1,24 +1,37 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PostCard from '../components/PostCard';
+<<<<<<< HEAD
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+=======
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+<<<<<<< HEAD
   const [categories, setCategories] = useState(['All', 'Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snacks']);
   const [activeCategory, setActiveCategory] = useState('All');
   const { user } = useAuth();
+=======
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get('http://localhost:8080/api/posts');
         setPosts(response.data);
       } catch (err) {
         setError('Failed to fetch recipes');
+=======
+        const response = await axios.get('http://localhost:8081/api/posts');
+        setPosts(response.data);
+      } catch (err) {
+        setError('Failed to fetch posts');
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
         console.error('Error fetching posts:', err);
       } finally {
         setLoading(false);
@@ -28,6 +41,7 @@ const HomePage = () => {
     fetchPosts();
   }, []);
 
+<<<<<<< HEAD
   // Filter posts by category (this is just a UI filter since we don't have actual categories in the backend yet)
   const filteredPosts = activeCategory === 'All' 
     ? posts 
@@ -166,6 +180,24 @@ const HomePage = () => {
           </div>
         </div>
       )}
+=======
+  if (loading) {
+    return <div className="text-center mt-8">Loading posts...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-8 text-red-600">{error}</div>;
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">Recent Posts</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
+      </div>
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
     </div>
   );
 };

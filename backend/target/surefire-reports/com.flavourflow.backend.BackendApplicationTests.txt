@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.flavourflow.backend.BackendApplicationTests
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.923 s -- in com.flavourflow.backend.BackendApplicationTests
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.488 s -- in com.flavourflow.backend.BackendApplicationTests
+>>>>>>> 94e146943f5b3188544a8fdfcd3c5d1551f83e0a
