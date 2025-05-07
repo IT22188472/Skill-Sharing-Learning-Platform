@@ -1,12 +1,3 @@
-# Backend
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
 # Frontend - React
 # Dependencies
 frontend/node_modules
@@ -32,7 +23,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# IDEs
+# Backend - Spring Boot
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!/src/main//target/
+!/src/test//target/
 
 ### STS ###
 .apt_generated
@@ -55,9 +51,14 @@ yarn-error.log*
 /dist/
 /nbdist/
 /.nb-gradle/
+build/
+!/src/main//build/
+!/src/test//build/
 
 ### VS Code ###
 .vscode/
+
+# IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -66,15 +67,13 @@ yarn-error.log*
 *.code-workspace
 .history/
 
-# OS generated files
-
-## macOS
+# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
 
-## Windows
+# Windows
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
@@ -82,7 +81,7 @@ ehthumbs_vista.db
 *.lnk
 [Dd]esktop.ini
 
-## Linux
+# Linux
 *~
 .fuse_hidden*
 .directory
@@ -111,6 +110,7 @@ hs_err_pid*
 replay_pid*
 
 # Maven
+target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -119,21 +119,18 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
 
 # Gradle
 .gradle
 **/build/
-!src/**/build/
+!src//build/
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
 gradle/wrapper/gradle-wrapper.properties
 
-# Spring Boot
-*.properties
-!src/main/resources/application*.properties
-!src/test/resources/application*.properties
-.spring-boot-devtools
+
 
 # Logs
 logs
@@ -141,19 +138,24 @@ logs
 log/
 .log.
 
-# npm cache
+# Optional npm cache directory
 .npm
 
-# eslint and stylelint
+# Optional eslint cache
 .eslintcache
+
+# Optional stylelint cache
 .stylelintcache
 
 # Yarn
+yarn-error.log
+.pnp/
+.pnp.js
 .yarn-integrity
 
-# dotenv
+# dotenv environment variable files
 .env*
 
-# Temp
+# Temporary files
 *.tmp
 *.temp
