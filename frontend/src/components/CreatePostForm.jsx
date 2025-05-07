@@ -1,167 +1,200 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const CreatePostForm = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+const AddCourse = () => {
+  const [newCourse, setNewCourse] = useState({
+    courseCode: '',
     title: '',
-    ingredients: '',
-    instructions: '',
-    imageFiles: [],
-    videoFile: null
+    description: '',
+    image: null,
+    duration: '',
+    level: '',
+    ageRange: '',
+    skillsImprove: '',
+    video: null
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  const handleChange = (e) => {
+  // Handle input change for the form
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setNewCourse({ ...newCourse, [name]: value });
   };
 
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({
-        ...formData,
-        imageFiles: [e.target.files[0]]  // Store as array with single item
-      });
-    }
+  // Handle file change for image/video
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setNewCourse({ ...newCourse, [name]: files[0] });
   };
 
-  const handleVideoChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({
-        ...formData,
-        videoFile: e.target.files[0]
-      });
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  // Handle form submission
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
 
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('You must be logged in to create a post');
-      }
+    // Convert skillsImprove to an array
+    const skillsImproveArray = newCourse.skillsImprove
+      ? newCourse.skillsImprove.split(',').map((skill) => skill.trim())
+      : [];
 
-      const postFormData = new FormData();
-      postFormData.append('title', formData.title);
-      postFormData.append('ingredients', formData.ingredients);
-      postFormData.append('instructions', formData.instructions);
+    const formData = new FormData();
+    formData.append('courseId', newCourse.courseCode);
+    formData.append('name', newCourse.title);
+    formData.append('description', newCourse.description);
+    formData.append('duration', newCourse.duration);
+    formData.append('level', newCourse.level);
+    formData.append('ageRange', newCourse.ageRange);
+    formData.append('video', newCourse.video); // Append video file
+    formData.append('skillsImprove', JSON.stringify(skillsImproveArray));
+    formData.append('image', newCourse.image); // Append image file
 
-      // Append image if exists
-      if (formData.imageFiles.length > 0) {
-        postFormData.append('imageFiles', formData.imageFiles[0]);
-      }
-
-      // Append video if exists
-      if (formData.videoFile) {
-        postFormData.append('videoFile', formData.videoFile);
-      }
-
-      const response = await axios.post(
-        'http://localhost:8080/api/posts',
-        postFormData,
-        {
-          headers: {
-            'Authorization': token,
-            'Content-Type': 'multipart/form-data'
-          }
+    axios
+      .post('http://localhost:8080/courses/add', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      );
-
-      // Handle successful response
-      navigate('/posts/' + response.data.id);
-    } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Error creating post');
-    } finally {
-      setLoading(false);
-    }
+      })
+      .then((response) => {
+        alert('Course added successfully!');
+        setNewCourse({
+          courseCode: '',
+          title: '',
+          description: '',
+          image: null,
+          duration: '',
+          level: '',
+          ageRange: '',
+          skillsImprove: '',
+          video: null
+        });
+      })
+      .catch((error) => console.error('Error adding course:', error));
   };
 
   return (
-    <div className="create-post-container">
-      <h2>Create New Recipe</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Title</label>
-          <input
-            type="text"
-            className="form-control"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-        </div>
+    <div className="container mx-auto p-5 max-w-4xl">
+      <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">Add a New Course</h2>
+      <div className="bg-white shadow-xl rounded-xl p-8 space-y-6">
+        <form onSubmit={handleFormSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Course Code</label>
+            <input
+              type="text"
+              placeholder="Enter course code"
+              name="courseCode"
+              value={newCourse.courseCode}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Ingredients</label>
-          <textarea
-            className="form-control"
-            name="ingredients"
-            value={formData.ingredients}
-            onChange={handleChange}
-            required
-            rows={4}
-            placeholder="Enter each ingredient on a new line"
-          />
-        </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Course Title</label>
+            <input
+              type="text"
+              placeholder="Enter course title"
+              name="title"
+              value={newCourse.title}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Instructions</label>
-          <textarea
-            className="form-control"
-            name="instructions"
-            value={formData.instructions}
-            onChange={handleChange}
-            required
-            rows={6}
-            placeholder="Enter step by step instructions"
-          />
-        </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Description</label>
+            <textarea
+              rows={3}
+              placeholder="Enter course description"
+              name="description"
+              value={newCourse.description}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Image</label>
-          <input 
-            type="file" 
-            className="form-control" 
-            accept="image/*" 
-            onChange={(e) => handleImageChange(e)}
-          />
-          <small className="text-muted">Max file size: 10MB</small>
-        </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Duration (Hours)</label>
+            <input
+              type="number"
+              placeholder="Enter course duration"
+              name="duration"
+              value={newCourse.duration}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Video (optional)</label>
-          <input 
-            type="file" 
-            className="form-control" 
-            accept="video/*" 
-            onChange={(e) => handleVideoChange(e)}
-          />
-          <small className="text-muted">Max video length: 30 seconds (approx. 15MB)</small>
-        </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Level</label>
+            <input
+              type="text"
+              placeholder="Beginner, Intermediate, Advanced"
+              name="level"
+              value={newCourse.level}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-        <button 
-          type="submit" 
-          className="btn btn-primary mt-3" 
-          disabled={loading}
-        >
-          {loading ? 'Creating...' : 'Create Post'}
-        </button>
-      </form>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Age Range</label>
+            <input
+              type="text"
+              placeholder="e.g., 10-50 years"
+              name="ageRange"
+              value={newCourse.ageRange}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Skills Improved (comma-separated)</label>
+            <input
+              type="text"
+              placeholder="e.g., Baking, Knife Skills"
+              name="skillsImprove"
+              value={newCourse.skillsImprove}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Image Upload</label>
+            <input
+              type="file"
+              name="image"
+              onChange={handleFileChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-800">Video Upload</label>
+            <input
+              type="file"
+              name="video"
+              onChange={handleFileChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          >
+            Add Course
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
 
-export default CreatePostForm;
+export default AddCourse;
