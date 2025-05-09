@@ -54,55 +54,53 @@ const UserInfoCard = ({ user }) => {
   }, [user?.id]);
 
   return (
-    <div className="fixed top-[85px] left-[30px] w-[280px] h-[670px] bg-gary-200 overflow-y-auto space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200">
+    <div className="fixed top-[85px] left-[180px] w-[250px] h-[670px] overflow-y-auto space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200">
       {/* Profile Card */}
-      <div className="bg-gray-200 rounded-2xl  p-6 text-center">
-        <p className="mt-2 text-sm text-gray-600 px-2">
-          Welcome back! <br />
-          Ready to share another delicious recipe?
-        </p>
-        <br />
+      <div className="bg-white rounded-2xl p-6 text-center shadow-md">
         <img
           src={
             user?.profileImage ||
             "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
           }
           alt="User Avatar"
-          className="w-36 h-36 rounded-full object-cover mx-auto border-4 border-gray-200 shadow-md"
+          className="w-[100px] h-[100px] rounded-full object-cover mx-auto border-4 border-white-200 shadow-md relative top-[-0px]"
         />
-        <h2 className="mt-4 text-xl font-semibold text-gray-800">
-          {user?.firstName} {user?.lastName || "Anonymous"}
+        <h2 className="mt-4 text-xl font-semibold text-gray-800 relative top-[-10px]">
+          <Link to={`/profile/${user.id}`} style={{ width: "100px" }}>
+            {user?.firstName} {user?.lastName || "Anonymous"}
+          </Link>
         </h2>
-        <p className="text-sm text-gray-500">{user?.email}</p>
+        <p className="text-sm text-gray-500 relative top-[-10px]">
+          {user?.email}
+        </p>
         <div className="flex justify-center gap-6 my-3 text-sm text-gray-700">
           <div>
-            <span className="font-bold">{user?.followers?.length || 0}</span>
+            <span className="font-bold relative top-[-10px]">
+              {user?.followers?.length || 0}
+            </span>
             <br />
-            <span className="text-xs text-gray-400">Followers</span>
+            <span className="text-xs text-gray-400 relative top-[-10px]">
+              Followers
+            </span>
           </div>
           <div>
-            <span className="font-bold">{user?.following?.length || 0}</span>
+            <span className="font-bold relative top-[-10px]">
+              {user?.following?.length || 0}
+            </span>
             <br />
-            <span className="text-xs text-gray-400">Following</span>
+            <span className="text-xs text-gray-400 relative top-[-10px]">
+              Following
+            </span>
           </div>
         </div>
-        <button>
-          <Link
-            to={`/profile/${user.id}`}
-            className="btn btn-primary rounded-2xl"
-            style={{ width: "100px" }}
-          >
-            Profile
-          </Link>
-        </button>
-
-        <br />
-        <br />
         <hr
           style={{ height: "3px", backgroundColor: "#333", border: "none" }}
         />
         <br />
-        <b>Achivements</b>
+        <h1 className="text-xl font-semibold text-dark mb-3">
+          <b>Achivements</b>
+          <br />
+        </h1>
         <p />
         <div className="flex justify-center gap-4">
           {completeCourse.length > 0 ? (
@@ -111,7 +109,7 @@ const UserInfoCard = ({ user }) => {
                 <img
                   src="https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Biginner_yaebnv.png"
                   alt="Beginner Badge"
-                  className="w-[50px] h-[50px]"
+                  className="w-[40px] h-[40px]"
                 />
                 <span>{badgeCount.Beginner}</span>
               </div>
@@ -119,7 +117,7 @@ const UserInfoCard = ({ user }) => {
                 <img
                   src="https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808778/Intermediate_o3ba9y.png"
                   alt="Intermediate Badge"
-                  className="w-[50px] h-[50px]"
+                  className="w-[40px] h-[40px]"
                 />
                 <span>{badgeCount.Intermediate}</span>
               </div>
@@ -127,13 +125,13 @@ const UserInfoCard = ({ user }) => {
                 <img
                   src="https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Advanced_x2xmg7.png"
                   alt="Advanced Badge"
-                  className="w-[50px] h-[50px]"
+                  className="w-[40px] h-[40px]"
                 />
                 <span>{badgeCount.Advanced}</span>
               </div>
             </>
           ) : (
-            <div className="w-full h-32 bg-gray-200 rounded-lg flex items-center justify-center">
+            <div className="w-full h-32 bg-white-200 rounded-lg flex items-center justify-center">
               <span className="text-dark text-2xl font-semibold">
                 No completed courses found
               </span>
@@ -145,8 +143,8 @@ const UserInfoCard = ({ user }) => {
           style={{ height: "3px", backgroundColor: "#333", border: "none" }}
         />
         <br />
-        <h3 className="text-lg font-semibold text-blue-700 mb-3">
-          Enrolled Courses ({enrollments.length})
+        <h3 className="text-xl font-semibold text-dark mb-3">
+          <b>Enrolled Courses ({enrollments.length})</b>
         </h3>
         <div className="grid grid-cols-4 gap-3 justify-center">
           {enrollments.length > 0 ? (

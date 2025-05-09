@@ -4,6 +4,8 @@ import PostCard from "../components/PostCard";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import UserInfoCard from "../components/UserInfoCard";
+import Topbar from "../components/Topbar";
+import AllGroups from "../components/AllGroups";
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
@@ -87,42 +89,24 @@ const HomePage = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
+        color: "gray",
       }}
     >
-      <div
-        className="relative text-black bg-gray-200 rounded-md px-4 bg-cover bg-center"
-        style={{
-          width: "720px",
-          left: "320px",
-          top: "85px",
-          height: "50px",
-          borderRadius: "50px",
-        }}
-      >
-        <img
-          src={
-            user?.profileImage ||
-            "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
-          }
-          alt="User Avatar"
-          className="w-[40px] h-[40px] rounded-full object-cover mx-auto border-4 border-gray-200 shadow-md"
-          style={{ position: "relative", left: "-330px", top: "5px" }}
-        />
-      </div>
+      <Topbar/>
       {/* Hero Section */}
       <div
         className="relative text-white py-40 px-4 bg-cover bg-center rounded-3xl"
         style={{
           backgroundImage: "url('/Landing5.jpg')",
-          width: "720px",
-          left: "320px",
+          width: "660px",
+          left: "440px",
           top: "95px",
           height: "300px",
         }}
       >
         <div
           className="bg-black bg-opacity-50 p-8 rounded-lg max-w-4xl mx-auto text-center top-[-10px]"
-          style={{ position: "relative", left: "-0px", top: "-50px" }}
+          style={{ position: "relative", left: "-0px", top: "-75px" }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Discover & Share Amazing Recipes
@@ -172,7 +156,7 @@ const HomePage = () => {
       {/* Categories Filter */}
       <div
         className="flex flex-wrap justify-center mt-10 mb-6 px-4 gap-2"
-        style={{ position: "absolute", left: "305px", top: "430px" }}
+        style={{ position: "absolute", left: "425px", top: "430px" }}
       >
         {categories.map((category) => (
           <button
@@ -194,12 +178,13 @@ const HomePage = () => {
           {user && (
             <div className="lg:w-1/4 w-full">
               <UserInfoCard user={user} />
+              <AllGroups user={user}/>
             </div>
           )}
 
           <div
             className="flex-1"
-            style={{ position: "absolute", left: "330px", top: "500px" }}
+            style={{ position: "absolute", left: "450px", top: "500px" }}
           >
             <h2 className="text-3xl font-bold mb-8 text-gray-800 flex items-center">
               {activeCategory === "All"
@@ -217,7 +202,8 @@ const HomePage = () => {
             ) : (
               <div className="flex flex-col items-center gap-6">
                 {filteredPosts.map((post) => (
-                  <div key={post.id} style={{ width: "700px" }}>
+                  <div key={post.id} style={{ width: "650px", height: "400px"
+                   }}>
                     <PostCard post={post} />
                   </div>
                 ))}
