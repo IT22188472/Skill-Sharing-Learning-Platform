@@ -97,7 +97,7 @@ const UserInfoCard = ({ user }) => {
           style={{ height: "3px", backgroundColor: "#333", border: "none" }}
         />
         <br />
-        <h1 className="text-xl font-semibold text-dark mb-3">
+        <h1 className="text-lg font-semi text-dark-500 mb-3">
           <b>Achivements</b>
           <br />
         </h1>
@@ -143,7 +143,7 @@ const UserInfoCard = ({ user }) => {
           style={{ height: "3px", backgroundColor: "#333", border: "none" }}
         />
         <br />
-        <h3 className="text-xl font-semibold text-dark mb-3">
+        <h3 className="text-lg font-semi text-dark-500 mb-3">
           <b>Enrolled Courses ({enrollments.length})</b>
         </h3>
         <div className="grid grid-cols-4 gap-3 justify-center">
@@ -173,10 +173,10 @@ const UserInfoCard = ({ user }) => {
               </span>
             </div>
           )}
-        </div>
+        </div><br/>
         <HashLink
           to={`/profile/${user.id}/#enrolled-courses`}
-          className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded-xl text-sm font-medium hover:bg-blue-700 transition"
+          className="text-blue-600 hover:underline text-sm font-semibold"
         >
           View All Courses
         </HashLink>
