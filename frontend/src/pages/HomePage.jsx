@@ -7,6 +7,7 @@ import UserInfoCard from "../components/UserInfoCard";
 import Topbar from "../components/Topbar";
 import AllGroups from "../components/AllGroups";
 
+
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -164,7 +165,7 @@ const HomePage = () => {
             onClick={() => setActiveCategory(category)}
             className={`px-4 py-2 rounded-full border text-sm font-medium transition duration-200 ${
               activeCategory === category
-                ? "bg-gray-900 text-white"
+                ? "bg-orange-400 text-white"
                 : "bg-white text-gray-700 border-gray-300"
             }`}
           >
