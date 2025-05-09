@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Add useEffect import
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -6,18 +6,29 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-yellow-100 shadow-md" style={{height:"70px"}}>
+    <nav
+      className="fixed top-0 left-0 w-full z-50 bg-yellow-50 shadow-md"
+      style={{ height: "70px" }}
+    >
       <div
         style={{ width: "100%", height: "10px", backgroundColor: "orange" }}
       ></div>
@@ -35,7 +46,7 @@ const Navbar = () => {
                 height: "50px",
                 position: "absolute",
                 top: "15px",
-                left: "40px",
+                left: "220px",
               }}
             />
           </Link>
@@ -47,50 +58,43 @@ const Navbar = () => {
                 <Link
                   to="/"
                   className="text-black font-bold text-xl hover:text-orange-100 font-poppins"
-                  style={{ position: "relative", right: "400px", top: "-10px" }}
+                  style={{ position: "relative", right: "420px", top: "-5px" }}
                 >
                   Recipes
                 </Link>
                 <Link
                   to={`/courses/${user.id}`}
                   className="text-black font-bold text-xl hover:text-orange-100 font-poppins"
-                  style={{ position: "relative", right: "340px", top: "-10px" }}
+                  style={{ position: "relative", right: "380px", top: "-5px" }}
                 >
                   Courses
                 </Link>
                 <Link
                   to="/groups"
                   className="text-black font-bold text-xl hover:text-orange-100 font-poppins"
-                  style={{ position: "relative", right: "280px", top: "-10px" }}
+                  style={{ position: "relative", right: "340px", top: "-5px" }}
                 >
                   Groups
                 </Link>
                 <Link
                   to="/my-recipes"
                   className="text-black font-bold text-xl hover:text-orange-100 font-poppins"
-                  style={{ position: "relative", right: "220px", top: "-10px" }}
+                  style={{ position: "relative", right: "300px", top: "-5px" }}
                 >
                   My Recipes
                 </Link>
                 <Link
                   to={`/profile/${user.id}`}
                   className="text-black font-bold text-xl hover:text-orange-100 font-poppins"
-                  style={{ position: "relative", right: "160px", top: "-10px" }}
+                  style={{ position: "relative", right: "260px", top: "-5px" }}
                 >
                   Profile
-                </Link>
-                <Link
-                  to={`/profile/${user.id}`}
-                  className="text-black font-bold text-xl hover:text-orange-100 font-poppins"
-                  style={{ position: "relative", right: "20px", top: "-10px" }}
-                >
-                  Hi, {user.firstName} {user.lastName}
                 </Link>
 
                 <button
                   onClick={handleLogout}
                   className="text-red-500 hover:text-red-600 font-poppins font-bold text-xl"
-                  style={{ position: "relative", right: "-40px", top: "-10px" }}
+                  style={{ position: "relative", right: "185px", top: "-5px" }}
                 >
                   Logout
                 </button>
@@ -100,12 +104,23 @@ const Navbar = () => {
                   className="rounded-full object-cover"
                   style={{
                     position: "relative",
-                    right: "80px",
+                    right: "300px",
                     width: "35px",
                     height: "35px",
-                    top: "-7px",
+                    top: "-3px",
                   }}
                 />
+                <div style={{
+                    position: "relative",
+                    right: "200px",
+                    width: "120px",
+                    height: "35px",
+                    top: "2px",
+                  }}>
+                  <span className="font-poppins font-bold text-xl">
+                    {currentDateTime.toLocaleTimeString()}
+                  </span>
+                </div>
               </>
             ) : (
               <>
