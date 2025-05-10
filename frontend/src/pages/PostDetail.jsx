@@ -269,9 +269,9 @@ const PostDetail = () => {
                   <video 
                     controls 
                     className="w-full h-full object-contain"
-                    poster={post.imageUrl ? `http://localhost:8081${post.imageUrl}` : undefined}
+                    poster={post.imageUrl ? `http://localhost:8080${post.imageUrl}` : undefined}
                   >
-                    <source src={`http://localhost:8081${post.videoUrl}`} type="video/mp4" />
+                    <source src={`http://localhost:8080${post.videoUrl}`} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 </div>

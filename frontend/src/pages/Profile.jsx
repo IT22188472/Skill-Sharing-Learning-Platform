@@ -78,7 +78,10 @@ const Profile = () => {
               style={{ position: "absolute", top: "50px", left: "40px" }}
             >
               <img
-                src="https://play-lh.googleusercontent.com/vco-LT_M58j9DIAxlS1Cv9uvzbRhB6cYIZJS7ocZksWRqoEPat_QXb6fVFi77lciJZQ=w526-h296-rw"
+                src={
+                  user?.profileImage ||
+                  "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
+                }
                 alt="Profile"
                 className="w-80 h-80 rounded-full border-4 border-white shadow-lg"
               />

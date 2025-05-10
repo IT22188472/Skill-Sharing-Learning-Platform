@@ -5,6 +5,7 @@ import com.flavourflow.backend.service.userservices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,5 +19,10 @@ public class userControll {
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable String id) {
         return userService.getUserById(id);
+    }
+
+    @GetMapping("/all")
+    public List<User> getAllusers() {
+        return userService.getAllusers();
     }
 }

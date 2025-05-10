@@ -3,10 +3,10 @@ import axios from "axios";
 import PostCard from "../components/PostCard";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import UserInfoCard from "../components/UserInfoCard";
-import Topbar from "../components/Topbar";
-import AllGroups from "../components/AllGroups";
-
+import UserInfoCard from "../components/Home compenents/UserInfoCard";
+import Topbar from "../components/Home compenents/Topbar";
+import AllGroups from "../components/Home compenents/AllGroups";
+import Followers from "../components/Home compenents/Followers";
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
@@ -100,7 +100,7 @@ const HomePage = () => {
         style={{
           backgroundImage: "url('/Landing5.jpg')",
           width: "660px",
-          left: "440px",
+          left: "400px",
           top: "95px",
           height: "300px",
         }}
@@ -157,7 +157,7 @@ const HomePage = () => {
       {/* Categories Filter */}
       <div
         className="flex flex-wrap justify-center mt-10 mb-6 px-4 gap-2"
-        style={{ position: "absolute", left: "425px", top: "430px" }}
+        style={{ position: "absolute", left: "385px", top: "430px" }}
       >
         {categories.map((category) => (
           <button
@@ -165,7 +165,7 @@ const HomePage = () => {
             onClick={() => setActiveCategory(category)}
             className={`px-4 py-2 rounded-full border text-sm font-medium transition duration-200 ${
               activeCategory === category
-                ? "bg-orange-400 text-white"
+                ? "bg-blue-400 text-white"
                 : "bg-white text-gray-700 border-gray-300"
             }`}
           >
@@ -180,12 +180,13 @@ const HomePage = () => {
             <div className="lg:w-1/4 w-full">
               <UserInfoCard user={user} />
               <AllGroups user={user}/>
+              <Followers />
             </div>
           )}
 
           <div
             className="flex-1"
-            style={{ position: "absolute", left: "450px", top: "500px" }}
+            style={{ position: "absolute", left: "410px", top: "500px" }}
           >
             <h2 className="text-3xl font-bold mb-8 text-gray-800 flex items-center">
               {activeCategory === "All"
