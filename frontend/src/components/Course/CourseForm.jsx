@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Card, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import { HashLink } from 'react-router-hash-link';
+import { HashLink } from "react-router-hash-link";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import cooking1 from "../../images/cooking4.jpg";
@@ -97,14 +97,17 @@ const CourseForm = () => {
                 width: "55%",
                 minHeight: "380px",
                 position: "sticky",
-                top: "20px",
+                top: "100px",
                 left: "160px",
               }}
             >
               <h2 className="fw-bold mb-2 text-2xl text-center">Profile</h2>
               <div className="text-center">
                 <img
-                  src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
+                  src={
+                    users?.profileImage ||
+                    "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
+                  }
                   alt="User"
                   className="rounded-circle shadow-sm"
                   style={{
@@ -135,7 +138,10 @@ const CourseForm = () => {
                 <Link to="/progress" className="btn btn-secondary">
                   Progress
                 </Link>
-                <HashLink to={`/profile/${users.id}/#Achievements`} className="btn btn-success">
+                <HashLink
+                  to={`/profile/${users.id}/#Achievements`}
+                  className="btn btn-success"
+                >
                   Achievements
                 </HashLink>
               </div>
@@ -145,7 +151,7 @@ const CourseForm = () => {
           {/* Right Column (Courses) */}
           <div
             className="w-full md:w-[60%]  "
-            style={{ position: "relative", left: "-60px" }}
+            style={{ position: "relative", left: "-60px" , top: "0px" }}
             ref={exploreCoursesRef}
           >
             <h2 className="text-3xl font-bold text-center mb-6">

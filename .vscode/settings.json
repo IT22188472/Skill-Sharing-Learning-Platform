@@ -1,3 +1,7 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.project.sourcePaths": [
+        "frontend/src/context"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

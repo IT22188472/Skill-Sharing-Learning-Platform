@@ -25,7 +25,7 @@ import com.flavourflow.backend.service.CustomUserDetailsService;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8081"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 public class AuthController {
 
     // @Autowired
