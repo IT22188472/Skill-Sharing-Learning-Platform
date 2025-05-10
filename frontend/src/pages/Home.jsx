@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Home compenents/Navbar';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);

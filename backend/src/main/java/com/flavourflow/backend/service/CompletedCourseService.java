@@ -44,11 +44,9 @@ public class CompletedCourseService {
     }
 
     public List<CompletedCourse> getCompletedCoursesByUserId(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        
-        return completedCourseRepository.findByUser(user);
-    }
+    return completedCourseRepository.findByUserId(userId);
+}
+
     
     
 }

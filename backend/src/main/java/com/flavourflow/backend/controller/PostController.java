@@ -36,9 +36,6 @@ public class PostController {
     @Autowired
     private FileStorageService fileStorageService;
 
-    @Autowired
-    private PostRepository postRepository;
-
     @PostMapping("/api/posts")
     public ResponseEntity<?> createPost(@RequestHeader("Authorization")String jwt, @ModelAttribute Post post) {
         try {

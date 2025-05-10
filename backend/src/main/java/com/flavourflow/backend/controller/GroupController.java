@@ -40,9 +40,6 @@ public class GroupController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private FileStorageService fileStorageService;
-
     // Handle JSON requests
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createGroupJson(@RequestBody GroupRequest groupRequest, 

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Home compenents/Navbar";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -40,6 +40,7 @@ function App() {
             <Route path="/ContentDashboard/:id" element={<ContentDashboard />} />
             <Route path ="/profile/:userid" element={<Profile />} />
             <Route path ="/enrollments/:courseId/:userId" element={<Enrollments />} />
+            
           </Routes>
         </div>
       </Router>
