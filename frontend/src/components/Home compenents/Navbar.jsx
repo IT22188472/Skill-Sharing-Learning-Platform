@@ -44,38 +44,45 @@ const Navbar = () => {
               <>
                 <Link
                   to="/"
-                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[420px] -top-[15px]"
+                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[440px] -top-[15px]"
                 >
                   Recipes
                 </Link>
                 <Link
                   to={`/courses/${user.id}`}
-                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[380px] -top-[15px]"
+                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[400px] -top-[15px]"
                 >
                   Courses
                 </Link>
                 <Link
                   to="/groups"
-                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[340px] -top-[15px]"
+                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[360px] -top-[15px]"
                 >
                   Groups
                 </Link>
                 <Link
                   to="/my-recipes"
-                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[300px] -top-[15px]"
+                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[320px] -top-[15px]"
                 >
                   My Recipes
                 </Link>
                 <Link
                   to={`/profile/${user.id}`}
-                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[260px] -top-[15px]"
+                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[280px] -top-[15px]"
                 >
                   Profile
                 </Link>
 
+                <Link
+                  to={`/profile/${user.id}`}
+                  className="text-black font-bold text-xl hover:text-orange-400 font-poppins relative right-[177px] -top-[20px]"
+                >
+                  {user?.firstName} {user?.lastName || "Anonymous"}
+                </Link>
+
                 <button
                   onClick={handleLogout}
-                  className="text-red-500 hover:text-red-600 font-bold text-xl font-poppins relative right-[155px] -top-[15px]"
+                  className="text-red-500 hover:text-red-600 font-bold text-sm font-poppins relative right-[307px] -top-[5px]"
                 >
                   Logout
                 </button>
@@ -86,14 +93,8 @@ const Navbar = () => {
                     "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
                   }
                   alt="User"
-                  className="rounded-full object-cover w-[40px] h-[40px] relative right-[280px] -top-[13px]"
+                  className="rounded-full object-cover w-[40px] h-[40px] relative right-[410px] -top-[12px]"
                 />
-
-                <div className="relative right-[200px] top-[-15px] w-[120px] h-[35px] flex items-center justify-center">
-                  <span className="font-poppins font-bold text-xl">
-                    {currentDateTime.toLocaleTimeString()}
-                  </span>
-                </div>
               </>
             ) : (
               <>

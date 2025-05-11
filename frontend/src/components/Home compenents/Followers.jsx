@@ -50,18 +50,18 @@ const Followers = () => {
 
   return (
     <div className="fixed top-[430px] left-[1080px] w-[300px] overflow-y-auto space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200">
-      <div className="bg-white shadow-xl rounded-2xl p-6 border border-gray-100">
+      <div className="bg-white shadow-xl rounded-2xl p-6 border border-gray-100 ">
         <h1 className="text-xl font-semibold text-gray-00 mb-4 text-left">
           &nbsp;&nbsp;Following&nbsp;({user?.following?.length || 0})
         </h1>
-        <div className="space-y-4 max-h-[180px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300">
+        <div className="space-y-4 max-h-[185px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300">
           {users.length > 0 ? (
             users
               .filter((u) => u.id !== currentUser?.id)
               .map((u, index) => (
                 <div
                   key={index}
-                  className="flex justify-between items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition min-h-[50px]"
+                  className="flex justify-between items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition h-[50px]"
                 >
                   <div className="flex items-center space-x-3">
                     <img
@@ -88,7 +88,7 @@ const Followers = () => {
         <div className="mt-4 text-center">
           <Link to="/">
             <button className="text-blue-600 hover:underline text-sm font-semibold">
-              See All Users
+              See All
             </button>
           </Link>
         </div>

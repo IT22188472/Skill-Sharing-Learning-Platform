@@ -54,7 +54,7 @@ const UserInfoCard = ({ user }) => {
   }, [user?.id]);
 
   return (
-    <div className="fixed top-[85px] left-[140px] w-[250px] h-[430px] overflow-y-auto space-y-4 z-50 pr-2 rounded-2xl ">
+    <div className="fixed top-[85px] left-[140px] w-[260px] h-[430px] overflow-y-auto pr-2 rounded-2xl ">
       {/* Profile Card */}
       <div className="bg-white rounded-2xl p-6 text-center shadow-md">
         <img
@@ -115,18 +115,18 @@ const UserInfoCard = ({ user }) => {
               </div>
             </>
           ) : (
-            <div className="w-full h-8 bg-white-200 rounded-lg flex items-center justify-center">
-              <span className="text-dark text-2xl font-semibold">
+            <div className="col-span-3 bg-gray-200 rounded-lg flex items-center justify-center relative top-[-0px] w-[200px] left-[0px]">
+              <span className="text-dark text-sm font-semibold">
                 No completed courses found
               </span>
             </div>
           )}
         </div>
         <br />
-        <h3 className="text-lg font-semi text-dark-500 text-left relative top-[-75px]">
+        <h3 className="text-lg font-semi text-dark-500 text-left relative top-[-70px]">
           <b>&nbsp;&nbsp;&nbsp;Enrolled Courses ({enrollments.length})</b>
         </h3>
-        <div className="grid grid-cols-4 gap-3 justify-center relative top-[-70px]">
+        <div className="grid grid-cols-4 gap-3 justify-center relative top-[-65px]">
           {enrollments.length > 0 ? (
             enrollments.map((enrollment, index) => (
               <div
@@ -147,7 +147,7 @@ const UserInfoCard = ({ user }) => {
               </div>
             ))
           ) : (
-            <div className="col-span-3 bg-gray-200 rounded-lg flex items-center justify-center">
+            <div className="col-span-3 bg-gray-200 rounded-lg flex items-center justify-center relative top-[12px] left-[30px]">
               <span className="text-dark text-sm font-semibold">
                 No enrollments found
               </span>
