@@ -21,7 +21,6 @@ import com.flavourflow.backend.response.ApiResponse;
 import com.flavourflow.backend.service.PostService;
 import com.flavourflow.backend.service.UserService;
 import com.flavourflow.backend.service.FileStorageService;
-import com.flavourflow.backend.repository.PostRepository;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
