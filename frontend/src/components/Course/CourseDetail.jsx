@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import Nav2 from "../../pages/nav_1";
 import axios from "axios";
 import Swal from "sweetalert2";

@@ -24,7 +24,7 @@ import com.flavourflow.backend.service.FileStorageService;
 import com.flavourflow.backend.repository.PostRepository;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3001", "http://localhost:8080"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 public class PostController {
 
     @Autowired
@@ -147,14 +147,16 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
-    @PutMapping("/api/posts/{postId}/save")
+
+    @PutMapping("/api/posts/save/{postId}")
     public ResponseEntity<Post> savedPostHandler(@PathVariable String postId, @RequestHeader("Authorization") String jwt) throws Exception {
         User reqUser = userService.findUserByJwt(jwt);
         Post post = postService.savedPost(postId, reqUser.getId());
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
-    @PutMapping("/api/posts/{postId}/like")
+
+    @PutMapping("/api/posts/like/{postId}")
     public ResponseEntity<Post> likePostHandler(@PathVariable String postId, @RequestHeader("Authorization") String jwt) throws Exception {
         User reqUser = userService.findUserByJwt(jwt);
         Post post = postService.likePost(postId, reqUser.getId());

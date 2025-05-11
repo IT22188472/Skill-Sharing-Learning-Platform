@@ -28,7 +28,8 @@ import com.flavourflow.backend.service.GroupService;
 import com.flavourflow.backend.service.UserService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3001", "http://localhost:8080"})
+
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 @RequestMapping("/api/groups")
 public class GroupController {
     

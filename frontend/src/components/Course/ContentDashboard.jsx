@@ -4,6 +4,7 @@ import axios from "axios";
 import { Spinner } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import Swal from "sweetalert2";
 import Nav1 from "../../pages/nav_1";
 
