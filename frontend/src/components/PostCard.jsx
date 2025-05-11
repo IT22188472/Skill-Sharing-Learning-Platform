@@ -98,11 +98,8 @@ const PostCard = ({ post, onPostDeleted }) => {
                   className="w-full h-full object-cover" 
                   controls
                 >
-<<<<<<< HEAD
-                  <source src={`http://localhost:8081${post.videoUrl}`} type="video/mp4" />
-=======
+
                   <source src={`http://localhost:8080${post.videoUrl}`} type="video/mp4" />
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
                   Your browser does not support the video tag.
                 </video>
                 <button 
@@ -119,11 +116,8 @@ const PostCard = ({ post, onPostDeleted }) => {
               // Show image when showVideo is false
               <div className="relative w-full h-full">
                 <img
-<<<<<<< HEAD
-                  src={`http://localhost:8081${post.imageUrl}`}
-=======
                   src={`http://localhost:8080${post.imageUrl}`}
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
+
                   alt={post.title}
                   className="w-full h-full object-cover"
                   onLoad={() => setIsImageLoaded(true)}
@@ -150,11 +144,7 @@ const PostCard = ({ post, onPostDeleted }) => {
         {/* Show only image if no video */}
         {post.imageUrl && !post.videoUrl && (
           <img
-<<<<<<< HEAD
-            src={`http://localhost:8081${post.imageUrl}`}
-=======
             src={`http://localhost:8080${post.imageUrl}`}
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
             alt={post.title}
             className="w-full h-full object-cover"
             onLoad={() => setIsImageLoaded(true)}
@@ -172,11 +162,7 @@ const PostCard = ({ post, onPostDeleted }) => {
             className="w-full h-full object-cover" 
             controls
           >
-<<<<<<< HEAD
-            <source src={`http://localhost:8081${post.videoUrl}`} type="video/mp4" />
-=======
             <source src={`http://localhost:8080${post.videoUrl}`} type="video/mp4" />
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
             Your browser does not support the video tag.
           </video>
         )}

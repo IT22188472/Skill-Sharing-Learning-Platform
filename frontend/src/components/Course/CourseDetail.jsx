@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
-<<<<<<< HEAD
 import "bootstrap/dist/css/bootstrap.min.css";
-=======
-//import "bootstrap/dist/css/bootstrap.min.css";
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
+
 import Nav2 from "../../pages/nav_1";
 import axios from "axios";
 import Swal from "sweetalert2";

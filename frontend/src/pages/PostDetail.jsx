@@ -269,15 +269,11 @@ const PostDetail = () => {
                   <video 
                     controls 
                     className="w-full h-full object-contain"
-<<<<<<< HEAD
-                    poster={post.imageUrl ? `http://localhost:8081${post.imageUrl}` : undefined}
-                  >
-                    <source src={`http://localhost:8081${post.videoUrl}`} type="video/mp4" />
-=======
+
                     poster={post.imageUrl ? `http://localhost:8080${post.imageUrl}` : undefined}
                   >
                     <source src={`http://localhost:8080${post.videoUrl}`} type="video/mp4" />
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
+
                     Your browser does not support the video tag.
                   </video>
                 </div>

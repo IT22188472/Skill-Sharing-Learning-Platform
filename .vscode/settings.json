@@ -1,8 +1,9 @@
 {
-<<<<<<< HEAD
-    "java.compile.nullAnalysis.mode": "automatic"
-=======
     "java.compile.nullAnalysis.mode": "automatic",
-    "js/ts.implicitProjectConfig.checkJs": false
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
+    "java.project.sourcePaths": [
+        "frontend/src/context"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "js/ts.implicitProjectConfig.checkJs": false,
+    "javascript.suggest.names": true
 }

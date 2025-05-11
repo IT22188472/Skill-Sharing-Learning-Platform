@@ -3,11 +3,7 @@ import { Card, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 import axios from "axios";
-<<<<<<< HEAD
 import "bootstrap/dist/css/bootstrap.min.css";
-=======
-//import "bootstrap/dist/css/bootstrap.min.css";
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
 import cooking1 from "../../images/cooking4.jpg";
 import Nav from "../../pages/nav";
 const userId = localStorage.getItem("userId");
