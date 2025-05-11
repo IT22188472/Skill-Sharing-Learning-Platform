@@ -3,7 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
+<<<<<<< HEAD
 import "bootstrap/dist/css/bootstrap.min.css";
+=======
+//import "bootstrap/dist/css/bootstrap.min.css";
+>>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
 import Swal from "sweetalert2";
 import Nav1 from "../../pages/nav_1";
 

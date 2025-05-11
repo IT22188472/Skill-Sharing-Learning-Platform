@@ -258,7 +258,11 @@ const EditPost = () => {
                       ) : currentMedia.imageUrl ? (
                         <div className="mb-3">
                           <img 
+<<<<<<< HEAD
                             src={`http://localhost:8081${currentMedia.imageUrl}`} 
+=======
+                            src={`http://localhost:8080${currentMedia.imageUrl}`} 
+>>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
                             alt="Current recipe" 
                             className="mx-auto h-32 w-auto object-cover rounded"
                           />
@@ -328,7 +332,11 @@ const EditPost = () => {
                       ) : currentMedia.videoUrl ? (
                         <div className="mb-3">
                           <video 
+<<<<<<< HEAD
                             src={`http://localhost:8081${currentMedia.videoUrl}`} 
+=======
+                            src={`http://localhost:8080${currentMedia.videoUrl}`} 
+>>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
                             controls 
                             className="mx-auto h-32 w-auto object-cover rounded"
                           />

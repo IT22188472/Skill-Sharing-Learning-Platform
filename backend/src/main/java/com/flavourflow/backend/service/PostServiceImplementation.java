@@ -89,6 +89,7 @@ public class PostServiceImplementation implements PostService {
 
     @Override
     public Post savedPost(String postId, String userId) throws Exception {
+<<<<<<< HEAD
         Post post=findPostById(postId);
         User user=userService.findUserById(userId);
 
@@ -103,10 +104,32 @@ public class PostServiceImplementation implements PostService {
         userRepository.save(user);
 
         return post;
+=======
+
+        Post post = findPostById(postId);
+        User user = userService.findUserById(userId);
+    
+        // Check if post is already saved by the user
+        boolean isSaved = user.getSavedPost().stream()
+                .anyMatch(savedPost -> savedPost.getId().equals(postId));
+    
+        if (isSaved) {
+            // Remove the post from saved posts
+            user.getSavedPost().removeIf(savedPost -> savedPost.getId().equals(postId));
+        } else {
+            // Add the post to saved posts
+            user.getSavedPost().add(post);
+        }
+    
+        userRepository.save(user);
+        return post;
+
+>>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
     }
 
     @Override
     public Post likePost(String postId, String userId) throws Exception {
+<<<<<<< HEAD
         Post post=findPostById(postId);
         User user=userService.findUserById(userId);
 
@@ -119,6 +142,24 @@ public class PostServiceImplementation implements PostService {
 
         
         return postRepository.save(post);
+=======
+        Post post = findPostById(postId);
+        User user = userService.findUserById(userId);
+  
+        // Check if user already liked the post
+        boolean isLiked = post.getLiked().stream()
+              .anyMatch(likedUser -> likedUser.getId().equals(userId));
+  
+        if (isLiked) {
+          // Remove like if already liked
+          post.getLiked().removeIf(likedUser -> likedUser.getId().equals(userId));
+           } else {
+          // Add like if not already liked
+          post.getLiked().add(user);
+          }
+        
+          return postRepository.save(post);
+>>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
     }
 
     @Override

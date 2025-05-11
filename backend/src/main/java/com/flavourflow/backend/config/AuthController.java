@@ -25,7 +25,11 @@ import com.flavourflow.backend.service.CustomUserDetailsService;
 
 @RestController
 @RequestMapping("/auth")
+<<<<<<< HEAD
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8081"})
+=======
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
+>>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
 public class AuthController {
 
     // @Autowired
