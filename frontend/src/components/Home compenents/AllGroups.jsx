@@ -32,7 +32,7 @@ const AllGroups = ({ user }) => {
   }
 
   return (
-    <div className="user-info-card fixed top-[85px] left-[1227px] transform -translate-x-1/2 w-[300px] z-50 pr-2 rounded-2xl scrollbar-thin scrollbar bg-white p-6 text-left shadow-md">
+    <div className="user-info-card fixed top-[85px] left-[1227px] transform -translate-x-1/2 w-[300px] z-50 pr-2 scrollbar-thin scrollbar bg-white p-6 text-left shadow-md">
       <h4 className="text-lg font-semibold mb-4">&nbsp;All Groups ({groups?.length})</h4>
   
       <button className="bg-blue-500 text-white px-4 py-2 mb-4 hover:bg-blue-600 transition duration-300 absolute top-[15px] right-8 rounded-3xl">
