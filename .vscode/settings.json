@@ -3,7 +3,5 @@
     "java.project.sourcePaths": [
         "frontend/src/context"
     ],
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "js/ts.implicitProjectConfig.checkJs": false,
-    "javascript.suggest.names": true
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

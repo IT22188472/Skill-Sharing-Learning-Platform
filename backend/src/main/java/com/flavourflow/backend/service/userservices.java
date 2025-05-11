@@ -4,6 +4,8 @@ import com.flavourflow.backend.models.User;
 import com.flavourflow.backend.repository.userrepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,4 +18,10 @@ public class userservices {
     public Optional<User> getUserById(String id) {
         return userRepository.findById(id);
     }
+
+    // Retrieve all courses
+    public List<User> getAllusers() {
+        return userRepository.findAll();
+    }
+
 }
