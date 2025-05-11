@@ -49,8 +49,8 @@ const Followers = () => {
     return <div className="text-center mt-10 text-red-600">Error: {error}</div>;
 
   return (
-    <div className="fixed top-[430px] left-[1080px] w-[300px] overflow-y-auto space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200">
-      <div className="bg-white shadow-xl rounded-2xl p-6 border border-gray-100 ">
+    <div className="fixed top-[425px] left-[1077px] w-[307px] overflow-y-auto space-y-4 z-50 pr-2 scrollbar-thin scrollbar-thumb-gray-200">
+      <div className="bg-white shadow-xl p-6 border border-gray-100 ">
         <h1 className="text-xl font-semibold text-gray-00 mb-4 text-left">
           &nbsp;&nbsp;Following&nbsp;({user?.following?.length || 0})
         </h1>

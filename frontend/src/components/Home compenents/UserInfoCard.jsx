@@ -54,9 +54,9 @@ const UserInfoCard = ({ user }) => {
   }, [user?.id]);
 
   return (
-    <div className="fixed top-[85px] left-[140px] w-[260px] h-[430px] overflow-y-auto pr-2 rounded-2xl ">
+    <div className="fixed top-[85px] left-[130px] w-[260px] h-[350px] pr-2 rounded-2xl ">
       {/* Profile Card */}
-      <div className="bg-white rounded-2xl p-6 text-center shadow-md">
+      <div className="bg-white rounded-2xl p-2 text-center shadow-md">
         <img
           src={
             user?.backgroundImage ||
@@ -81,12 +81,12 @@ const UserInfoCard = ({ user }) => {
         <p className="text-sm text-gray-500 relative top-[-75px]">
           {user?.email}
         </p>
-        <h1 className="text-lg font-semi text-dark-500 mb-3 text-left relative top-[-65px]">
-          <b>&nbsp;&nbsp;&nbsp;Achivements</b>
+        <h1 className="text-lg font-semi text-dark-500 mb-3 text-left relative top-[-55px]">
+          <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Achivements</b>
           <br />
         </h1>
         <p />
-        <div className="flex justify-center gap-4 relative top-[-65px]">
+        <div className="flex justify-center gap-4 relative top-[-55px]">
           {completeCourse.length > 0 ? (
             <>
               <div className="flex items-center justify-center flex-col">
@@ -123,10 +123,10 @@ const UserInfoCard = ({ user }) => {
           )}
         </div>
         <br />
-        <h3 className="text-lg font-semi text-dark-500 text-left relative top-[-70px]">
-          <b>&nbsp;&nbsp;&nbsp;Enrolled Courses ({enrollments.length})</b>
+        <h3 className="text-lg font-semi text-dark-500 text-left relative top-[-60px]">
+          <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enrolled Courses ({enrollments.length})</b>
         </h3>
-        <div className="grid grid-cols-4 gap-3 justify-center relative top-[-65px]">
+        <div className="grid grid-cols-4 gap-1 justify-center relative top-[-50px] left-[5px]">
           {enrollments.length > 0 ? (
             enrollments.map((enrollment, index) => (
               <div
@@ -157,7 +157,7 @@ const UserInfoCard = ({ user }) => {
         <br />
         <HashLink
           to={`/profile/${user.id}/#enrolled-courses`}
-          className="text-blue-600 hover:underline text-sm font-semibold relative top-[-75px] block text-center -h-[0px]"
+          className="text-blue-600 hover:underline text-sm font-semibold relative top-[-55px] block text-center"
         >
           View All Courses
         </HashLink>
