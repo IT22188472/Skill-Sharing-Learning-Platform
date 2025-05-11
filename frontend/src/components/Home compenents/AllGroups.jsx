@@ -24,7 +24,7 @@ const AllGroups = ({ user }) => {
 
   if (!user) {
     return (
-      <div className="user-info-card fixed top-[85px] left-[50%] transform -translate-x-1/2 font-bold w-[300px] h-[100px] space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200 bg-white p-6 text-center shadow-md">
+      <div className="user-info-card fixed top-[85px] left-[50%] transform -translate-x-1/2 font-bold w-[300px] h-[100px] space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200 bg-white p-4 text-center shadow-sm">
         <h3 className="text-xl font-semibold">User Information</h3>
         <p>No user data available.</p>
       </div>
@@ -32,7 +32,7 @@ const AllGroups = ({ user }) => {
   }
 
   return (
-    <div className="user-info-card fixed top-[85px] left-[1227px] transform -translate-x-1/2 w-[300px] z-50 pr-2 rounded-2xl scrollbar-thin scrollbar bg-white p-6 text-left shadow-md">
+    <div className="user-info-card fixed top-[85px] left-[1227px] transform -translate-x-1/2 w-[300px] z-50 pr-2 scrollbar-thin scrollbar bg-white p-4 text-left shadow-sm">
       <h4 className="text-lg font-semibold mb-4">&nbsp;All Groups ({groups?.length})</h4>
   
       <button className="bg-blue-500 text-white px-4 py-2 mb-4 hover:bg-blue-600 transition duration-300 absolute top-[15px] right-8 rounded-3xl">
@@ -55,7 +55,7 @@ const AllGroups = ({ user }) => {
               return (
                 <div
                   key={group._id?.$oid || group._id}
-                  className="group-card flex items-center bg-white rounded-lg p-4 shadow-md hover:shadow-xl transition duration-300 w-[260px] border-t-4 h-[65px]"
+                  className="group-card flex items-center bg-white rounded-lg p-3 shadow-md hover:shadow-sm transition duration-300 w-[260px] border-t-4 h-[65px]"
                   style={{ borderTopColor: borderColor, marginTop: "12px" }}
                 >
                   <div

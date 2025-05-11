@@ -54,55 +54,42 @@ const UserInfoCard = ({ user }) => {
   }, [user?.id]);
 
   return (
-    <div className="fixed top-[85px] left-[140px] w-[250px] h-[670px] overflow-y-auto space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200">
+    <div className="fixed top-[85px] left-[140px] w-[250px] h-[470px] overflow-y-auto space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200">
+
       {/* Profile Card */}
       <div className="bg-white rounded-2xl p-6 text-center shadow-md">
+        <img
+          src={
+            user?.backgroundImage ||
+            "https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=900&q=60"
+          }
+          alt="User Background"
+          className="w-full h-[90px] rounded-t-2xl object-cover"
+        />
         <img
           src={
             user?.profileImage ||
             "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
           }
           alt="User Avatar"
-          className="w-[100px] h-[100px] rounded-full object-cover mx-auto border-4 border-white-200 shadow-md relative top-[-0px]"
+          className="w-[100px] h-[100px] rounded-full object-cover mx-auto border-4 border-white-200 shadow-md relative -top-[70px]"
         />
-        <h2 className="mt-4 text-xl font-semibold text-gray-800 relative top-[-10px]">
+        <h2 className="mt-4 text-xl font-semibold text-gray-800 relative top-[-75px]">
           <Link to={`/profile/${user.id}`} style={{ width: "100px" }}>
             {user?.firstName} {user?.lastName || "Anonymous"}
           </Link>
         </h2>
-        <p className="text-sm text-gray-500 relative top-[-10px]">
+        <p className="text-sm text-gray-500 relative top-[-70px]">
           {user?.email}
         </p>
-        <div className="flex justify-center gap-6 my-3 text-sm text-gray-700">
-          <div>
-            <span className="font-bold relative top-[-10px]">
-              {user?.followers?.length || 0}
-            </span>
-            <br />
-            <span className="text-xs text-gray-400 relative top-[-10px]">
-              Followers
-            </span>
-          </div>
-          <div>
-            <span className="font-bold relative top-[-10px]">
-              {user?.following?.length || 0}
-            </span>
-            <br />
-            <span className="text-xs text-gray-400 relative top-[-10px]">
-              Following
-            </span>
-          </div>
-        </div>
-        <hr
-          style={{ height: "3px", backgroundColor: "#333", border: "none" }}
-        />
+        
         <br />
-        <h1 className="text-lg font-semi text-dark-500 mb-3">
-          <b>Achivements</b>
+        <h1 className="text-lg font-semi text-dark-500 mb-3 text-left relative top-[-70px]">
+          <b>&nbsp;&nbsp;&nbsp;&nbsp;Achivements</b>
           <br />
         </h1>
         <p />
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-4 relative top-[-70px]">
           {completeCourse.length > 0 ? (
             <>
               <div className="flex items-center justify-center flex-col">
@@ -131,52 +118,47 @@ const UserInfoCard = ({ user }) => {
               </div>
             </>
           ) : (
-            <div className="w-full h-32 bg-white-200 rounded-lg flex items-center justify-center">
-              <span className="text-dark text-2xl font-semibold">
-                No completed courses found
+            <div className="w-full h-30 bg-white-200 rounded-lg flex items-center justify-center">
+              <span className="text-dark-500 text-2xl font-semibold">
+                &nbsp;&nbsp;&nbsp;&nbsp;No completed courses found
               </span>
             </div>
           )}
-        </div>
-        <br />
-        <hr
-          style={{ height: "3px", backgroundColor: "#333", border: "none" }}
-        />
-        <br />
-        <h3 className="text-lg font-semi text-dark-500 mb-3">
-          <b>Enrolled Courses ({enrollments.length})</b>
+        </div><br/>
+        <h3 className="text-lg font-semi text-dark-500 mb-3 text-left relative top-[-70px] h-[20px]">
+          <b>&nbsp;Enrolled Courses ({enrollments.length})</b>
         </h3>
-        <div className="grid grid-cols-4 gap-3 justify-center">
+        <div className="grid grid-cols-4 gap-3 justify-center relative top-[-70px] h-[0px]">
           {enrollments.length > 0 ? (
             enrollments.map((enrollment, index) => (
               <div
                 key={index}
-                className="relative bg-gray-300 rounded-full overflow-hidden"
+                className="relative bg-gray-300 rounded-full overflow-hidden h-[50px]"
                 style={{ width: "50px", height: "50px" }}
               >
                 <Link
                   to={`/enrollments/${enrollment.courseId}/${user.id}`}
-                  className="block w-full h-full"
+                  className="block w-full h-[10px]"
                 >
                   <img
                     src={enrollment.image || "https://via.placeholder.com/90"}
                     alt="Enrollment"
-                    className="w-full h-full object-cover"
+                    className="w-full h-[50px] object-cover"
                   />
                 </Link>
               </div>
             ))
           ) : (
-            <div className="col-span-3 h-32 bg-gray-200 rounded-lg flex items-center justify-center">
+            <div className="col-span-3 h-8 bg-gray-200 rounded-lg flex items-center justify-center ">
               <span className="text-dark text-sm font-semibold">
                 No enrollments found
               </span>
             </div>
           )}
-        </div><br/>
+        </div>
         <HashLink
           to={`/profile/${user.id}/#enrolled-courses`}
-          className="text-blue-600 hover:underline text-sm font-semibold"
+          className="text-blue-600 hover:underline text-sm font-semibold h-[0px] relative top-[0px]"
         >
           View All Courses
         </HashLink>

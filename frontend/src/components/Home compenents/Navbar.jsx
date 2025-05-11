@@ -75,7 +75,7 @@ const Navbar = () => {
 
                 <button
                   onClick={handleLogout}
-                  className="text-red-500 hover:text-red-600 font-bold text-xl font-poppins relative right-[155px] -top-[15px]"
+                  className="text-red-500 hover:text-red-600 font-bold text-lg font-poppins relative right-[158px] -top-[0px]"
                 >
                   Logout
                 </button>
@@ -86,12 +86,12 @@ const Navbar = () => {
                     "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
                   }
                   alt="User"
-                  className="rounded-full object-cover w-[40px] h-[40px] relative right-[280px] -top-[13px]"
+                  className="rounded-full object-cover w-[40px] h-[40px] relative right-[270px] -top-[15px]"
                 />
 
-                <div className="relative right-[200px] top-[-15px] w-[120px] h-[35px] flex items-center justify-center">
+                <div className="relative right-[285px] top-[-20px] w-[120px] h-[35px] flex items-center justify-center">
                   <span className="font-poppins font-bold text-xl">
-                    {currentDateTime.toLocaleTimeString()}
+                    {user.firstName} {user.lastName}
                   </span>
                 </div>
               </>

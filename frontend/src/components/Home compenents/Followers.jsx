@@ -49,12 +49,12 @@ const Followers = () => {
     return <div className="text-center mt-10 text-red-600">Error: {error}</div>;
 
   return (
-    <div className="fixed top-[430px] left-[1080px] w-[300px] overflow-y-auto space-y-4 z-50 pr-2 rounded-2xl scrollbar-thin scrollbar-thumb-gray-200">
-      <div className="bg-white shadow-xl rounded-2xl p-6 border border-gray-100">
+    <div className="fixed top-[425px] left-[1078px] w-[305px] overflow-y-auto space-y-4 z-50 pr-2 scrollbar-thin scrollbar-thumb-gray-200">
+      <div className="bg-white shadow-sm p-3 border border-gray-100">
         <h1 className="text-xl font-semibold text-gray-00 mb-4 text-left">
           &nbsp;&nbsp;Following&nbsp;({user?.following?.length || 0})
         </h1>
-        <div className="space-y-4 max-h-[180px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300">
+        <div className="space-y-4 max-h-[195px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300">
           {users.length > 0 ? (
             users
               .filter((u) => u.id !== currentUser?.id)
@@ -88,7 +88,7 @@ const Followers = () => {
         <div className="mt-4 text-center">
           <Link to="/">
             <button className="text-blue-600 hover:underline text-sm font-semibold">
-              See All Users
+              See All
             </button>
           </Link>
         </div>
