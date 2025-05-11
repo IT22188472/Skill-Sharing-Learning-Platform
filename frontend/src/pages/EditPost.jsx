@@ -258,7 +258,7 @@ const EditPost = () => {
                       ) : currentMedia.imageUrl ? (
                         <div className="mb-3">
                           <img 
-                            src={`http://localhost:8081${currentMedia.imageUrl}`} 
+                            src={`http://localhost:8080${currentMedia.imageUrl}`} 
                             alt="Current recipe" 
                             className="mx-auto h-32 w-auto object-cover rounded"
                           />
@@ -328,7 +328,7 @@ const EditPost = () => {
                       ) : currentMedia.videoUrl ? (
                         <div className="mb-3">
                           <video 
-                            src={`http://localhost:8081${currentMedia.videoUrl}`} 
+                            src={`http://localhost:8080${currentMedia.videoUrl}`} 
                             controls 
                             className="mx-auto h-32 w-auto object-cover rounded"
                           />

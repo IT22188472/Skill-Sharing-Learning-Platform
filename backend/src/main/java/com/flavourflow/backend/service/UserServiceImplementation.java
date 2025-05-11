@@ -52,17 +52,25 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User followUser(String reqUserId, String userId2) throws Exception {
-
-        User reqUser=findUserById(reqUserId);
-
-        User user2=findUserById(userId2);
-
-        user2.getFollowers().add(reqUser.getId());
-        reqUser.getFollowing().add(user2.getId());
-
+     
+        User reqUser = findUserById(reqUserId); // Find the requesting user
+        User user2 = findUserById(userId2);     // Find the user to follow
+    
+        
+        if (reqUser.getFollowing().contains(user2.getId())) {
+            
+            reqUser.getFollowing().remove(user2.getId());
+            user2.getFollowers().remove(reqUser.getId());
+        } else {
+            
+            reqUser.getFollowing().add(user2.getId());
+            user2.getFollowers().add(reqUser.getId());
+        }
+    
+        
         userRepository.save(reqUser);
         userRepository.save(user2);
-
+    
         return reqUser;
     }
 

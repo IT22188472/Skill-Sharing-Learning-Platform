@@ -95,6 +95,7 @@ const PostCard = ({ post, onPostDeleted }) => {
           <>
             {showVideo ? (
               // Show video when showVideo is true
+
               <div className="relative w-full h-[300px]">
                 <video className="w-full h-[300px] object-cover" controls>
                   <source
@@ -163,7 +164,7 @@ const PostCard = ({ post, onPostDeleted }) => {
         {/* Show only image if no video */}
         {post.imageUrl && !post.videoUrl && (
           <img
-            src={`http://localhost:8081${post.imageUrl}`}
+            src={`http://localhost:8080${post.imageUrl}`}
             alt={post.title}
             className="w-full h-[300px] object-cover"
             onLoad={() => setIsImageLoaded(true)}

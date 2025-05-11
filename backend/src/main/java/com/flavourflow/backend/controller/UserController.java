@@ -20,7 +20,7 @@ import com.flavourflow.backend.service.UserService;
 
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3001", "http://localhost:8080"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 public class UserController {
 
     @Autowired
