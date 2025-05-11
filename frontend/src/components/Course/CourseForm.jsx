@@ -6,6 +6,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import cooking1 from "../../images/cooking4.jpg";
 import Nav from "../../pages/nav";
+import UserInfoCard2 from "../Course/UserInfoCard2";
 const userId = localStorage.getItem("userId");
 
 const CourseForm = () => {
@@ -36,10 +37,10 @@ const CourseForm = () => {
     <div>
       {/* Hero Section with Navigation Bar on Top */}
       <div
-        className="position-relative text-white text-center bg-dark"
+        className="position-relative text-white text-center bg-dark top-5"
         style={{
           background: `url(${cooking1}) no-repeat center center / cover`,
-          height: "440px",
+          height: "350px",
         }}
       >
         {/* Navigation Bar inside Hero Section */}
@@ -49,7 +50,7 @@ const CourseForm = () => {
         {/* Hero Content */}
         <div
           className=""
-          style={{ position: "relative", top: "200px", left: "-200px" }}
+          style={{ position: "relative", top: "180px", left: "-200px" }}
         >
           <div className=" bg-opacity-50 p-4 rounded position-absolute top-50 start-50 translate-middle ">
             <h1 className="display-4 fw-bold">Taste the Learning Journey.</h1>
@@ -91,77 +92,25 @@ const CourseForm = () => {
         <div className="row">
           {/* Left Column (Sidebar) */}
           <div className="col-md-4 mb-4">
-            <div
-              className="bg-light p-3 rounded-5 shadow-sm"
-              style={{
-                width: "55%",
-                minHeight: "380px",
-                position: "sticky",
-                top: "100px",
-                left: "160px",
-              }}
-            >
-              <h2 className="fw-bold mb-2 text-2xl text-center">Profile</h2>
-              <div className="text-center">
-                <img
-                  src={
-                    users?.profileImage ||
-                    "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
-                  }
-                  alt="User"
-                  className="rounded-circle shadow-sm"
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    objectFit: "cover",
-                    position: "relative",
-                    left: "70px",
-                  }}
-                />
-                <br />
-                <b>
-                  <Link to={`/profile/${users.id}`}>
-                    <h1 className="text-xl font-bold hover:text-blue-500 transition-colors duration-200">
-                      {users.firstName} {users.lastName}
-                    </h1>
-                  </Link>
-                </b>
-              </div>
-              <br />
-              <div className="d-grid gap-4">
-                <HashLink
-                  to={`/profile/${users.id}/#enrolled-courses`}
-                  className="btn btn-primary"
-                >
-                  Enrolled Courses
-                </HashLink>
-                <Link to="/progress" className="btn btn-secondary">
-                  Progress
-                </Link>
-                <HashLink
-                  to={`/profile/${users.id}/#Achievements`}
-                  className="btn btn-success"
-                >
-                  Achievements
-                </HashLink>
-              </div>
+            <div>
+              <UserInfoCard2 user={users} />
             </div>
           </div>
 
           {/* Right Column (Courses) */}
           <div
-            className="w-full md:w-[60%]  "
-            style={{ position: "relative", left: "-60px" , top: "0px" }}
+            className="w-full md:w-[70%]  "
+            style={{ position: "relative", left: "380px", top: "-360px" }}
             ref={exploreCoursesRef}
           >
             <h2 className="text-3xl font-bold text-center mb-6">
               Explore Courses
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:grid-cols-4 gap-4">
               {courses.length > 0 ? (
                 courses.map((course) => (
                   <div key={course.courseId} className="">
-                    <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <div className="bg-white rounded-2xl shadow-sm overflow-hidden h-[310px]">
                       <img
                         src={
                           course.images && course.images.length > 0
@@ -172,12 +121,12 @@ const CourseForm = () => {
                         className="w-full h-40 object-cover"
                       />
                       <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">
+                        <h3 className="text-lg font-semibold mb-2 ">
                           {course.name}
                         </h3>
                         <p className="text-gray-600 mb-2">
-                          {course.description.length > 100
-                            ? course.description.slice(0, 100) + "..."
+                          {course.description.length > 50
+                            ? course.description.slice(0, 60) + "..."
                             : course.description}
                         </p>
                         <p className="text-sm font-medium text-gray-800 mb-1">
