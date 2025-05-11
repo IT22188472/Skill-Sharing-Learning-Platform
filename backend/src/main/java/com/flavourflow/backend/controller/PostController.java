@@ -24,11 +24,7 @@ import com.flavourflow.backend.service.FileStorageService;
 import com.flavourflow.backend.repository.PostRepository;
 
 @RestController
-<<<<<<< HEAD
-@CrossOrigin(origins = {"http://localhost:3001", "http://localhost:8080"})
-=======
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
 public class PostController {
 
     @Autowired
@@ -154,22 +150,16 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
-<<<<<<< HEAD
-    @PutMapping("/api/posts/{postId}/save")
-=======
+
     @PutMapping("/api/posts/save/{postId}")
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
     public ResponseEntity<Post> savedPostHandler(@PathVariable String postId, @RequestHeader("Authorization") String jwt) throws Exception {
         User reqUser = userService.findUserByJwt(jwt);
         Post post = postService.savedPost(postId, reqUser.getId());
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
-<<<<<<< HEAD
-    @PutMapping("/api/posts/{postId}/like")
-=======
+
     @PutMapping("/api/posts/like/{postId}")
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
     public ResponseEntity<Post> likePostHandler(@PathVariable String postId, @RequestHeader("Authorization") String jwt) throws Exception {
         User reqUser = userService.findUserByJwt(jwt);
         Post post = postService.likePost(postId, reqUser.getId());

@@ -52,20 +52,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User followUser(String reqUserId, String userId2) throws Exception {
-
-<<<<<<< HEAD
-        User reqUser=findUserById(reqUserId);
-
-        User user2=findUserById(userId2);
-
-        user2.getFollowers().add(reqUser.getId());
-        reqUser.getFollowing().add(user2.getId());
-
-        userRepository.save(reqUser);
-        userRepository.save(user2);
-
-=======
-        
+     
         User reqUser = findUserById(reqUserId); // Find the requesting user
         User user2 = findUserById(userId2);     // Find the user to follow
     
@@ -84,7 +71,6 @@ public class UserServiceImplementation implements UserService {
         userRepository.save(reqUser);
         userRepository.save(user2);
     
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
         return reqUser;
     }
 

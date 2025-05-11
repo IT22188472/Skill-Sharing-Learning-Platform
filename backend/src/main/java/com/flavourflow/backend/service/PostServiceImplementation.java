@@ -89,22 +89,6 @@ public class PostServiceImplementation implements PostService {
 
     @Override
     public Post savedPost(String postId, String userId) throws Exception {
-<<<<<<< HEAD
-        Post post=findPostById(postId);
-        User user=userService.findUserById(userId);
-
-        if (user.getSavedPost().contains(post)) {
-            user.getSavedPost().remove(post);
-        }
-        else{
-
-            user.getSavedPost().add(post);
-        }
-
-        userRepository.save(user);
-
-        return post;
-=======
 
         Post post = findPostById(postId);
         User user = userService.findUserById(userId);
@@ -124,25 +108,10 @@ public class PostServiceImplementation implements PostService {
         userRepository.save(user);
         return post;
 
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
     }
 
     @Override
     public Post likePost(String postId, String userId) throws Exception {
-<<<<<<< HEAD
-        Post post=findPostById(postId);
-        User user=userService.findUserById(userId);
-
-        if (post.getLiked().contains(user)) {
-            post.getLiked().remove(user);
-        }
-        else{
-           post.getLiked().add(user);
-        }
-
-        
-        return postRepository.save(post);
-=======
         Post post = findPostById(postId);
         User user = userService.findUserById(userId);
   
@@ -157,9 +126,8 @@ public class PostServiceImplementation implements PostService {
           // Add like if not already liked
           post.getLiked().add(user);
           }
-        
+  
           return postRepository.save(post);
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
     }
 
     @Override

@@ -24,11 +24,8 @@ import com.flavourflow.backend.service.GroupService;
 import com.flavourflow.backend.service.UserService;
 
 @RestController
-<<<<<<< HEAD
-@CrossOrigin(origins = {"http://localhost:3001", "http://localhost:8080"})
-=======
+
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
 @RequestMapping("/api/groups")
 public class GroupMessageController {
 
