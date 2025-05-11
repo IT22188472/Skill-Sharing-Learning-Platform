@@ -23,7 +23,6 @@ import com.flavourflow.backend.models.Group;
 import com.flavourflow.backend.models.User;
 import com.flavourflow.backend.request.GroupRequest;
 import com.flavourflow.backend.response.ApiResponse;
-import com.flavourflow.backend.service.FileStorageService;
 import com.flavourflow.backend.service.GroupService;
 import com.flavourflow.backend.service.UserService;
 

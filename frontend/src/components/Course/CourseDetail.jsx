@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import Nav2 from "../../pages/nav_1";
+import UserInfoCard3 from "../Course/UserInfoCard3";
+import CourseCard from "./CourseCard";
+import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Logo from "/logo black.png";
 
 const CourseDetail = () => {
+  const { user } = useAuth();
   const { userid, id } = useParams();
   const courseId = id;
   const userId = userid;
@@ -134,7 +137,7 @@ const CourseDetail = () => {
 
     // Check if the URL is a Cloudinary MP4 URL
     if (url.includes("cloudinary.com") && url.endsWith(".mp4")) {
-      return url; // Direct video URL (Cloudinary, etc.)
+      return url;
     }
 
     // Otherwise, treat as YouTube video URL
@@ -159,28 +162,24 @@ const CourseDetail = () => {
   return (
     <div style={{ background: "#f0f2f5", minHeight: "100vh" }}>
       <br /> <br />
-      <Nav2 />
+      <br /> <br />
       <Container className="py-4">
-        <Row className="justify-content-center">
+        <Row className="justify-content-center relative left-[-15px]">
           <Col md={7}>
             <Card className="p-4 shadow-sm rounded-4">
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <div className="d-flex align-items-center">
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+              <div className="d-flex justify-content-between align-items-center mb-3 ">
+                <div className="d-flex align-items-center relative top-[-5px]">
+                  &nbsp;&nbsp;&nbsp;<img
+                    src={Logo}
                     alt="Avatar"
-                    className="rounded-circle"
                     style={{
-                      width: "50px",
-                      height: "50px",
+                      width: "140px",
+                      height: "40px",
                       marginRight: "15px",
                     }}
                   />
                   <div>
-                    <h2 className="text-xl fw-bold mb-0">{course.name}</h2>
-                    <small className="text-lg text-muted">
-                      by FlavorFlow · {new Date().toLocaleDateString()}
-                    </small>
+                    <h2 className="text-2xl fw-bold mb-0 text-orange-300">  {course.name}</h2>
                   </div>
                 </div>
                 <Button
@@ -237,7 +236,7 @@ const CourseDetail = () => {
 
               {/* Display images for the course */}
               {course.images && course.images.length > 0 && (
-                <div className="mb-3">
+                <div className="mb-3 relative">
                   <Row>
                     {course.images.map((image, idx) => {
                       let colSize = 12;
@@ -251,7 +250,7 @@ const CourseDetail = () => {
                             src={image}
                             alt={`Course Image ${idx + 1}`}
                             className="w-100 rounded-4"
-                            style={{ height: "200px", objectFit: "cover" }}
+                            style={{ height: "180px", objectFit: "cover" }}
                           />
                         </Col>
                       );
@@ -261,8 +260,8 @@ const CourseDetail = () => {
               )}
 
               {/* Description */}
-              <div className="mb-3">
-                <p style={{ fontSize: "1rem", lineHeight: "1.6" }}>
+              <div className="mb-3 relative left-[10px]">
+                <p className="text-lg" style={{ lineHeight: "1.6" }}>
                   {showFullDescription
                     ? course.description
                     : course.description.substring(0, 200) +
@@ -280,7 +279,7 @@ const CourseDetail = () => {
               </div>
 
               {/* Skills Hashtags */}
-              <div className="mb-3">
+              <div className="mb-3 text-lg">
                 {Array.isArray(course.skillsImprove) &&
                   course.skillsImprove.map((skill, idx) => (
                     <span
@@ -292,26 +291,8 @@ const CourseDetail = () => {
                   ))}
               </div>
 
-              {/* Reactions */}
-              <div className="d-flex justify-content-around border-top pt-3 mb-3">
-                <Button variant="light">👍 120</Button>
-                <Button variant="light">💬 45</Button>
-                <Button variant="light">🔗 Share</Button>
-              </div>
-
-              {/* Comment Box */}
-              <Form>
-                <Form.Group>
-                  <Form.Control
-                    type="text"
-                    placeholder="Write a comment..."
-                    className="rounded-pill px-4 py-2"
-                  />
-                </Form.Group>
-              </Form>
-
               {/* Small Course Info */}
-              <div className="mt-4 p-3 bg-light rounded-4">
+              <div className="mt-4 p-3 bg-light rounded-4 relative top-[-20px]">
                 <Row>
                   <Col xs={6}>
                     <strong>Duration:</strong> {course.duration} hrs
@@ -334,6 +315,28 @@ const CourseDetail = () => {
           </Col>
         </Row>
       </Container>
+      <UserInfoCard3 user={user} />
+      <CourseCard userid={userid}/>
+      <Link
+        to={`/courses/${userid}`}
+        className="fixed top-[90px] left-[50px] w-[150px] mb-3 ms-2"
+      >
+        <div className="inline-flex items-center justify-center w-full px-4 py-2 border-2 border-gray-700 text-black text-sm font-semibold rounded-full hover:bg-gray-100 transition duration-300 ease-in-out">
+          <svg
+            className="w-5 h-5 mr-2 text-gray-700"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M7.707 14.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L4.414 9H18a1 1 0 110 2H4.414l3.293 3.293a1 1 0 010 1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+          Back to Courses
+        </div>
+      </Link>
     </div>
   );
 };

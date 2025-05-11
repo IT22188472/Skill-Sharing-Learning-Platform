@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const UserInfoCard = ({ user }) => {
+const UserInfoCard2 = ({ user }) => {
   const [enrollments, setEnrollments] = useState([]);
   const [completeCourse, setCompleteCourse] = useState([]);
   const [badgeCount, setBadgeCount] = useState({
@@ -54,7 +54,7 @@ const UserInfoCard = ({ user }) => {
   }, [user?.id]);
 
   return (
-    <div className="fixed top-[85px] left-[130px] w-[260px] h-[350px] pr-2 rounded-2xl ">
+    <div className="fixed top-[130px] left-[45px] w-[260px] h-[350px] pr-2 rounded-2xl ">
       {/* Profile Card */}
       <div className="bg-white rounded-2xl p-2 text-center shadow-md">
         <img
@@ -124,36 +124,39 @@ const UserInfoCard = ({ user }) => {
         </div>
         <br />
         <h3 className="text-lg font-semi text-dark-500 text-left relative top-[-60px]">
-          <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enrolled Courses ({enrollments.length})</b>
+          <b>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enrolled Courses (
+            {enrollments.length})
+          </b>
         </h3>
         <div className="grid grid-cols-4 gap-1 justify-center relative top-[-50px] left-[5px]">
-  {enrollments.length > 0 ? (
-    enrollments.slice(0, 4).map((enrollment, index) => (
-      <div
-        key={index}
-        className="relative bg-gray-300 rounded-full overflow-hidden"
-        style={{ width: "50px", height: "50px" }}
-      >
-        <Link
-          to={`/enrollments/${enrollment.courseId}/${user.id}`}
-          className="block w-full h-full"
-        >
-          <img
-            src={enrollment.image || "https://via.placeholder.com/90"}
-            alt="Enrollment"
-            className="w-full h-full object-cover"
-          />
-        </Link>
-      </div>
-    ))
-  ) : (
-    <div className="col-span-3 bg-gray-200 rounded-lg flex items-center justify-center relative top-[12px] left-[30px]">
-      <span className="text-dark text-sm font-semibold">
-        No enrollments found
-      </span>
-    </div>
-  )}
-</div>
+          {enrollments.length > 0 ? (
+            enrollments.slice(0, 4).map((enrollment, index) => (
+              <div
+                key={index}
+                className="relative bg-gray-300 rounded-full overflow-hidden"
+                style={{ width: "50px", height: "50px" }}
+              >
+                <Link
+                  to={`/enrollments/${enrollment.courseId}/${user.id}`}
+                  className="block w-full h-full"
+                >
+                  <img
+                    src={enrollment.image || "https://via.placeholder.com/90"}
+                    alt="Enrollment"
+                    className="w-full h-full object-cover"
+                  />
+                </Link>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-3 bg-gray-200 rounded-lg flex items-center justify-center relative top-[12px] left-[30px]">
+              <span className="text-dark text-sm font-semibold">
+                No enrollments found
+              </span>
+            </div>
+          )}
+        </div>
 
         <br />
         <HashLink
@@ -167,4 +170,4 @@ const UserInfoCard = ({ user }) => {
   );
 };
 
-export default UserInfoCard;
+export default UserInfoCard2;
