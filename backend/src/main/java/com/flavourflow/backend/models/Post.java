@@ -10,8 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.springframework.data.annotation.Transient;
 
@@ -28,7 +26,7 @@ public class Post {
     private String videoUrl; 
 
     @DBRef(lazy = true)
-    @JsonIgnore
+    //@JsonIgnore
     private User user;
 
     private List<User> liked = new ArrayList<>();
