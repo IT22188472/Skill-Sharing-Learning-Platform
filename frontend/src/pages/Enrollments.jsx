@@ -2,8 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2"; // Import SweetAlert2
+import { useAuth } from "../context/AuthContext";
+import UserInfoCard3 from "../components/Course/UserInfoCard3";
 
 const Enrollments = () => {
+  const { user } = useAuth();
   const { courseId, userId } = useParams();
   const id = userId;
   const userid = userId;
@@ -58,15 +61,18 @@ const Enrollments = () => {
       // Based on course level, assign badge image
       switch (enroll.level) {
         case "Advanced":
-          badgeImage = "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Advanced_x2xmg7.png";
+          badgeImage =
+            "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Advanced_x2xmg7.png";
           badgeMessage = "Congratulations on completing an Advanced Course!";
           break;
         case "Intermediate":
-          badgeImage = "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808778/Intermediate_o3ba9y.png";
+          badgeImage =
+            "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808778/Intermediate_o3ba9y.png";
           badgeMessage = "Well done on completing an Intermediate Course!";
           break;
         case "Beginner":
-          badgeImage = "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Biginner_yaebnv.png";
+          badgeImage =
+            "https://res.cloudinary.com/dgt4osgv8/image/upload/v1745808777/Biginner_yaebnv.png";
           badgeMessage = "Great job on completing a Beginner Course!";
           break;
         default:
@@ -86,7 +92,7 @@ const Enrollments = () => {
         cancelButtonText: "Profile",
         reverseButtons: true,
         customClass: {
-          popup: 'rounded-popup',
+          popup: "rounded-popup",
         },
       }).then((result) => {
         if (result.isConfirmed) {
@@ -95,8 +101,7 @@ const Enrollments = () => {
           window.location.href = `/profile/${userid}`;
         }
       });
-      
-      
+
       // Add this style in your CSS file or within a style tag in the component
       const style = document.createElement("style");
       style.innerHTML = `
@@ -105,8 +110,6 @@ const Enrollments = () => {
         }
       `;
       document.head.appendChild(style);
-      
-      
     } catch (error) {
       console.error("Error completing course:", error);
       alert("Failed to complete course or remove from enrollments.");
@@ -165,70 +168,29 @@ const Enrollments = () => {
 
   return (
     <div className="container-fluid mt-4">
-      <div className="row">
+      <div className="row relative left-[0px] top-[70px]">
         {/* Sidebar */}
-        <div className="col-md-4 mb-4">
-          <div
-            className="bg-gray-200 p-4 rounded-5 shadow-sm"
-            style={{
-              width: "50%",
-              minHeight: "380px",
-              position: "relative",
-              top: "50px",
-              left: "50px",
-            }}
-          >
-            <h2 className="fw-bold mb-3 text-center text-3xl">Profile</h2>
-            <div className="text-center">
-              <img
-                src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png"
-                alt="User"
-                className="rounded-circle shadow-sm mb-3"
-                style={{ width: "100px", height: "100px", objectFit: "cover" }}
-              />
-              <Link to={`/profile/${userId}`}>
-                <h5 className="text-xl font-bold">
-                  {enroll?.user?.firstName} {enroll?.user?.lastName}
-                </h5>
-              </Link>
-              <br />
-            </div>
-            <hr />
-            <div className="d-grid gap-3">
-              <Link to="/enroll-courses" className="btn btn-outline-primary">
-                Enrolled Courses
-              </Link>
-              <Link to="/progress" className="btn btn-outline-secondary">
-                Progress
-              </Link>
-              <Link to="/achievements" className="btn btn-outline-success">
-                Achievements
-              </Link>
-            </div>
-          </div>
-        </div>
+        <UserInfoCard3 user={user} />
 
         {/* Main Content */}
         <div className="col-md-8 mb-4">
           <div
-            className="bg-gray-200 p-4 rounded-5 shadow-sm"
+            className="bg-white p-4 rounded-2 shadow-sm"
             style={{
-              width: "115%",
-              maxWidth: "1150px",
+              width: "110%",
+              height: "630px",
               margin: "0 auto",
               position: "relative",
-              left: "-200px",
+              left: "320px",
               top: "0px",
             }}
           >
-            <h2 className="mb-3 text-4xl">
-              <b>
-                {enroll.courseId}&nbsp;-&nbsp;{enroll.name}
-              </b>
+            <h2 className="mb-3 text-2xl">
+              <b>&nbsp;&nbsp;{enroll.name}</b>
             </h2>
             <h2
               className="text-xl"
-              style={{ position: "absolute", top: "30px", left: "620px" }}
+              style={{ position: "absolute", top: "20px", left: "620px" }}
             >
               <strong>Enrollment Date:</strong>{" "}
               {new Date(enroll.enrollDate).toLocaleDateString()}
@@ -327,6 +289,7 @@ const Enrollments = () => {
                 </div>
               )}
             </div>
+            
 
             {/* Course Description */}
             <br />
@@ -338,6 +301,26 @@ const Enrollments = () => {
                 <br />
               </p>
             </div>
+            <Link
+              to={`/courses/${userid}`}
+              className="fixed top-[90px] left-[50px] w-[150px] mb-3 ms-2"
+            >
+              <div className="inline-flex items-center justify-center w-full px-4 py-2 border-2 border-gray-700 text-black text-sm font-semibold rounded-full hover:bg-gray-100 transition duration-300 ease-in-out">
+                <svg
+                  className="w-5 h-5 mr-2 text-gray-700"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.707 14.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L4.414 9H18a1 1 0 110 2H4.414l3.293 3.293a1 1 0 010 1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Back to Courses
+              </div>
+            </Link>
           </div>
         </div>
       </div>

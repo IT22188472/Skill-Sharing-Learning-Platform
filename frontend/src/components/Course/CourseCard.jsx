@@ -23,7 +23,7 @@ const CourseCard = () => {
         </h2>
 
         {/* Scrollable Container for Courses */}
-        <div className="overflow-y-auto max-h-[580px] w-full relative left-[7px]">
+        <div className="overflow-y-auto h-[580px] w-full relative left-[7px]">
           {courses.length > 0 ? (
             courses.map((course) => (
               <div

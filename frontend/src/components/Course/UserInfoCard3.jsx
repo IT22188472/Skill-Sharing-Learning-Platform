@@ -150,7 +150,7 @@ const UserInfoCard2 = ({ user }) => {
               </div>
             ))
           ) : (
-            <div className="col-span-3 bg-gray-200 rounded-lg flex items-center justify-center relative top-[12px] left-[30px]">
+            <div className="col-span-3 bg-gray-200 rounded-lg flex items-center justify-center relative top-[4px] left-[30px]">
               <span className="text-dark text-sm font-semibold">
                 No enrollments found
               </span>
