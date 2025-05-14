@@ -5,9 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import org.springframework.data.annotation.Transient;
 
 @Document(collection = "Posts")
@@ -22,12 +27,17 @@ public class Post {
     private String imageUrl;
     private String videoUrl; 
 
+    @DBRef(lazy = true)
+    @JsonIgnore
     private User user;
 
     private List<User> liked = new ArrayList<>();
     
     @CreatedDate
     private LocalDateTime createdAt;
+   
+    @DBRef(lazy = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @Transient
     private MultipartFile imageFile;
@@ -40,7 +50,7 @@ public class Post {
     }
 
     public Post(String id, String title, String ingredients, String instructions, String imageUrl, String videoUrl,
-            User user, List<User> liked, LocalDateTime createdAt) {
+            User user, List<User> liked, LocalDateTime createdAt, List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.ingredients = ingredients;
@@ -50,7 +60,10 @@ public class Post {
         this.user = user;
         this.liked = liked;
         this.createdAt = createdAt;
+        this.comments = comments;
     }
+
+
 
     public String getId() {
         return id;
@@ -146,5 +159,14 @@ public class Post {
             this.createdAt = LocalDateTime.now();
         }
     }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+  
 
 }
