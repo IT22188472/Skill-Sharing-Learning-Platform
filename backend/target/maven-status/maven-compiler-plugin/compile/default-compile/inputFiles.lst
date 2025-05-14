@@ -9,6 +9,7 @@ C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\sr
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\config\jwtValidator.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\config\MongoConfig.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\config\WebMvcConfig.java
+C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\controller\CommentController.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\controller\CompletedCourseController.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\controller\CourseController.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\controller\EnrollmentController.java
@@ -21,12 +22,14 @@ C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\sr
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\exception\FileStorageException.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\model\AuthResponse.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\model\Course.java
+C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\models\Comment.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\models\CompletedCourse.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\models\Enrollusrs.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\models\Group.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\models\GroupMessage.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\models\Post.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\models\User.java
+C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\repository\CommentRepository.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\repository\CompletedCourseRepository.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\repository\CourseRepository.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\repository\EnrollmentRepository.java
@@ -38,9 +41,12 @@ C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\sr
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\request\CompleteCourseRequest.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\request\GroupRequest.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\request\LoginRequest.java
+C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\request\UpdateCommentRequest.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\response\ApiResponse.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\response\AuthResponse.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\service\CloudinaryService.java
+C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\service\CommentService.java
+C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\service\CommentServiceImplementation.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\service\CompletedCourseService.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\service\CourseService.java
 C:\Users\USER\Documents\GitHub\Skills\Skill-Sharing-Learning-Platform\backend\src\main\java\com\flavourflow\backend\service\CustomUserDetailsService.java
