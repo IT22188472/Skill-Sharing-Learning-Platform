@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-<<<<<<< HEAD
-  baseURL: 'http://localhost:8081',
-=======
   baseURL: 'http://localhost:8080',
->>>>>>> e8cb9c1e (Follow/Unfollow User, Save/Unsave Post & Like/Unlike Post with correctly triggered Backend)
 });
 
 // Add a request interceptor to include JWT token in all requests
