@@ -171,7 +171,7 @@ const PostDetail = () => {
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
               {post.title}
             </h1>
-            <div className="flex flex-wrap items-center text-white text-opacity-90 mb-4">
+            <div className="flex flex-wrap items-center text-white text-opacity-90 mb-4 mt-2">
               <div className="flex items-center mr-6 mb-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -260,7 +260,7 @@ const PostDetail = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto max-w-5xl px-4 -mt-10 relative z-10">
+      <div className="container mx-auto max-w-5xl px-4 -mt-10 relative z-10 -mt-6">
         <div className="bg-white rounded-xl shadow-xl overflow-hidden">
           {/* Tab Navigation */}
           <div className="flex border-b">

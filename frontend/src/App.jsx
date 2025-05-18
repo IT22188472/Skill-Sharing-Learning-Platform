@@ -17,6 +17,7 @@ import AddCourse from "./components/Course/AddCourse";
 import ContentDashboard from "./components/Course/ContentDashboard";
 import Profile from "./pages/Profile";
 import Enrollments from "./pages/Enrollments";
+import EditCourse from "./components/Course/EditCourse";
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
             <Route path="/ContentDashboard/:id" element={<ContentDashboard />} />
             <Route path ="/profile/:userid" element={<Profile />} />
             <Route path ="/enrollments/:courseId/:userId" element={<Enrollments />} />
-            
+            <Route path="/edit-course/:courseId" element={<EditCourse />} />
           </Routes>
         </div>
       </Router>
