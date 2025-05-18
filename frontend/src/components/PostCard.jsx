@@ -20,29 +20,43 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [likeCount, setLikeCount] = useState(post.liked?.length || 0);
+  const [likeCount, setLikeCount] = useState(0);
   const [showComments, setShowComments] = useState(false);
-  const [commentCount, setCommentCount] = useState(post.comments?.length || 0);
-  const [comments, setComments] = useState(post.comments || []);
+  const [commentCount, setCommentCount] = useState(0);
+  const [comments, setComments] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const isOwner = user && post.user && user.id === post.user.id;
+  // Debug logs
+  useEffect(() => {
+    console.log("Post data received:", post);
+    console.log("Current user:", user);
+  }, [post, user]);
+
+  const isOwner = user && post?.user && user.id === post.user.id;
 
   useEffect(() => {
-    if (user && post.liked) {
-      const liked = post.liked.some(likedUser => likedUser.id === user.id);
-      setIsLiked(liked);
-    }
-    // Initialize comments from post prop
-    if (post.comments) {
-      setComments(post.comments);
-    }
-  }, [user, post.liked, post.comments]);
+    if (!post) return;
 
-  const getCommentCount = () => {
-    return commentCount;
-  };
+    // Initialize state from post data
+    setLikeCount(post.liked?.length || 0);
+    setCommentCount(post.comments?.length || 0);
+    setComments(post.comments || []);
+
+    if (user) {
+      // Check if user liked the post
+      if (Array.isArray(post.liked)) {
+        const liked = post.liked.some(likedUser => likedUser.id === user.id);
+        setIsLiked(liked);
+      }
+      
+      // Check if user saved the post
+      if (Array.isArray(user.savedPost)) {
+        const saved = user.savedPost.some(savedPost => savedPost.id === post.id);
+        setIsBookmarked(saved);
+      }
+    }
+  }, [user, post]);
 
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
@@ -61,21 +75,7 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
       onPostDeleted ? onPostDeleted(post.id) : navigate("/");
     } catch (error) {
       console.error("Error deleting post:", error);
-      if (error.response) {
-        if (error.response.status === 403) {
-          setError(
-            "Access denied. You may not have permission to delete this recipe."
-          );
-        } else if (error.response.status === 401) {
-          setError("Your session has expired. Please log in again.");
-        } else {
-          setError(error.response.data?.message || "Error deleting recipe");
-        }
-      } else if (error.request) {
-        setError("Network error. Please check your connection.");
-      } else {
-        setError("Error deleting recipe: " + error.message);
-      }
+      setError(error.response?.data?.message || "Error deleting recipe");
     } finally {
       setIsDeleting(false);
     }
@@ -105,7 +105,7 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
       );
 
       setIsLiked(!isLiked);
-      setLikeCount(response.data.liked.length);
+      setLikeCount(response.data.liked?.length || 0);
       
       if (onPostUpdated) {
         onPostUpdated(response.data);
@@ -113,6 +113,40 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
     } catch (error) {
       console.error("Error liking post:", error);
       setError("Failed to like post. Please try again.");
+    }
+  };
+
+  const handleSavePost = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("You must be logged in to save a post");
+        return;
+      }
+
+      const authToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+      
+      const response = await axios.put(
+        `http://localhost:8080/api/posts/save/${post.id}`,
+        {},
+        {
+          headers: { Authorization: authToken },
+        }
+      );
+
+      setIsBookmarked(!isBookmarked);
+      
+      if (onPostUpdated) {
+        onPostUpdated(response.data);
+      }
+    } catch (error) {
+      console.error("Error saving post:", error);
+      setError("Failed to save post. Please try again.");
     }
   };
 
@@ -133,86 +167,72 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
   };
 
   const toggleMedia = () => setShowVideo(!showVideo);
-  const handleBookmark = () => setIsBookmarked(!isBookmarked);
 
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    try {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    } catch {
+      return "";
+    }
   };
 
-  if (!post) return null;
+  if (!post) {
+    console.warn("PostCard rendered without post data");
+    return null;
+  }
 
-  return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
-      {/* Media Container */}
-      <div className="relative w-full h-48 bg-orange-100">
-        {!isImageLoaded && post.imageUrl && !showVideo && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="animate-pulse w-full h-full bg-orange-200"></div>
-          </div>
-        )}
+  const renderMedia = () => {
+    if (!post.imageUrl && !post.videoUrl) {
+      return (
+        <div className="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-16 w-16 text-orange-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+            />
+          </svg>
+        </div>
+      );
+    }
 
-        {post.imageUrl && post.videoUrl ? (
-          showVideo ? (
-            <div className="relative w-full h-full">
-              <video className="w-full h-full object-cover" controls>
-                <source
-                  src={`http://localhost:8080${post.videoUrl}`}
-                  type="video/mp4"
-                />
-              </video>
-              <button
-                onClick={toggleMedia}
-                className="absolute bottom-3 right-3 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-orange-100 transition duration-200"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-          ) : (
-            <div className="relative w-full h-full">
-              <img
-                src={`http://localhost:8080${post.imageUrl}`}
-                alt={post.title}
-                className="w-full h-full object-cover"
-                onLoad={() => setIsImageLoaded(true)}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src =
-                    "https://images.unsplash.com/photo-1495195134817-aeb325a55b65?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1776&q=80";
-                  setIsImageLoaded(true);
-                }}
+    if (post.imageUrl && post.videoUrl) {
+      return showVideo ? (
+        <div className="relative w-full h-full">
+          <video className="w-full h-full object-cover" controls>
+            <source
+              src={`http://localhost:8080${post.videoUrl}`}
+              type="video/mp4"
+            />
+          </video>
+          <button
+            onClick={toggleMedia}
+            className="absolute bottom-3 right-3 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-orange-100 transition duration-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                clipRule="evenodd"
               />
-              <button
-                onClick={toggleMedia}
-                className="absolute bottom-3 right-3 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-orange-100 transition duration-200"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l3-2z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-          )
-        ) : post.imageUrl ? (
+            </svg>
+          </button>
+        </div>
+      ) : (
+        <div className="relative w-full h-full">
           <img
             src={`http://localhost:8080${post.imageUrl}`}
             alt={post.title}
@@ -225,31 +245,67 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
               setIsImageLoaded(true);
             }}
           />
-        ) : post.videoUrl ? (
-          <video className="w-full h-full object-cover" controls>
-            <source
-              src={`http://localhost:8080${post.videoUrl}`}
-              type="video/mp4"
-            />
-          </video>
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+          <button
+            onClick={toggleMedia}
+            className="absolute bottom-3 right-3 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-orange-100 transition duration-200"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-16 w-16 text-orange-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l3-2z"
+                clipRule="evenodd"
               />
             </svg>
+          </button>
+        </div>
+      );
+    }
+
+    if (post.imageUrl) {
+      return (
+        <img
+          src={`http://localhost:8080${post.imageUrl}`}
+          alt={post.title}
+          className="w-full h-full object-cover"
+          onLoad={() => setIsImageLoaded(true)}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src =
+              "https://images.unsplash.com/photo-1495195134817-aeb325a55b65?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1776&q=80";
+            setIsImageLoaded(true);
+          }}
+        />
+      );
+    }
+
+    if (post.videoUrl) {
+      return (
+        <video className="w-full h-full object-cover" controls>
+          <source
+            src={`http://localhost:8080${post.videoUrl}`}
+            type="video/mp4"
+          />
+        </video>
+      );
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+      {/* Media Container */}
+      <div className="relative w-full h-48 bg-orange-100">
+        {!isImageLoaded && post.imageUrl && !showVideo && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="animate-pulse w-full h-full bg-orange-200"></div>
           </div>
         )}
+        
+        {renderMedia()}
 
         <div className="absolute top-3 left-3 flex space-x-2">
           {post.user && (
@@ -273,13 +329,10 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
       </div>
 
       {/* Content Area */}
-      <div
-        className="p-4 flex flex-col flex-grow"
-        style={{ minHeight: "180px" }}
-      >
+      <div className="p-4 flex flex-col flex-grow" style={{ minHeight: "180px" }}>
         <div className="flex justify-between items-start mb-2">
           <h2 className="text-lg font-bold text-gray-800 line-clamp-2 flex-1">
-            {post.title}
+            {post.title || "Untitled Post"}
           </h2>
           <p className="text-gray-500 text-xs ml-2 whitespace-nowrap">
             {formatDate(post.createdAt)}
@@ -300,7 +353,7 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
 
         {/* Buttons Container */}
         <div className="mt-auto">
-          {/* Owner Actions - First Line */}
+          {/* Owner Actions */}
           {isOwner && (
             <div className="flex justify-end space-x-3 mb-2 pb-2 border-b border-gray-100">
               <Link
@@ -325,7 +378,7 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
             </div>
           )}
 
-          {/* Social Media Buttons - Second Line */}
+          {/* Social Media Buttons */}
           <div className="flex justify-between items-center">
             <div className="flex space-x-3">
               <button
@@ -344,7 +397,7 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
                 } transition`}
               >
                 <FaComment size={14} />
-                <span>{getCommentCount()}</span>
+                <span>{commentCount}</span>
               </button>
               <button className="flex items-center space-x-1 text-gray-500 hover:text-green-500 transition text-sm">
                 <FaShareAlt size={14} />
@@ -352,12 +405,14 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
             </div>
 
             <button
-              onClick={handleBookmark}
-              className="text-gray-500 hover:text-yellow-500 transition"
+              onClick={handleSavePost}
+              className={`text-gray-500 hover:text-yellow-500 transition ${
+                isBookmarked ? "text-yellow-500" : ""
+              }`}
             >
               <FaBookmark
                 size={14}
-                className={isBookmarked ? "text-yellow-500 fill-current" : ""}
+                className={isBookmarked ? "fill-current" : ""}
               />
             </button>
           </div>
