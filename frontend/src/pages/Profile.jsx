@@ -11,7 +11,7 @@ import {
   FaCalendarAlt,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import { FiMoreHorizontal } from "react-icons/fi";
+import { FiMoreHorizontal, FiEye, FiEdit, FiTrash } from "react-icons/fi";
 import { MdThumbUp } from "react-icons/md";
 
 const Profile = () => {
@@ -213,7 +213,15 @@ const Profile = () => {
           </a>
         </div>
 
-        <hr className="border-gray-300 mb-6 relative -left-[250px] top-[-120px] h-[5px] bg-gray-500 w-[600px]" />
+        <hr className="border-gray-300 mb-6 relative -left-[250px] top-[-120px] h-[3px] bg-gray-500 w-[1240px]" />
+        <Link
+          to={`/addcourse/${userid}`}
+          className="btn btn-primary mb-3 absolute top-[220px] left-[-200px]"
+        >
+          Create New Course
+        </Link>
+        <br />
+        <hr className="border-gray-300 mb-6 relative -left-[250px] top-[-120px] h-[2px] bg-gray-500 w-[1240px]" />
 
         {/* Tabs */}
         <div className="border-b border-gray-200 relative top-[-115px] left-[-250px] text-xl">
@@ -325,36 +333,63 @@ const Profile = () => {
           )}
 
           {activeTab1 === "courses" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {course && course.length > 0 ? (
                 course.map((course, index) => (
-                  <a
+                  <div
                     key={index}
-                    href={`/courses/${course.id}`}
                     className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    &nbsp;&nbsp;
+                  >&nbsp;&nbsp;
                     <img
-                      className="w-[250px] h-[130px] rounded-lg"
+                      className="w-[300px] h-[120px] object-cover rounded-l-lg"
                       src={course.images[0]}
                       alt={course.name || "Post image"}
                     />
-                    <div className="flex w-[180px] h-[-10px] flex-col justify-between p-4 leading-normal">
+                    <div className="flex w-full flex-col justify-between p-4 leading-normal">
                       <h5 className="mb-2 text-xl font-bold tracking-tight text-black dark:text-white">
                         {course.name || "Untitled Post"}
                       </h5>
                       <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                         {course.description?.split(" ").length > 5
-                          ? course.description.split(" ").slice(0, 5).join(" ") +
-                            "..."
+                          ? course.description
+                              .split(" ")
+                              .slice(0, 5)
+                              .join(" ") + "..."
                           : course.description || "No instructions available."}
                       </p>
+
+                      {/* Action buttons */}
+                      <div className="flex space-x-6 mt-2 relative left-[0px] top-[0px]">
+                        <a
+                          href={`/course/${course.courseId}/${userid}`}
+                          title="View Course"
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          <FiEye size={15} />
+                        </a>
+
+                        <a
+                          href={`/edit-course/${course.courseId}/${userid}`}
+                          title="Edit Course"
+                          className="text-green-600 hover:text-green-800"
+                        >
+                          <FiEdit size={15} />
+                        </a>
+
+                        <button
+                          onClick={() => handleDelete(course.courseId)}
+                          title="Delete Course"
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          <FiTrash size={15} />
+                        </button>
+                      </div>
                     </div>
-                  </a>
+                  </div>
                 ))
               ) : (
                 <div className="col-span-full py-10 text-center">
-                  <div className="text-gray-400 mb-4">No Posts yet</div>
+                  <div className="text-gray-400 mb-4">No Courses yet</div>
                 </div>
               )}
             </div>

@@ -30,10 +30,14 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
+    public List<Course> getCoursesByUserId(String userId) {
+        return courseRepository.findByUserId(userId);
+    }
+
     public List<Course> getCoursesByStatus(String status) {
         return courseRepository.findByStatus(status);
     }
-    
+
     public Optional<Course> updateCourse(String id, Course updatedCourse) {
         return courseRepository.findById(id).map(existingCourse -> {
             existingCourse.setCourseId(updatedCourse.getCourseId());
@@ -58,6 +62,5 @@ public class CourseService {
             return false;
         }
     }
-    
-    
+
 }
