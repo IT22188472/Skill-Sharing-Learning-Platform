@@ -108,6 +108,16 @@ public class CourseController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Course>> getCoursesByUserId(@PathVariable String userId) {
+        List<Course> userCourses = courseService.getCoursesByUserId(userId);
+        if (userCourses.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } else {
+            return ResponseEntity.ok(userCourses);
+        }
+    }
+
     @GetMapping("/active")
     public ResponseEntity<List<Course>> getActiveCourses() {
         List<Course> activeCourses = courseService.getCoursesByStatus("active");

@@ -11,6 +11,7 @@ import com.flavourflow.backend.model.Course;
 public interface CourseRepository extends MongoRepository<Course, String> {
 
     List<Course> findByStatus(String status);
+    List<Course> findByUserId(String userId);
     
 }
 
