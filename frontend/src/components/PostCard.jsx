@@ -1,172 +1,242 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { FaTrash, FaEdit, FaEye } from "react-icons/fa";
+import {
+  FaTrash,
+  FaEdit,
+  FaEye,
+  FaHeart,
+  FaComment,
+  FaShareAlt,
+  FaBookmark,
+} from "react-icons/fa";
+import CommentsSection from "./CommentsSection";
 
-const PostCard = ({ post, onPostDeleted }) => {
+const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState("");
   const [showVideo, setShowVideo] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [showComments, setShowComments] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
+  const [comments, setComments] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // Check if the current user is the post owner
-  const isOwner = user && post.user && user.id === post.user.id;
+  // Debug logs
+  useEffect(() => {
+    console.log("Post data received:", post);
+    console.log("Current user:", user);
+  }, [post, user]);
+
+  const isOwner = user && post?.user && user.id === post.user.id;
+
+  useEffect(() => {
+    if (!post) return;
+
+    // Initialize state from post data
+    setLikeCount(post.liked?.length || 0);
+    setCommentCount(post.comments?.length || 0);
+    setComments(post.comments || []);
+
+    if (user) {
+      // Check if user liked the post
+      if (Array.isArray(post.liked)) {
+        const liked = post.liked.some(likedUser => likedUser.id === user.id);
+        setIsLiked(liked);
+      }
+      
+      // Check if user saved the post
+      if (Array.isArray(user.savedPost)) {
+        const saved = user.savedPost.some(savedPost => savedPost.id === post.id);
+        setIsBookmarked(saved);
+      }
+    }
+  }, [user, post]);
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this recipe?")) {
-      return;
-    }
-
+    if (!window.confirm("Are you sure you want to delete this recipe?")) return;
     setIsDeleting(true);
     setError("");
-
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         setError("You must be logged in to delete a recipe");
         return;
       }
-
-      // Make sure token is properly formatted with Bearer prefix
       const authToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
-
       await axios.delete(`http://localhost:8080/api/posts/${post.id}`, {
-        headers: {
-          Authorization: authToken,
-        },
+        headers: { Authorization: authToken },
       });
-
-      // Call the callback to update the UI
-      if (onPostDeleted) {
-        onPostDeleted(post.id);
-      } else {
-        navigate("/");
-      }
+      onPostDeleted ? onPostDeleted(post.id) : navigate("/");
     } catch (error) {
       console.error("Error deleting post:", error);
-
-      if (error.response) {
-        if (error.response.status === 403) {
-          setError(
-            "Access denied. You may not have permission to delete this recipe."
-          );
-        } else if (error.response.status === 401) {
-          setError("Your session has expired. Please log in again.");
-        } else {
-          setError(error.response.data?.message || "Error deleting recipe");
-        }
-      } else if (error.request) {
-        setError("Network error. Please check your connection.");
-      } else {
-        setError("Error deleting recipe: " + error.message);
-      }
+      setError(error.response?.data?.message || "Error deleting recipe");
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const toggleMedia = () => {
-    setShowVideo(!showVideo);
+  const handleLike = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("You must be logged in to like a post");
+        return;
+      }
+
+      const authToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+      
+      const response = await axios.put(
+        `http://localhost:8080/api/posts/like/${post.id}`,
+        {},
+        {
+          headers: { Authorization: authToken },
+        }
+      );
+
+      setIsLiked(!isLiked);
+      setLikeCount(response.data.liked?.length || 0);
+      
+      if (onPostUpdated) {
+        onPostUpdated(response.data);
+      }
+    } catch (error) {
+      console.error("Error liking post:", error);
+      setError("Failed to like post. Please try again.");
+    }
   };
+
+  const handleSavePost = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("You must be logged in to save a post");
+        return;
+      }
+
+      const authToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+      
+      const response = await axios.put(
+        `http://localhost:8080/api/posts/save/${post.id}`,
+        {},
+        {
+          headers: { Authorization: authToken },
+        }
+      );
+
+      setIsBookmarked(!isBookmarked);
+      
+      if (onPostUpdated) {
+        onPostUpdated(response.data);
+      }
+    } catch (error) {
+      console.error("Error saving post:", error);
+      setError("Failed to save post. Please try again.");
+    }
+  };
+
+  const handleCommentAdded = (newComment) => {
+    setComments(prev => [newComment, ...prev]);
+    setCommentCount(prev => prev + 1);
+    if (onPostUpdated) {
+      onPostUpdated({ ...post, comments: [...comments, newComment] });
+    }
+  };
+
+  const handleCommentDeleted = (deletedCommentId) => {
+    setComments(prev => prev.filter(comment => comment._id !== deletedCommentId));
+    setCommentCount(prev => prev - 1);
+    if (onPostUpdated) {
+      onPostUpdated({ ...post, comments: comments.filter(c => c._id !== deletedCommentId) });
+    }
+  };
+
+  const toggleMedia = () => setShowVideo(!showVideo);
 
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    try {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    } catch {
+      return "";
+    }
   };
 
-  if (!post) return null;
+  if (!post) {
+    console.warn("PostCard rendered without post data");
+    return null;
+  }
 
-  return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl h-full flex flex-col transform hover:-translate-y-1">
-      {/* Media Container */}
-      <div className="relative w-full h-56 bg-orange-100">
-        {/* Loading skeleton */}
-        {!isImageLoaded && post.imageUrl && !showVideo && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="animate-pulse w-full h-full bg-orange-200"></div>
-          </div>
-        )}
+  const renderMedia = () => {
+    if (!post.imageUrl && !post.videoUrl) {
+      return (
+        <div className="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-16 w-16 text-orange-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+            />
+          </svg>
+        </div>
+      );
+    }
 
-        {/* Show image or video based on state */}
-        {post.imageUrl && post.videoUrl && (
-          <>
-            {showVideo ? (
-              // Show video when showVideo is true
-
-              <div className="relative w-full h-[300px]">
-                <video className="w-full h-[300px] object-cover" controls>
-                  <source
-                    src={`http://localhost:8080${post.videoUrl}`}
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-                <button
-                  onClick={toggleMedia}
-                  className="absolute bottom-3 right-3 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-orange-100 transition duration-200"
-                  aria-label="Show Image"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </div>
-            ) : (
-              // Show image when showVideo is false
-              <div className="relative w-full h-[300px]">
-                <img
-                  src={`http://localhost:8080${post.imageUrl}`}
-                  alt={post.title}
-                  className="w-full h-[300px] object-cover"
-                  onLoad={() => setIsImageLoaded(true)}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src =
-                      "https://images.unsplash.com/photo-1495195134817-aeb325a55b65?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1776&q=80";
-                    setIsImageLoaded(true);
-                  }}
-                />
-                <button
-                  onClick={toggleMedia}
-                  className="absolute bottom-3 right-3 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-orange-100 transition duration-200"
-                  aria-label="Play Video"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* Show only image if no video */}
-        {post.imageUrl && !post.videoUrl && (
+    if (post.imageUrl && post.videoUrl) {
+      return showVideo ? (
+        <div className="relative w-full h-full">
+          <video className="w-full h-full object-cover" controls>
+            <source
+              src={`http://localhost:8080${post.videoUrl}`}
+              type="video/mp4"
+            />
+          </video>
+          <button
+            onClick={toggleMedia}
+            className="absolute bottom-3 right-3 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-orange-100 transition duration-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      ) : (
+        <div className="relative w-full h-full">
           <img
             src={`http://localhost:8080${post.imageUrl}`}
             alt={post.title}
-            className="w-full h-[300px] object-cover"
+            className="w-full h-full object-cover"
             onLoad={() => setIsImageLoaded(true)}
             onError={(e) => {
               e.target.onerror = null;
@@ -175,46 +245,74 @@ const PostCard = ({ post, onPostDeleted }) => {
               setIsImageLoaded(true);
             }}
           />
-        )}
-
-        {/* Show only video if no image */}
-        {!post.imageUrl && post.videoUrl && (
-          <video className="w-full h-[300px] object-cover" controls>
-            <source
-              src={`http://localhost:8080${post.videoUrl}`}
-              type="video/mp4"
-            />
-            Your browser does not support the video tag.
-          </video>
-        )}
-
-        {/* Show placeholder if no media */}
-        {!post.imageUrl && !post.videoUrl && (
-          <div className="w-full h-[300px] bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+          <button
+            onClick={toggleMedia}
+            className="absolute bottom-3 right-3 bg-white bg-opacity-90 text-orange-600 p-2 rounded-full shadow-md hover:bg-orange-100 transition duration-200"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-16 w-16 text-orange-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l3-2z"
+                clipRule="evenodd"
               />
             </svg>
+          </button>
+        </div>
+      );
+    }
+
+    if (post.imageUrl) {
+      return (
+        <img
+          src={`http://localhost:8080${post.imageUrl}`}
+          alt={post.title}
+          className="w-full h-full object-cover"
+          onLoad={() => setIsImageLoaded(true)}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src =
+              "https://images.unsplash.com/photo-1495195134817-aeb325a55b65?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1776&q=80";
+            setIsImageLoaded(true);
+          }}
+        />
+      );
+    }
+
+    if (post.videoUrl) {
+      return (
+        <video className="w-full h-full object-cover" controls>
+          <source
+            src={`http://localhost:8080${post.videoUrl}`}
+            type="video/mp4"
+          />
+        </video>
+      );
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+      {/* Media Container */}
+      <div className="relative w-full h-48 bg-orange-100">
+        {!isImageLoaded && post.imageUrl && !showVideo && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="animate-pulse w-full h-full bg-orange-200"></div>
           </div>
         )}
+        
+        {renderMedia()}
 
-        {/* Media type indicator badges */}
-        <div className="absolute top-5 left-5 flex space-x-2">
+        <div className="absolute top-3 left-3 flex space-x-2">
           {post.user && (
-            <div className="bg-black bg-opacity-50 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full flex items-center">
+            <div className="bg-black bg-opacity-50 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w- mr-3"
+                className="h-3 w-3 mr-1"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -230,79 +328,112 @@ const PostCard = ({ post, onPostDeleted }) => {
         </div>
       </div>
 
-      <div className="p-5 relative top-[110px] left-[0px] flex flex-col flex-grow">
-        <div className="flex-grow">
-          <div className="flex justify-between items-start mb-2">
-            <h2 className="text-xl font-bold text-gray-800 line-clamp-2">
-              {post.title}
-            </h2>
-            {post.videoUrl && (
-              <span className="bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center relative -left-[70px]">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3 mr-1"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                </svg>
-                Video
-              </span>
-            )}
-          </div>
-
-          <p className="text-gray-500 relative -top-[28px] left-[520px] text-sm mb-3">
+      {/* Content Area */}
+      <div className="p-4 flex flex-col flex-grow" style={{ minHeight: "180px" }}>
+        <div className="flex justify-between items-start mb-2">
+          <h2 className="text-lg font-bold text-gray-800 line-clamp-2 flex-1">
+            {post.title || "Untitled Post"}
+          </h2>
+          <p className="text-gray-500 text-xs ml-2 whitespace-nowrap">
             {formatDate(post.createdAt)}
           </p>
-
-          {/* Preview of ingredients */}
-          {post.ingredients && (
-            <div className="mb-4 relative -top-[20px]">
-              <h3 className="text-sm font-semibold text-gray-700 mb-1">
-                Ingredients:
-              </h3>
-              <p className="text-sm text-gray-600 line-clamp-2">
-                {post.ingredients.split("\n").slice(0, 2).join(", ")}
-                {post.ingredients.split("\n").length > 2 ? "..." : ""}
-              </p>
-            </div>
-          )}
         </div>
 
-        <div className="flex flex-col space-y-3 mt-4 relative -top-[90px] left-[490px]">
+        {post.ingredients && (
+          <div className="mb-2">
+            <h3 className="text-xs font-semibold text-gray-700 mb-1">
+              Ingredients:
+            </h3>
+            <p className="text-xs text-gray-600 line-clamp-2">
+              {post.ingredients.split("\n").slice(0, 2).join(", ")}
+              {post.ingredients.split("\n").length > 2 ? "..." : ""}
+            </p>
+          </div>
+        )}
+
+        {/* Buttons Container */}
+        <div className="mt-auto">
+          {/* Owner Actions */}
           {isOwner && (
-            <div className="flex space-x-2 mt-4">
-              {/* View Post */}
+            <div className="flex justify-end space-x-3 mb-2 pb-2 border-b border-gray-100">
               <Link
                 to={`/posts/${post.id}`}
                 className="text-blue-600 hover:text-blue-800 transition"
               >
-                <FaEye className="w-5 h-5" title="View" />
+                <FaEye size={14} title="View" />
               </Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              {/* Edit Post */}
               <Link
                 to={`/posts/${post.id}/edit`}
                 className="text-green-600 hover:text-green-800 transition"
               >
-                <FaEdit className="w-5 h-5" title="Edit" />
+                <FaEdit size={14} title="Edit" />
               </Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              {/* Delete Post */}
               <button
                 onClick={handleDelete}
                 disabled={isDeleting}
                 className="text-red-600 hover:text-red-800 transition"
               >
-                <FaTrash className="w-5 h-5" title="Delete" />
+                <FaTrash size={14} title="Delete" />
               </button>
             </div>
           )}
+
+          {/* Social Media Buttons */}
+          <div className="flex justify-between items-center">
+            <div className="flex space-x-3">
+              <button
+                onClick={handleLike}
+                className={`flex items-center space-x-1 transition text-sm ${
+                  isLiked ? "text-red-500" : "text-gray-500 hover:text-red-500"
+                }`}
+              >
+                <FaHeart className={isLiked ? "fill-current" : ""} size={14} />
+                <span>{likeCount}</span>
+              </button>
+              <button 
+                onClick={() => setShowComments(!showComments)}
+                className={`flex items-center space-x-1 text-sm ${
+                  showComments ? "text-blue-500" : "text-gray-500 hover:text-blue-500"
+                } transition`}
+              >
+                <FaComment size={14} />
+                <span>{commentCount}</span>
+              </button>
+              <button className="flex items-center space-x-1 text-gray-500 hover:text-green-500 transition text-sm">
+                <FaShareAlt size={14} />
+              </button>
+            </div>
+
+            <button
+              onClick={handleSavePost}
+              className={`text-gray-500 hover:text-yellow-500 transition ${
+                isBookmarked ? "text-yellow-500" : ""
+              }`}
+            >
+              <FaBookmark
+                size={14}
+                className={isBookmarked ? "fill-current" : ""}
+              />
+            </button>
+          </div>
         </div>
 
         {error && (
-          <div className="mt-4 bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-lg text-sm">
+          <div className="mt-2 bg-red-50 border border-red-200 text-red-600 px-3 py-1 rounded-lg text-xs">
             {error}
+          </div>
+        )}
+
+        {/* Comments Section */}
+        {showComments && (
+          <div className="border-t mt-3 pt-3">
+            <div className="max-h-64 overflow-y-auto pr-2">
+              <CommentsSection 
+                postId={post.id} 
+                onCommentAdded={handleCommentAdded}
+                onCommentDeleted={handleCommentDeleted}
+              />
+            </div>
           </div>
         )}
       </div>
