@@ -11,6 +11,7 @@ import {
   FaShareAlt,
   FaBookmark,
 } from "react-icons/fa";
+import CommentsSection from "./CommentsSection";
 
 const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -20,23 +21,27 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.liked?.length || 0);
+  const [showComments, setShowComments] = useState(false);
+  const [commentCount, setCommentCount] = useState(post.comments?.length || 0);
+  const [comments, setComments] = useState(post.comments || []);
   const navigate = useNavigate();
   const { user } = useAuth();
 
   const isOwner = user && post.user && user.id === post.user.id;
 
   useEffect(() => {
-    // Check if user already liked the post when component mounts
     if (user && post.liked) {
       const liked = post.liked.some(likedUser => likedUser.id === user.id);
       setIsLiked(liked);
     }
-  }, [user, post.liked]);
+    // Initialize comments from post prop
+    if (post.comments) {
+      setComments(post.comments);
+    }
+  }, [user, post.liked, post.comments]);
 
   const getCommentCount = () => {
-    if (Array.isArray(post.comments)) return post.comments.length;
-    if (typeof post.comments === "number") return post.comments;
-    return 0;
+    return commentCount;
   };
 
   const handleDelete = async () => {
@@ -99,17 +104,31 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
         }
       );
 
-      // Update local state based on response
       setIsLiked(!isLiked);
       setLikeCount(response.data.liked.length);
       
-      // If parent component provided an update handler, call it
       if (onPostUpdated) {
         onPostUpdated(response.data);
       }
     } catch (error) {
       console.error("Error liking post:", error);
       setError("Failed to like post. Please try again.");
+    }
+  };
+
+  const handleCommentAdded = (newComment) => {
+    setComments(prev => [newComment, ...prev]);
+    setCommentCount(prev => prev + 1);
+    if (onPostUpdated) {
+      onPostUpdated({ ...post, comments: [...comments, newComment] });
+    }
+  };
+
+  const handleCommentDeleted = (deletedCommentId) => {
+    setComments(prev => prev.filter(comment => comment._id !== deletedCommentId));
+    setCommentCount(prev => prev - 1);
+    if (onPostUpdated) {
+      onPostUpdated({ ...post, comments: comments.filter(c => c._id !== deletedCommentId) });
     }
   };
 
@@ -186,7 +205,7 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
                 >
                   <path
                     fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l3-2z"
                     clipRule="evenodd"
                   />
                 </svg>
@@ -318,7 +337,12 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
                 <FaHeart className={isLiked ? "fill-current" : ""} size={14} />
                 <span>{likeCount}</span>
               </button>
-              <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition text-sm">
+              <button 
+                onClick={() => setShowComments(!showComments)}
+                className={`flex items-center space-x-1 text-sm ${
+                  showComments ? "text-blue-500" : "text-gray-500 hover:text-blue-500"
+                } transition`}
+              >
                 <FaComment size={14} />
                 <span>{getCommentCount()}</span>
               </button>
@@ -342,6 +366,19 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
         {error && (
           <div className="mt-2 bg-red-50 border border-red-200 text-red-600 px-3 py-1 rounded-lg text-xs">
             {error}
+          </div>
+        )}
+
+        {/* Comments Section */}
+        {showComments && (
+          <div className="border-t mt-3 pt-3">
+            <div className="max-h-64 overflow-y-auto pr-2">
+              <CommentsSection 
+                postId={post.id} 
+                onCommentAdded={handleCommentAdded}
+                onCommentDeleted={handleCommentDeleted}
+              />
+            </div>
           </div>
         )}
       </div>

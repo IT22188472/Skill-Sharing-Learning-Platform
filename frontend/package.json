@@ -23,6 +23,7 @@
         "@testing-library/user-event": "^13.5.0",
         "axios": "^1.8.4",
         "bootstrap": "^5.3.6",
+        "date-fns": "^4.1.0",
         "framer-motion": "^12.10.5",
         "lines-and-columns": "^2.0.4",
         "react": "^18.2.0",
