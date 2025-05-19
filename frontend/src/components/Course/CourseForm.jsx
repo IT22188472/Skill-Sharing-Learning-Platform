@@ -151,12 +151,6 @@ const CourseForm = () => {
             </div>
           </div>
         </div>
-        {/* Link to the add course page */}
-        <Link to={`/ContentDashboard/${users.id}`}>
-          <Button variant="primary" className="mt-4">
-            Content Dashboard
-          </Button>
-        </Link>
       </div>
     </div>
   );
