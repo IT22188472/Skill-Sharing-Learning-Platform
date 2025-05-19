@@ -15,6 +15,7 @@ com\flavourflow\backend\controller\CompletedCourseController.class
 com\flavourflow\backend\service\FileStorageService.class
 com\flavourflow\backend\config\JwtConstant.class
 com\flavourflow\backend\request\CompleteCourseRequest.class
+com\flavourflow\backend\service\CommentServiceImplementation.class
 com\flavourflow\backend\service\CourseService.class
 com\flavourflow\backend\request\LoginRequest.class
 com\flavourflow\backend\config\jwtValidator.class
@@ -25,6 +26,7 @@ com\flavourflow\backend\controller\UserController.class
 com\flavourflow\backend\service\UserServiceImplementation.class
 com\flavourflow\backend\controller\CourseController.class
 com\flavourflow\backend\models\User.class
+com\flavourflow\backend\controller\CommentController.class
 com\flavourflow\backend\controller\GroupMessageController.class
 com\flavourflow\backend\repository\UserRepository.class
 com\flavourflow\backend\service\PostService.class
@@ -32,17 +34,20 @@ com\flavourflow\backend\repository\EnrollmentRepository.class
 com\flavourflow\backend\repository\PostRepository.class
 com\flavourflow\backend\controller\userControll.class
 com\flavourflow\backend\config\CorsConfig$1.class
+com\flavourflow\backend\repository\CommentRepository.class
 com\flavourflow\backend\models\CompletedCourse.class
 com\flavourflow\backend\models\Post.class
 com\flavourflow\backend\service\CompletedCourseService.class
 com\flavourflow\backend\BackendApplication.class
 com\flavourflow\backend\exception\FileStorageException.class
 com\flavourflow\backend\config\AuthController.class
+com\flavourflow\backend\models\Comment.class
 com\flavourflow\backend\controller\PostController.class
 com\flavourflow\backend\service\PostServiceImplementation.class
 com\flavourflow\backend\repository\GroupRepository.class
 com\flavourflow\backend\response\AuthResponse.class
 com\flavourflow\backend\config\CorsConfig.class
+com\flavourflow\backend\request\UpdateCommentRequest.class
 com\flavourflow\backend\service\CloudinaryService.class
 com\flavourflow\backend\service\EnrollmentService.class
 com\flavourflow\backend\models\Enrollusrs.class
@@ -55,3 +60,4 @@ com\flavourflow\backend\controller\GroupController.class
 com\flavourflow\backend\repository\CompletedCourseRepository.class
 com\flavourflow\backend\service\UserService.class
 com\flavourflow\backend\service\CustomUserDetailsService.class
+com\flavourflow\backend\service\CommentService.class

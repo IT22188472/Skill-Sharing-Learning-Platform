@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
 import {
   FaTwitter,
   FaFacebook,
@@ -29,6 +30,34 @@ const Profile = () => {
   const [enrollments, setEnrollments] = useState(null);
   const token = localStorage.getItem("token");
   const authToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+
+
+  const handleDelete = (courseId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:8080/courses/coursesdelete/${courseId}`)
+          .then(() => {
+            Swal.fire("Deleted!", "The course has been deleted.", "success");
+            setCourse((prevCourses) =>
+              prevCourses.filter((course) => course.courseId !== courseId)
+            );
+          })
+          .catch((error) => {
+            Swal.fire("Error!", "Failed to delete the course.", "error");
+            console.error("Delete error:", error);
+          });
+      }
+    });
+  };
 
   useEffect(() => {
     axios
@@ -319,7 +348,7 @@ const Profile = () => {
 
                       <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                         <MdThumbUp className="inline-block w-6 h-6 mr-1" />
-                        &nbsp;&nbsp;{post.Liked?.length || 0}
+                        &nbsp;&nbsp;{post.liked?.length || 0}
                       </p>
                     </div>
                   </a>
@@ -369,7 +398,7 @@ const Profile = () => {
                         </a>
 
                         <a
-                          href={`/edit-course/${course.courseId}/${userid}`}
+                          href={`/ContentDashboard/${userid}`}
                           title="Edit Course"
                           className="text-green-600 hover:text-green-800"
                         >

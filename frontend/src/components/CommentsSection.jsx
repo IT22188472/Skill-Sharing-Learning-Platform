@@ -603,6 +603,7 @@ const CommentsSection = ({ postId, onCommentAdded, onCommentDeleted }) => {
           {error}
         </div>
       )}
+      <br/><br/><br/><br/>
     </div>
   );
 };
