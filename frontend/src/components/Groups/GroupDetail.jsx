@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import cooking1 from '../../images/cooking3.jpg'
 
 const GroupDetail = () => {
     const { groupId } = useParams();
@@ -186,12 +187,15 @@ const GroupDetail = () => {
     }
 
     return (
-        <div className="min-h-screen bg-orange-50 py-12">
+        <div className="min-h-screen bg-orange-50 py-24">
             {/* Hero Section */}
-            <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white py-12 px-4">
-                <div className="container mx-auto max-w-5xl">
-                    <div className="flex flex-col md:flex-row items-center justify-between">
-                        <div className="md:w-2/3 mb-8 md:mb-0">
+            <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white py-12 px-4" style={{
+                          background: `url(${cooking1}) no-repeat center center / cover`,
+                          height: "300px",
+                        }}>
+                <div className="container mx-auto max-w-5xl" >
+                    <div className="flex flex-col md:flex-row items-center justify-between" >
+                        <div className="md:w-2/3 mb-8 md:mb-0" >
                             <div className="flex items-center mb-4">
                                 <Link 
                                     to="/groups" 
@@ -210,7 +214,7 @@ const GroupDetail = () => {
                             {!isMember ? (
                                 <button
                                     onClick={handleJoinGroup}
-                                    className="bg-white text-orange-600 hover:bg-orange-100 px-6 py-3 rounded-full font-medium transition duration-200 shadow-md flex items-center"
+                                    className="bg-white text-dark hover:bg-orange-100 px-6 py-3 rounded-full font-medium transition duration-200 shadow-md flex items-center"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
@@ -230,10 +234,10 @@ const GroupDetail = () => {
                             )}
                         </div>
                         <div className="md:w-1/3 flex justify-center">
-                            <div className="bg-white bg-opacity-20 p-6 rounded-lg shadow-lg backdrop-blur-sm">
+                            <div className="bg-white bg-opacity-20 p-6 rounded-3xl shadow-lg backdrop-blur-sm">
                                 <div className="text-center">
-                                    <span className="text-4xl font-bold">{members.length}</span>
-                                    <p className="text-orange-100">Members</p>
+                                    <span className="text-4xl font-bold text-dark">{members.length}</span>
+                                    <p className="text-dark">Members</p>
                                 </div>
                             </div>
                         </div>
