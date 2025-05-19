@@ -298,7 +298,7 @@ const PostCard = ({ post, onPostDeleted, onPostUpdated }) => {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
       {/* Media Container */}
-      <div className="relative w-full h-48 bg-orange-100">
+      <div className="relative w-full h-64 bg-orange-100">
         {!isImageLoaded && post.imageUrl && !showVideo && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="animate-pulse w-full h-full bg-orange-200"></div>

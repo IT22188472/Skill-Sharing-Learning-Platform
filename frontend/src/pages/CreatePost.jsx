@@ -94,6 +94,7 @@ const CreatePost = () => {
 
   return (
     <div className="bg-orange-50 min-h-screen py-12">
+      <br/><br/><br/>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-xl shadow-xl overflow-hidden">
           <div className="bg-gradient-to-r from-orange-500 to-red-600 px-6 py-8 md:py-10 md:px-8">

@@ -191,7 +191,7 @@ const GroupDetail = () => {
             {/* Hero Section */}
             <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white py-12 px-4" style={{
                           background: `url(${cooking1}) no-repeat center center / cover`,
-                          height: "300px",
+                          height: "250px",
                         }}>
                 <div className="container mx-auto max-w-5xl" >
                     <div className="flex flex-col md:flex-row items-center justify-between" >

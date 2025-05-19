@@ -54,7 +54,7 @@ const UserInfoCard2 = ({ user }) => {
   }, [user?.id]);
 
   return (
-    <div className="fixed top-[350px] left-[100px] w-[260px] h-[350px] pr-2 rounded-2xl ">
+    <div className="relative top-[-540px] left-[100px] w-[260px] h-[350px] pr-2 rounded-2xl ">
       {/* Profile Card */}
       <div className="bg-white rounded-2xl p-2 text-center shadow-md">
         <img
